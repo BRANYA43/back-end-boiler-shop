@@ -8,6 +8,7 @@ authors = [
 ]
 readme = "README.md"
 
+
 [tool.poetry.dependencies]
 django = "^5.0"
 django-baton = "^2.8.1"
@@ -25,6 +26,26 @@ mypy = "^1.7.1"
 pre-commit = "^3.6.0"
 ruff = "^0.1.8"
 
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.ruff]
+line-length = 120
+ignore-init-module-imports = true
+extend-exclude = ["migrations"]
+
+
+[tool.ruff.format]
+quote-style = "single"
+
+
+[tool.isort]
+line_length = 120
+multi_line_output = 4
+
+
+[tool.mypy]
+ignore_missing_imports = true
