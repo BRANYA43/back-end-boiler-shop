@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "back-end-boiler-shop"
+version = "0.1.0"
+description = ""
+authors = [
+    "BRANYA43 <bogdan.timchenko.2504@gmail.com>",
+    "DmitryTok <FoB09@ukr.net>",
+]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+django = "^5.0"
+django-baton = "^2.8.1"
+django-taggit = "^5.0.1"
+djangorestframework = "^3.14.0"
+drf-spectacular = "^0.27.0"
+python = "^3.10"
+python-dotenv = "^1.0.0"
+
+
+[tool.poetry.group.dev.dependencies]
+django-debug-toolbar = "^4.2.0"
+isort = "^5.13.2"
+mypy = "^1.7.1"
+pre-commit = "^3.6.0"
+ruff = "^0.1.8"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
