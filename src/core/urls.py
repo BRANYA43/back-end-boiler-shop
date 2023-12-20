@@ -11,6 +11,7 @@ api_urls = [
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('baton/', include('baton.urls')),
     path('api/', include(api_urls)),
 ]
 
