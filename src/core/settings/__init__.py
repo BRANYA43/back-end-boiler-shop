@@ -11,6 +11,7 @@ env.setdefault('DJANGO_ENV', 'development')
 _settings = (
     'components/base.py',
     'components/rest_framework.py',
+    'components/baton.py',  # It must be last component
     'environments/{}.py'.format(env['DJANGO_ENV']),
     optional('environments/local.py'),
 )
