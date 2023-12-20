@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     # External apps
     'taggit',
     'rest_framework',
+    'drf_spectacular',
     # Internal apps
 ]
 
