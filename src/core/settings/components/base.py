@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # External apps
     'taggit',
+    'rest_framework',
     # Internal apps
 ]
 
