@@ -4,9 +4,9 @@ Base Django Settings
 
 from core.settings.components import BASE_DIR, env
 
-SECRET_KEY = env.get('SECRET_KEY')
+SECRET_KEY = env.get('DJANGO_SECRET_KEY')
 
-ALLOWED_HOSTS = env.get('ALLOWED_HOSTS', '').split()
+ALLOWED_HOSTS = env.get('DJANGO_ALLOWED_HOSTS', '').split()
 
 INSTALLED_APPS = [
     # Default apps

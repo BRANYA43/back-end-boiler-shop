@@ -1,18 +1,15 @@
 """
 Combining settings for django project 
 """
-
-from os import environ as env
-
 from split_settings.tools import include, optional
 
-env.setdefault('DJANGO_ENV', 'development')
+from core.settings.components import env
 
 _settings = (
     'components/base.py',
     'components/rest_framework.py',
     'components/baton.py',  # It must be last component
-    'environments/{}.py'.format(env['DJANGO_ENV']),
+    'environments/{}.py'.format(env['DJANGO_SETTINGS_ENV'].lower()),
     optional('environments/local.py'),
 )
 
