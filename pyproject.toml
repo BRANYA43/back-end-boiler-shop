@@ -10,7 +10,7 @@ readme = "README.md"
 
 
 [tool.poetry.dependencies]
-django = "^5.0"
+django = "4.2.7"
 django-baton = "^2.8.1"
 django-taggit = "^5.0.1"
 django-split-settings = "^1.2.0"
