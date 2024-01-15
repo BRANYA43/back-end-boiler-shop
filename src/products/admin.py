@@ -1,6 +1,13 @@
 from django.contrib import admin
 
-from products.models import Category, Product
+from products.models import Attribute, Category, Product
+
+
+@admin.register(Attribute)
+class AttributeAdmin(admin.ModelAdmin):
+    list_display = ['name', 'value']
+    fields = ['name', 'value']
+    search_fields = ['name', 'value']
 
 
 @admin.register(Product)
