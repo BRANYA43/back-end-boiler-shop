@@ -7,7 +7,7 @@ class SpecificationModelTest(CustomTestCase):
         self.model = Specification
 
     def test_model_has_necessary_fields(self):
-        necessary_field = ['uuid', 'product']
+        necessary_field = ['uuid', 'product', 'attributes']
         self.assertModelHasNecessaryFields(self.model, necessary_field)
 
     def test_uuid_field(self):

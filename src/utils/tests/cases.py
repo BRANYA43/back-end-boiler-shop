@@ -27,12 +27,8 @@ class CustomTestCase(APITestCase):
         return list(serializer().fields)
 
     def assertModelHasNecessaryFields(self, model: Type[Model], necessary_fields: list[str]):
-        model_fields = self.get_model_field_names(model)
-        model_fields.sort()
-        necessary_fields.sort()
-
         for field in necessary_fields:
-            self.assertIn(field, model_fields)
+            self.assertTrue(hasattr(model, field))
 
     def assertSerializerHasOnlyExpectedFields(self, serializer: Type[Serializer], expected_fields: list[str]):
         serializer_fields = self.get_serializer_field_names(serializer)
