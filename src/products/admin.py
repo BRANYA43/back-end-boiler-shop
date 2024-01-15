@@ -1,6 +1,18 @@
 from django.contrib import admin
 
-from products.models import Attribute, Category, Product
+from products.models import Attribute, Category, Product, Specification
+
+
+@admin.register(Specification)
+class SpecificationAdmin(admin.ModelAdmin):
+    fields = ['product', 'attributes']
+    search_fields = ['product', 'attributes']
+
+
+class SpecificationInline(admin.StackedInline):
+    model = Specification
+    fields = ['attributes']
+    can_delete = False
 
 
 @admin.register(Attribute)
@@ -18,6 +30,7 @@ class ProductAdmin(admin.ModelAdmin):
     readonly_fields = ['updated', 'created']
     search_fields = ['name', 'slug', 'description']
     list_filter = ['category', 'stock', 'is_displayed']
+    inlines = [SpecificationInline]
 
 
 class InlineCategory(admin.TabularInline):
