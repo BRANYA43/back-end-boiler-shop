@@ -8,3 +8,11 @@ class UUIDMixin(models.Model):
 
     class Meta:
         abstract = True
+
+
+class CreatedAndUpdatedDateTimeMixin(models.Model):
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        abstract = True
