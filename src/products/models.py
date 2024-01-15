@@ -8,7 +8,7 @@ class Specification(UUIDMixin):
     attributes = models.ManyToManyField('Attribute', related_name='specifications')
 
     def __str__(self):
-        return f'Specification of {self.product}'
+        return str(self.product)
 
 
 class Attribute(UUIDMixin):
