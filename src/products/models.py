@@ -3,6 +3,14 @@ from django.db import models
 from utils.mixins import CreatedAndUpdatedDateTimeMixin, UUIDMixin
 
 
+class Attribute(UUIDMixin):
+    name = models.CharField(max_length=50)
+    value = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+
 class Stock(models.TextChoices):
     IN_STOCK = 'in_stock', 'In stock'
     OUT_OF_STOCK = 'out_of_stock', 'Out of stock'
