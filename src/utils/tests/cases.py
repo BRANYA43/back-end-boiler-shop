@@ -15,10 +15,6 @@ class CustomTestCase(APITestCase):
         return model._meta.get_field(name)
 
     @staticmethod
-    def get_model_field_names(model: Type[Model]) -> list[str]:
-        return [field.name for field in model._meta.fields]
-
-    @staticmethod
     def get_serializer_field(serializer: Type[Serializer], name: str) -> Type[Field]:
         return serializer().fields[name]
 

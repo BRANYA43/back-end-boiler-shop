@@ -27,11 +27,6 @@ class TestCaseTest(CustomTestCase):
         field = self.get_model_field(TestModel, 'field_1')
         self.assertIsInstance(field, models.Field)
 
-    def test_get_model_field_name_method_returns_correct_field_names(self):
-        fields = self.get_model_field_names(TestModel)
-        expected_fields = ['field_1', 'field_2', 'field_3']
-        self.assertListEqual(fields, expected_fields)
-
     def test_get_serializer_field_method_returns_correct_field(self):
         field = self.get_serializer_field(TestSerializer, 'field_1')
         self.assertIsInstance(field, serializers.Field)
