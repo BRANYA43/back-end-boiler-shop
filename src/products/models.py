@@ -16,7 +16,7 @@ class Attribute(UUIDMixin):
     value = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.name
+        return f'{self.name}: {self.value}'
 
 
 class Stock(models.TextChoices):
