@@ -1,5 +1,62 @@
-from products.models import Attribute, Category, Product, Stock
+from products.models import Attribute, Category, Product, Specification, Stock
 from utils.tests import CustomTestCase
+
+
+class SpecificationModelTest(CustomTestCase):
+    def setUp(self) -> None:
+        self.model = Specification
+
+    def test_model_has_necessary_fields(self):
+        necessary_field = ['uuid', 'product']
+        self.assertModelHasNecessaryFields(self.model, necessary_field)
+
+    def test_uuid_field(self):
+        """
+        Tests:
+        uuid field is primary key;
+        """
+        field = self.get_model_field(self.model, 'uuid')
+        self.assertTrue(field.primary_key)
+
+    def test_product_field(self):
+        """
+        Tests:
+        product field has relation one ot one;
+        product field has related_model as Product;
+        """
+        field = self.get_model_field(self.model, 'product')
+        self.assertTrue(field.one_to_one)
+        self.assertIs(field.related_model, Product)
+
+    def test_attributes_field(self):
+        """
+        Tests:
+        attributes field has relation many to many;
+        attributes field has related_model as Attribute;
+        """
+        field = self.get_model_field(self.model, 'attributes')
+        self.assertTrue(field.many_to_many)
+        self.assertIs(field.related_model, Attribute)
+
+    def test_model_is_created_after_creating_product(self):
+        self.assertEqual(Specification.objects.count(), 0)
+
+        category = Category.objects.create(name='category')
+        Product.objects.create(name='product', slug='slug', category=category, price=1000)
+
+        self.assertEqual(Specification.objects.count(), 1)
+
+    def test_model_is_deleted_after_deleting_product(self):
+        self.assertEqual(Specification.objects.count(), 0)
+
+        category = Category.objects.create(name='category')
+        product = Product.objects.create(name='product', slug='slug', category=category, price=1000)
+
+        self.assertEqual(Specification.objects.count(), 1)
+
+        product.delete()
+
+        self.assertEqual(Specification.objects.count(), 0)
 
 
 class AttributeModelTest(CustomTestCase):

@@ -3,6 +3,14 @@ from django.db import models
 from utils.mixins import CreatedAndUpdatedDateTimeMixin, UUIDMixin
 
 
+class Specification(UUIDMixin):
+    product = models.OneToOneField('Product', on_delete=models.CASCADE, related_name='specification')
+    attributes = models.ManyToManyField('Attribute', related_name='specifications')
+
+    def __str__(self):
+        return f'Specification of {self.product}'
+
+
 class Attribute(UUIDMixin):
     name = models.CharField(max_length=50)
     value = models.CharField(max_length=50)
