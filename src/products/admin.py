@@ -1,6 +1,16 @@
 from django.contrib import admin
 
-from products.models import Category
+from products.models import Category, Product
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ['name', 'slug', 'category', 'is_displayed', 'stock', 'updated', 'created']
+    fields = ['category', 'name', 'slug', 'price', 'stock', 'description', 'is_displayed', 'updated', 'created']
+    prepopulated_fields = {'slug': ['name']}
+    readonly_fields = ['updated', 'created']
+    search_fields = ['name', 'slug', 'description']
+    list_filter = ['category', 'stock', 'is_displayed']
 
 
 class InlineCategory(admin.TabularInline):
