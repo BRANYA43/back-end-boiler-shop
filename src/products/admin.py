@@ -26,12 +26,26 @@ class AttributeAdmin(admin.ModelAdmin):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug', 'category', 'is_displayed', 'stock', 'updated', 'created']
-    fields = ['category', 'name', 'slug', 'price', 'stock', 'description', 'is_displayed', 'updated', 'created']
+    fields = [
+        'category',
+        'total_grade',
+        'name',
+        'slug',
+        'price',
+        'stock',
+        'description',
+        'is_displayed',
+        'updated',
+        'created',
+    ]
     prepopulated_fields = {'slug': ['name']}
-    readonly_fields = ['updated', 'created']
+    readonly_fields = ['total_grade', 'updated', 'created']
     search_fields = ['name', 'slug', 'description']
     list_filter = ['category', 'stock', 'is_displayed']
     inlines = [SpecificationInline]
+
+    def total_grade(self, instance):
+        return str(instance.total_grade)
 
 
 class InlineCategory(admin.TabularInline):
