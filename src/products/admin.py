@@ -20,6 +20,7 @@ class AttributeAdmin(admin.ModelAdmin):
     list_display = ['name', 'value']
     fields = ['name', 'value']
     search_fields = ['name', 'value']
+    ordering = ['name']
 
 
 @admin.register(Product)
