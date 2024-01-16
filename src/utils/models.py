@@ -5,7 +5,7 @@ from utils.utils import get_upload_filename
 
 
 class Image(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
-    name = models.SlugField(max_length=50, unique=True)
+    name = models.CharField(max_length=50, unique=True)
     image = models.ImageField(upload_to=get_upload_filename)
 
     class Meta:
