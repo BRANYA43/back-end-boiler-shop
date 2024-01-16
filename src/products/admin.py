@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from products.models import Attribute, Category, Product, Specification
+from products.models import Category, Product, Specification
 
 
 @admin.register(Specification)
@@ -13,14 +13,6 @@ class SpecificationInline(admin.StackedInline):
     model = Specification
     fields = ['attributes']
     can_delete = False
-
-
-@admin.register(Attribute)
-class AttributeAdmin(admin.ModelAdmin):
-    list_display = ['name', 'value']
-    fields = ['name', 'value']
-    search_fields = ['name', 'value']
-    ordering = ['name']
 
 
 @admin.register(Product)
