@@ -16,3 +16,12 @@ class CreatedAndUpdatedDateTimeMixin(models.Model):
 
     class Meta:
         abstract = True
+
+
+class ImageSetMixin(UUIDMixin):
+    from utils.models import Image
+
+    images = models.ManyToManyField(Image, blank=True)
+
+    class Meta:
+        abstract = True
