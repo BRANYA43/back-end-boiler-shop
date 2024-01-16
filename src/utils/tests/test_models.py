@@ -1,5 +1,6 @@
 from utils.models import Attribute, Image
 from utils.tests import CustomTestCase
+from utils.utils import get_upload_filename
 
 
 class ImageModelTest(CustomTestCase):
@@ -27,6 +28,14 @@ class ImageModelTest(CustomTestCase):
         field = self.get_model_field(self.model, 'name')
         self.assertEqual(field.max_length, 50)
         self.assertTrue(field.unique)
+
+    def test_image_field(self):
+        """
+        Test:
+        image field has upload to as get_upload_filename
+        """
+        field = self.get_model_field(self.model, 'image')
+        self.assertIs(field.upload_to, get_upload_filename)
 
 
 class AttributeModelTest(CustomTestCase):

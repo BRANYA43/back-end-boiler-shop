@@ -1,11 +1,12 @@
 from django.db import models
 
 from utils.mixins import CreatedAndUpdatedDateTimeMixin, UUIDMixin
+from utils.utils import get_upload_filename
 
 
 class Image(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
     name = models.SlugField(max_length=50, unique=True)
-    image = models.ImageField()
+    image = models.ImageField(upload_to=get_upload_filename)
 
     class Meta:
         pass
