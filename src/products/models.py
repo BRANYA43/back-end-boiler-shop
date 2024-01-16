@@ -1,6 +1,7 @@
 from django.db import models
 
 from utils.mixins import CreatedAndUpdatedDateTimeMixin, UUIDMixin
+from utils.models import Attribute
 
 
 def _set_grade_dict():
@@ -9,18 +10,10 @@ def _set_grade_dict():
 
 class Specification(UUIDMixin):
     product = models.OneToOneField('Product', on_delete=models.CASCADE, related_name='specification')
-    attributes = models.ManyToManyField('Attribute', related_name='specifications')
+    attributes = models.ManyToManyField(Attribute, related_name='specifications')
 
     def __str__(self):
         return str(self.product)
-
-
-class Attribute(UUIDMixin):
-    name = models.CharField(max_length=50)
-    value = models.CharField(max_length=50)
-
-    def __str__(self):
-        return f'{self.name}: {self.value}'
 
 
 class Stock(models.TextChoices):
