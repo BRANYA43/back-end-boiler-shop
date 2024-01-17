@@ -1,7 +1,11 @@
 from django.db import models
 
-from utils.mixins import CreatedAndUpdatedDateTimeMixin, UUIDMixin
+from utils.mixins import CreatedAndUpdatedDateTimeMixin, ImageSetMixin, UUIDMixin
 from utils.models import Attribute
+
+
+class ProductImageSet(ImageSetMixin):
+    product = models.OneToOneField('Product', on_delete=models.CASCADE, related_name='image_set')
 
 
 def _set_grade_dict():

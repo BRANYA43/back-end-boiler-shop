@@ -1,6 +1,41 @@
-from products.models import Category, Product, Specification, Stock
-from utils.models import Attribute
+from products.models import Category, Product, ProductImageSet, Specification, Stock
+from utils.models import Attribute, Image
 from utils.tests import CustomTestCase
+
+
+class ProductImageSetModelTest(CustomTestCase):
+    def setUp(self) -> None:
+        self.model = ProductImageSet
+
+    def test_uuid_field(self):
+        """
+        Tests:
+        uuid field is primary key;
+        """
+        field = self.get_model_field(self.model, 'uuid')
+        self.assertTrue(field.primary_key)
+
+    def test_images_field(self):
+        """
+        Tests:
+        image field has relation many to many;
+        image field has related model as Image;
+        image field can be blank;
+        """
+        field = self.get_model_field(self.model, 'images')
+        self.assertTrue(field.many_to_many)
+        self.assertIs(field.related_model, Image)
+        self.assertTrue(field.blank)
+
+    def test_product_field(self):
+        """
+        Tests:
+        product field has relation one ot one;
+        product field has related_model as Product;
+        """
+        field = self.get_model_field(self.model, 'product')
+        self.assertTrue(field.one_to_one)
+        self.assertIs(field.related_model, Product)
 
 
 class SpecificationModelTest(CustomTestCase):
