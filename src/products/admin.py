@@ -1,6 +1,18 @@
 from django.contrib import admin
 
-from products.models import Category, Product, Specification
+from products.models import Category, Product, ProductImageSet, Specification
+
+
+@admin.register(ProductImageSet)
+class ProductImageSetAdmin(admin.ModelAdmin):
+    fields = ['product', 'images']
+    search_fields = ['product', 'images']
+
+
+class ProductImageSetInline(admin.StackedInline):
+    model = ProductImageSet
+    fields = ['images']
+    can_delete = False
 
 
 @admin.register(Specification)
@@ -34,7 +46,7 @@ class ProductAdmin(admin.ModelAdmin):
     readonly_fields = ['total_grade', 'updated', 'created']
     search_fields = ['name', 'slug', 'description']
     list_filter = ['category', 'stock', 'is_displayed']
-    inlines = [SpecificationInline]
+    inlines = [SpecificationInline, ProductImageSetInline]
 
     def total_grade(self, instance):
         return str(instance.total_grade)
