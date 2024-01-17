@@ -37,6 +37,26 @@ class ProductImageSetModelTest(CustomTestCase):
         self.assertTrue(field.one_to_one)
         self.assertIs(field.related_model, Product)
 
+    def test_model_is_created_after_creating_product(self):
+        self.assertEqual(self.model.objects.count(), 0)
+
+        category = Category.objects.create(name='category')
+        Product.objects.create(name='product', slug='slug', category=category, price=1000)
+
+        self.assertEqual(self.model.objects.count(), 1)
+
+    def test_model_is_deleted_after_deleting_product(self):
+        self.assertEqual(self.model.objects.count(), 0)
+
+        category = Category.objects.create(name='category')
+        product = Product.objects.create(name='product', slug='slug', category=category, price=1000)
+
+        self.assertEqual(self.model.objects.count(), 1)
+
+        product.delete()
+
+        self.assertEqual(self.model.objects.count(), 0)
+
 
 class SpecificationModelTest(CustomTestCase):
     def setUp(self) -> None:
