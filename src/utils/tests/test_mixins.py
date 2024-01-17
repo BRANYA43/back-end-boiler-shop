@@ -29,13 +29,10 @@ class ImageSetMixinTest(CustomTestCase):
     def setUp(self) -> None:
         self.mixin = ImageSetMixin
 
-    def test_uuid_field(self):
-        """
-        Tests:
-        uuid field is primary key;
-        """
-        field = self.get_model_field(self.mixin, 'uuid')
-        self.assertTrue(field.primary_key)
+    def test_model_inherit_necessary_mixins(self):
+        mixins = [UUIDMixin]
+        for mixin in mixins:
+            self.assertTrue(issubclass(self.mixin, mixin))
 
     def test_images_field(self):
         """

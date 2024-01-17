@@ -1,3 +1,4 @@
+from utils.mixins import UUIDMixin
 from utils.models import Attribute, Image
 from utils.tests import CustomTestCase
 from utils.utils import get_upload_filename
@@ -7,17 +8,14 @@ class ImageModelTest(CustomTestCase):
     def setUp(self) -> None:
         self.model = Image
 
+    def test_model_inherit_necessary_mixins(self):
+        mixins = [UUIDMixin]
+        for mixin in mixins:
+            self.assertTrue(issubclass(self.model, mixin))
+
     def test_model_has_necessary_fields(self):
         necessary_fields = ['uuid', 'name', 'image', 'updated', 'created']
         self.assertModelHasNecessaryFields(self.model, necessary_fields)
-
-    def test_uuid_field(self):
-        """
-        Tests:
-        uuid field is primary key;
-        """
-        field = self.get_model_field(self.model, 'uuid')
-        self.assertTrue(field.primary_key)
 
     def test_name_field(self):
         """
@@ -42,17 +40,14 @@ class AttributeModelTest(CustomTestCase):
     def setUp(self) -> None:
         self.model = Attribute
 
+    def test_model_inherit_necessary_mixins(self):
+        mixins = [UUIDMixin]
+        for mixin in mixins:
+            self.assertTrue(issubclass(self.model, mixin))
+
     def test_model_has_necessary_fields(self):
         necessary_fields = ['uuid', 'name', 'value']
         self.assertModelHasNecessaryFields(self.model, necessary_fields)
-
-    def test_uuid_field(self):
-        """
-        Tests:
-        uuid field is primary key;
-        """
-        field = self.get_model_field(self.model, 'uuid')
-        self.assertTrue(field.primary_key)
 
     def test_name_field(self):
         """

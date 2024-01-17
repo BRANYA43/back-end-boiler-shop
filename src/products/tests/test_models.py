@@ -1,5 +1,6 @@
 from products.models import Category, Product, ProductImageSet, Specification, Stock
-from utils.models import Attribute, Image
+from utils.mixins import CreatedAndUpdatedDateTimeMixin, ImageSetMixin, UUIDMixin
+from utils.models import Attribute
 from utils.tests import CustomTestCase
 
 
@@ -7,25 +8,10 @@ class ProductImageSetModelTest(CustomTestCase):
     def setUp(self) -> None:
         self.model = ProductImageSet
 
-    def test_uuid_field(self):
-        """
-        Tests:
-        uuid field is primary key;
-        """
-        field = self.get_model_field(self.model, 'uuid')
-        self.assertTrue(field.primary_key)
-
-    def test_images_field(self):
-        """
-        Tests:
-        image field has relation many to many;
-        image field has related model as Image;
-        image field can be blank;
-        """
-        field = self.get_model_field(self.model, 'images')
-        self.assertTrue(field.many_to_many)
-        self.assertIs(field.related_model, Image)
-        self.assertTrue(field.blank)
+    def test_model_inherit_necessary_mixins(self):
+        mixins = [ImageSetMixin]
+        for mixin in mixins:
+            self.assertTrue(issubclass(self.model, mixin))
 
     def test_product_field(self):
         """
@@ -62,17 +48,14 @@ class SpecificationModelTest(CustomTestCase):
     def setUp(self) -> None:
         self.model = Specification
 
+    def test_model_inherit_necessary_mixins(self):
+        mixins = [UUIDMixin]
+        for mixin in mixins:
+            self.assertTrue(issubclass(self.model, mixin))
+
     def test_model_has_necessary_fields(self):
         necessary_field = ['uuid', 'product', 'attributes']
         self.assertModelHasNecessaryFields(self.model, necessary_field)
-
-    def test_uuid_field(self):
-        """
-        Tests:
-        uuid field is primary key;
-        """
-        field = self.get_model_field(self.model, 'uuid')
-        self.assertTrue(field.primary_key)
 
     def test_product_field(self):
         """
@@ -119,6 +102,11 @@ class ProductModelTest(CustomTestCase):
     def setUp(self) -> None:
         self.model = Product
 
+    def test_model_inherit_necessary_mixins(self):
+        mixins = [UUIDMixin, CreatedAndUpdatedDateTimeMixin]
+        for mixin in mixins:
+            self.assertTrue(issubclass(self.model, mixin))
+
     def test_model_has_necessary_fields(self):
         necessary_fields = [
             'uuid',
@@ -133,14 +121,6 @@ class ProductModelTest(CustomTestCase):
             'created',
         ]
         self.assertModelHasNecessaryFields(self.model, necessary_fields)
-
-    def test_uuid_field(self):
-        """
-        Tests:
-        uuid field is primary key;
-        """
-        field = self.get_model_field(self.model, 'uuid')
-        self.assertTrue(field.primary_key)
 
     def test_name_field(self):
         """
@@ -222,17 +202,14 @@ class CategoryModelTest(CustomTestCase):
     def setUp(self) -> None:
         self.model = Category
 
+    def test_model_inherit_necessary_mixins(self):
+        mixins = [UUIDMixin]
+        for mixin in mixins:
+            self.assertTrue(issubclass(self.model, mixin))
+
     def test_model_has_necessary_fields(self):
         necessary_fields = ['uuid', 'name', 'parent']
         self.assertModelHasNecessaryFields(self.model, necessary_fields)
-
-    def test_uuid_field(self):
-        """
-        Requirements:
-        uuid field is primary_key'
-        """
-        field = self.get_model_field(self.model, 'uuid')
-        self.assertTrue(field.primary_key)
 
     def test_name_field(self):
         """
