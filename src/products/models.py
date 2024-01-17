@@ -7,6 +7,9 @@ from utils.models import Attribute
 class ProductImageSet(ImageSetMixin):
     product = models.OneToOneField('Product', on_delete=models.CASCADE, related_name='image_set')
 
+    def __str__(self):
+        return str(self.product)
+
 
 def _set_grade_dict():
     return {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
