@@ -1,3 +1,5 @@
+from django.db.models import ProtectedError
+
 from products.models import Category, Product, ProductImageSet, Specification, Stock
 from utils.mixins import CreatedAndUpdatedDateTimeMixin, ImageSetMixin, UUIDMixin
 from utils.models import Attribute
@@ -196,6 +198,13 @@ class ProductModelTest(CustomTestCase):
         expected_total_grade = round(grade / count, 2)
 
         self.assertEqual(product.total_grade, expected_total_grade)
+
+    def test_model_allows_category_to_be_deleted(self):
+        category = Category.objects.create(name='category')
+        Product.objects.create(name='product', slug='slug', category=category, price=1000)
+
+        with self.assertRaises(ProtectedError):
+            category.delete()
 
 
 class CategoryModelTest(CustomTestCase):
