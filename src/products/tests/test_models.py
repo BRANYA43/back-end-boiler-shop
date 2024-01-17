@@ -4,6 +4,7 @@ from products.models import Category, Product, ProductImageSet, Specification, S
 from utils.mixins import CreatedAndUpdatedDateTimeMixin, ImageSetMixin, UUIDMixin
 from utils.models import Attribute
 from utils.tests import CustomTestCase
+from utils.tests.creators import create_test_product
 
 
 class ProductImageSetModelTest(CustomTestCase):
@@ -28,16 +29,14 @@ class ProductImageSetModelTest(CustomTestCase):
     def test_model_is_created_after_creating_product(self):
         self.assertEqual(self.model.objects.count(), 0)
 
-        category = Category.objects.create(name='category')
-        Product.objects.create(name='product', slug='slug', category=category, price=1000)
+        create_test_product()
 
         self.assertEqual(self.model.objects.count(), 1)
 
     def test_model_is_deleted_after_deleting_product(self):
         self.assertEqual(self.model.objects.count(), 0)
 
-        category = Category.objects.create(name='category')
-        product = Product.objects.create(name='product', slug='slug', category=category, price=1000)
+        product = create_test_product()
 
         self.assertEqual(self.model.objects.count(), 1)
 
@@ -82,16 +81,14 @@ class SpecificationModelTest(CustomTestCase):
     def test_model_is_created_after_creating_product(self):
         self.assertEqual(Specification.objects.count(), 0)
 
-        category = Category.objects.create(name='category')
-        Product.objects.create(name='product', slug='slug', category=category, price=1000)
+        create_test_product()
 
         self.assertEqual(Specification.objects.count(), 1)
 
     def test_model_is_deleted_after_deleting_product(self):
         self.assertEqual(Specification.objects.count(), 0)
 
-        category = Category.objects.create(name='category')
-        product = Product.objects.create(name='product', slug='slug', category=category, price=1000)
+        product = create_test_product()
 
         self.assertEqual(Specification.objects.count(), 1)
 
@@ -200,8 +197,8 @@ class ProductModelTest(CustomTestCase):
         self.assertEqual(product.total_grade, expected_total_grade)
 
     def test_model_allows_category_to_be_deleted(self):
-        category = Category.objects.create(name='category')
-        Product.objects.create(name='product', slug='slug', category=category, price=1000)
+        product = create_test_product()
+        category = product.category
 
         with self.assertRaises(ProtectedError):
             category.delete()
