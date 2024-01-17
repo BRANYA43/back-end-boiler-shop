@@ -20,8 +20,8 @@ class ImageModelTest(CustomTestCase):
     def test_name_field(self):
         """
         Tests:
-        name field has max length as 50;
-        name field is unique;
+        field has max length as 50;
+        field is unique;
         """
         field = self.get_model_field(self.model, 'name')
         self.assertEqual(field.max_length, 50)
@@ -30,7 +30,7 @@ class ImageModelTest(CustomTestCase):
     def test_image_field(self):
         """
         Test:
-        image field has upload to as get_upload_filename
+        field has get_upload_filename method to upload;
         """
         field = self.get_model_field(self.model, 'image')
         self.assertIs(field.upload_to, get_upload_filename)
@@ -52,7 +52,7 @@ class AttributeModelTest(CustomTestCase):
     def test_name_field(self):
         """
         Tests:
-        name field has max length as 50;
+        field has max length as 50;
         """
         field = self.get_model_field(self.model, 'name')
         self.assertEqual(field.max_length, 50)
@@ -60,7 +60,7 @@ class AttributeModelTest(CustomTestCase):
     def test_value_field(self):
         """
         Tests:
-        value field has max length as 50;
+        field has max length as 50;
         """
         field = self.get_model_field(self.model, 'value')
         self.assertEqual(field.max_length, 50)

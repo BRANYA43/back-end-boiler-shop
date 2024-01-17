@@ -16,8 +16,8 @@ class ProductImageSetModelTest(CustomTestCase):
     def test_product_field(self):
         """
         Tests:
-        product field has relation one ot one;
-        product field has related_model as Product;
+        field has relation one ot one;
+        field has related_model as Product;
         """
         field = self.get_model_field(self.model, 'product')
         self.assertTrue(field.one_to_one)
@@ -60,8 +60,8 @@ class SpecificationModelTest(CustomTestCase):
     def test_product_field(self):
         """
         Tests:
-        product field has relation one ot one;
-        product field has related_model as Product;
+        field has relation one ot one;
+        field has related model as Product;
         """
         field = self.get_model_field(self.model, 'product')
         self.assertTrue(field.one_to_one)
@@ -70,8 +70,8 @@ class SpecificationModelTest(CustomTestCase):
     def test_attributes_field(self):
         """
         Tests:
-        attributes field has relation many to many;
-        attributes field has related_model as Attribute;
+        field has relation many to many;
+        field has related model as Attribute;
         """
         field = self.get_model_field(self.model, 'attributes')
         self.assertTrue(field.many_to_many)
@@ -125,7 +125,7 @@ class ProductModelTest(CustomTestCase):
     def test_name_field(self):
         """
         Tests:
-        name field has max length as 50;
+        field has max length as 50;
         """
         field = self.get_model_field(self.model, 'name')
         self.assertEqual(field.max_length, 50)
@@ -133,8 +133,8 @@ class ProductModelTest(CustomTestCase):
     def test_slug_field(self):
         """
         Tests:
-        slug field has max length as 50;
-        slug field is unique;
+        field has max length as 50;
+        field is unique;
         """
         field = self.get_model_field(self.model, 'slug')
         self.assertEqual(field.max_length, 50)
@@ -143,8 +143,8 @@ class ProductModelTest(CustomTestCase):
     def test_category_field(self):
         """
         Tests:
-        category field has relation many to one;
-        category field has Category as related model;
+        field has relation many to one;
+        field has Category as related model;
         """
         field = self.get_model_field(self.model, 'category')
         self.assertTrue(field.many_to_one)
@@ -153,8 +153,8 @@ class ProductModelTest(CustomTestCase):
     def test_stock_field(self):
         """
         Tests:
-        stock field is Stock.IN_STOCK by default;
-        stock field has Stock.choices;
+        field is Stock.IN_STOCK by default;
+        field has Stock.choices;
         """
         field = self.get_model_field(self.model, 'stock')
         self.assertEqual(field.default, Stock.IN_STOCK)
@@ -163,8 +163,8 @@ class ProductModelTest(CustomTestCase):
     def test_price_field(self):
         """
         Tests:
-        price field has max digits as ten;
-        price field has decimal places as two;
+        field has max digits as 10;
+        field has decimal places as 2;
         """
         field = self.get_model_field(self.model, 'price')
         self.assertEqual(field.max_digits, 10)
@@ -173,7 +173,7 @@ class ProductModelTest(CustomTestCase):
     def test_is_displayed_field(self):
         """
         Tests:
-        is_displayed field is true by default;
+        field is true by default;
         """
         field = self.get_model_field(self.model, 'is_displayed')
         self.assertTrue(field.default)
@@ -181,8 +181,8 @@ class ProductModelTest(CustomTestCase):
     def test_description_field(self):
         """
         Tests:
-        description field can be null;
-        description field can be blank;
+        field can be null;
+        field can be blank;
         """
         field = self.get_model_field(self.model, 'description')
         self.assertTrue(field.null)
@@ -213,9 +213,9 @@ class CategoryModelTest(CustomTestCase):
 
     def test_name_field(self):
         """
-        Requirements:
-        name field is unique;
-        name field has max length as 50;
+        Tests:
+        field is unique;
+        field has max length as 50;
         """
         field = self.get_model_field(self.model, 'name')
         self.assertTrue(field.unique)
@@ -223,12 +223,12 @@ class CategoryModelTest(CustomTestCase):
 
     def test_parent_field(self):
         """
-        Requirements:
-        parent field has relation many to one;
-        parent field has Category as related model;
-        parent field can be null;
-        parent field can be blank;
-        parent field is None by default;
+        Tests:
+        field has relation many to one;
+        field has related model as Category;
+        field can be null;
+        field can be blank;
+        field is None by default;
         """
         field = self.get_model_field(self.model, 'parent')
         self.assertTrue(field.many_to_one)
