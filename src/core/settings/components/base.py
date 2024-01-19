@@ -21,6 +21,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_spectacular',
     # Internal apps
+    'products',
+    'utils',
 ]
 
 MIDDLEWARE = [

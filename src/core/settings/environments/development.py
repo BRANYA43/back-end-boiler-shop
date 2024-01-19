@@ -1,6 +1,7 @@
 """
 Development setting file
 """
+from core.settings.components import BASE_DIR
 from core.settings.components.base import INSTALLED_APPS, MIDDLEWARE
 
 DEBUG = True
@@ -14,3 +15,6 @@ MIDDLEWARE += [
 ]
 
 INTERNAL_IPS = ['127.0.0.1']
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'

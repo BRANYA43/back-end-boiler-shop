@@ -6,3 +6,4 @@ django-split-settings==1.2.0
 djangorestframework==3.14.0
 drf-spectacular==0.27.0
 python-dotenv==1.0.0
+pillow==10.2.0
