@@ -271,11 +271,11 @@ class CategoryModelTest(CustomTestCase):
         parent = Category.objects.create(name='parent')
         sub = Category.objects.create(name='sub', parent=parent)  # noqa
 
-        self.assertIsNotNone(parent.sub_categories.first())
+        self.assertIsNotNone(parent.subs.first())
         self.assertTrue(parent.is_parent_category)
 
     def test_is_parent_category_property_is_false_if_sub_categories_are_none(self):
         parent = Category.objects.create(name='parent')
 
-        self.assertIsNone(parent.sub_categories.first())
+        self.assertIsNone(parent.subs.first())
         self.assertFalse(parent.is_parent_category)
