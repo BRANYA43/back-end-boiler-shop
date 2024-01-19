@@ -57,7 +57,7 @@ class Product(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
 class Category(UUIDMixin):
     name = models.CharField(max_length=50, unique=True)
     parent = models.ForeignKey(
-        'self', default=None, null=True, blank=True, on_delete=models.SET_NULL, related_name='sub_categories'
+        'self', default=None, null=True, blank=True, on_delete=models.SET_NULL, related_name='subs'
     )
 
     def __str__(self):
@@ -71,6 +71,6 @@ class Category(UUIDMixin):
 
     @property
     def is_parent_category(self):
-        if self.sub_categories.first():
+        if self.subs.first():
             return True
         return False
