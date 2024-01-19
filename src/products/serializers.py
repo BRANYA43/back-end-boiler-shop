@@ -1,6 +1,13 @@
 from rest_framework import serializers
 
-from products.models import Category, Product, Specification
+from products.models import Category, Product, ProductImageSet, Specification
+
+
+class ProductImageSetSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = ProductImageSet
+        fields = ['url', 'uuid', 'product', 'images']
+        read_only_fields = ['uuid']
 
 
 class SpecificationSerializer(serializers.HyperlinkedModelSerializer):
