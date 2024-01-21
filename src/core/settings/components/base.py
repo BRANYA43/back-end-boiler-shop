@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     # Internal apps
     'products',
     'utils',
+    'orders',
 ]
 
 MIDDLEWARE = [
