@@ -1,10 +1,48 @@
 from django.db.models import ProtectedError
 
-from products.models import Category, Product, ProductImageSet, Specification, Stock
+from products.models import Category, Product, ProductImageSet, Specification, Stock, Price
 from utils.mixins import CreatedAndUpdatedDateTimeMixin, ImageSetMixin, UUIDMixin
 from utils.models import Attribute
 from utils.tests import CustomTestCase
 from utils.tests.creators import create_test_product
+
+
+class PriceModelTest(CustomTestCase):
+    def setUp(self) -> None:
+        self.model = Price
+
+    def test_model_inherit_necessary_mixins(self):
+        mixins = [UUIDMixin]
+        for mixin in mixins:
+            self.assertTrue(issubclass(self.model, mixin))
+
+    def test_product_field(self):
+        """
+        Tests:
+        field has relation many ot one;
+        field has related_model as Product;
+        """
+        field = self.get_model_field(self.model, 'product')
+        self.assertTrue(field.many_to_one)
+        self.assertIs(field.related_model, Product)
+
+    def test_price_field(self):
+        """
+        Tests:
+        field has max digits as 10;
+        field has decimal places as 2;
+        """
+        field = self.get_model_field(self.model, 'price')
+        self.assertEqual(field.max_digits, 10)
+        self.assertEqual(field.decimal_places, 2)
+
+    def test_created_field(self):
+        """
+        Tests:
+        field sets date only when model is created;
+        """
+        field = self.get_model_field(self.model, 'created')
+        self.assertTrue(field.auto_now_add)
 
 
 class ProductImageSetModelTest(CustomTestCase):
