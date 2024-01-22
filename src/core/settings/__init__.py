@@ -9,7 +9,7 @@ _settings = (
     'components/base.py',
     'components/rest_framework.py',
     'components/baton.py',  # It must be last component
-    'environments/{}.py'.format(env['DJANGO_SETTINGS_ENV'].lower()),
+    'environments/{}.py'.format(env.get('DJANGO_SETTINGS_ENV', 'production').lower()),
     optional('environments/local.py'),
 )
 
