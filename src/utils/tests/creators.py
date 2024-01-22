@@ -16,7 +16,7 @@ def create_test_attribute(name=None, value=None, **extra_fields):
         name = faker.word()
     if value is None:
         value = faker.word()
-    return _create_test_model(Attribute, name=name, value=value**extra_fields)
+    return _create_test_model(Attribute, name=name, value=value, **extra_fields)
 
 
 def create_test_image(name=None, **extra_fields):
