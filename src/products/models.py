@@ -26,7 +26,7 @@ def _set_grade_dict():
 
 class Specification(UUIDMixin):
     product = models.OneToOneField('Product', on_delete=models.CASCADE, related_name='specification')
-    attributes = models.ManyToManyField(Attribute, related_name='specifications')
+    attributes = models.ManyToManyField(Attribute, related_name='specifications', blank=True)
 
     def __str__(self):
         return str(self.product)

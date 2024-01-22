@@ -121,10 +121,12 @@ class SpecificationModelTest(CustomTestCase):
         Tests:
         field has relation many to many;
         field has related model as Attribute;
+        field can be blank;
         """
         field = self.get_model_field(self.model, 'attributes')
         self.assertTrue(field.many_to_many)
         self.assertIs(field.related_model, Attribute)
+        self.assertTrue(field.blank)
 
     def test_model_is_created_after_creating_product(self):
         self.assertEqual(Specification.objects.count(), 0)
