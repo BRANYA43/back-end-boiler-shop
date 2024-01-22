@@ -35,7 +35,6 @@ class ProductAdmin(admin.ModelAdmin):
         'total_grade',
         'name',
         'slug',
-        'price',
         'stock',
         'description',
         'is_displayed',
