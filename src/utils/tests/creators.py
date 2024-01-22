@@ -1,7 +1,7 @@
 from django.core.files.uploadedfile import SimpleUploadedFile
 from faker import Faker
 
-from products.models import Category, Product
+from products.models import Category, Product, Price
 from utils.models import Attribute, Image
 
 faker = Faker()
@@ -42,3 +42,11 @@ def create_test_product(category=None, name=None, slug=None, price=None, **extra
     if price is None:
         price = 1000
     return _create_test_model(Product, category=category, name=name, slug=slug, price=price, **extra_fields)
+
+
+def create_test_price(product=None, price=None, **extra_fields):
+    if product is None:
+        product = create_test_product()
+    if price is None:
+        price = 1000
+    return _create_test_model(Price, product=product, price=price, **extra_fields)
