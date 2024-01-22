@@ -11,7 +11,8 @@ class ProductImageSetAdmin(admin.ModelAdmin):
 
 class ProductImageSetInline(admin.StackedInline):
     model = ProductImageSet
-    fields = ['images']
+    fields = ['uuid', 'images']
+    readonly_fields = ['uuid']
     can_delete = False
 
 
@@ -23,7 +24,8 @@ class SpecificationAdmin(admin.ModelAdmin):
 
 class SpecificationInline(admin.StackedInline):
     model = Specification
-    fields = ['attributes']
+    fields = ['uuid', 'attributes']
+    readonly_fields = ['uuid']
     can_delete = False
 
 
