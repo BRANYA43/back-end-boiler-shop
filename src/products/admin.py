@@ -1,6 +1,20 @@
 from django.contrib import admin
 
-from products.models import Category, Product, ProductImageSet, Specification
+from products.models import Category, Product, ProductImageSet, Specification, Price
+
+
+class PriceInline(admin.TabularInline):
+    model = Price
+    fields = ['uuid', 'price', 'created']
+    readonly_fields = ['uuid', 'created']
+    show_change_link = True
+    extra = 1
+
+
+class PriceAdmin(admin.ModelAdmin):
+    fields = ['product', 'price', 'created']
+    search_fields = ['product', 'price']
+    ordering = ['-created']
 
 
 @admin.register(ProductImageSet)
@@ -37,6 +51,7 @@ class ProductAdmin(admin.ModelAdmin):
         'total_grade',
         'name',
         'slug',
+        'price',
         'stock',
         'description',
         'is_displayed',
@@ -44,13 +59,16 @@ class ProductAdmin(admin.ModelAdmin):
         'created',
     ]
     prepopulated_fields = {'slug': ['name']}
-    readonly_fields = ['total_grade', 'updated', 'created']
+    readonly_fields = ['price', 'total_grade', 'updated', 'created']
     search_fields = ['name', 'slug', 'description']
     list_filter = ['category', 'stock', 'is_displayed']
-    inlines = [SpecificationInline, ProductImageSetInline]
+    inlines = [SpecificationInline, ProductImageSetInline, PriceInline]
 
     def total_grade(self, instance):
         return str(instance.total_grade)
+
+    def price(self, instance):
+        return str(instance.price.price)
 
 
 class InlineCategory(admin.TabularInline):
