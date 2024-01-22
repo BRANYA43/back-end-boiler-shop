@@ -4,7 +4,7 @@ from products.models import Category, Product, ProductImageSet, Specification, S
 from utils.mixins import CreatedAndUpdatedDateTimeMixin, ImageSetMixin, UUIDMixin
 from utils.models import Attribute
 from utils.tests import CustomTestCase
-from utils.tests.creators import create_test_product
+from utils.tests.creators import create_test_product, create_test_price
 
 
 class PriceModelTest(CustomTestCase):
@@ -197,16 +197,6 @@ class ProductModelTest(CustomTestCase):
         self.assertEqual(field.default, Stock.IN_STOCK)
         self.assertEqual(field.choices, Stock.choices)
 
-    def test_price_field(self):
-        """
-        Tests:
-        field has max digits as 10;
-        field has decimal places as 2;
-        """
-        field = self.get_model_field(self.model, 'price')
-        self.assertEqual(field.max_digits, 10)
-        self.assertEqual(field.decimal_places, 2)
-
     def test_is_displayed_field(self):
         """
         Tests:
@@ -233,6 +223,17 @@ class ProductModelTest(CustomTestCase):
         expected_total_grade = round(grade / count, 2)
 
         self.assertEqual(product.total_grade, expected_total_grade)
+
+    def test_price_property_returns_latest_created_price(self):
+        product = create_test_product()
+        price_1 = create_test_price(product, price=1000)
+
+        self.assertEqual(price_1.price, product.price.price)
+
+        price_2 = create_test_price(product, price=2000)
+
+        self.assertNotEqual(price_1.price, product.price.price)
+        self.assertEqual(price_2.price, product.price.price)
 
     def test_model_allows_category_to_be_deleted(self):
         product = create_test_product()

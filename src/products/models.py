@@ -42,7 +42,6 @@ class Product(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50, unique=True)
     category = models.ForeignKey('Category', on_delete=models.PROTECT, related_name='products')
-    price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.CharField(max_length=20, choices=Stock.choices, default=Stock.IN_STOCK)
     description = models.TextField(blank=True, null=True)
     is_displayed = models.BooleanField(default=True)
@@ -61,6 +60,10 @@ class Product(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
         if count != 0:
             return round(grade / count, 2)
         return 0
+
+    @property
+    def price(self) -> Price:
+        return self.prices.latest('created')
 
 
 class Category(UUIDMixin):
