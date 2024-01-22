@@ -53,7 +53,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 class InlineCategory(admin.TabularInline):
     model = Category
-    fields = ['uuid', 'name']
+    fields = ['uuid', 'name', 'image']
     readonly_fields = ['uuid']
     extra = 1
 
@@ -61,8 +61,7 @@ class InlineCategory(admin.TabularInline):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'is_parent_category', 'is_sub_category']
-    fields = ['uuid', 'name', 'parent']
-    readonly_fields = ['uuid']
+    fields = ['name', 'parent', 'image']
     search_fields = ['name']
     ordering = ['parent', 'name']
     inlines = [InlineCategory]
