@@ -1,7 +1,7 @@
 from django.db import models
 
 from utils.mixins import CreatedAndUpdatedDateTimeMixin, ImageSetMixin, UUIDMixin
-from utils.models import Attribute
+from utils.models import Attribute, Image
 
 
 class Price(UUIDMixin):
@@ -67,6 +67,7 @@ class Product(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
 
 
 class Category(UUIDMixin):
+    image = models.ForeignKey(Image, on_delete=models.PROTECT, related_name='categories', null=True, blank=True)
     name = models.CharField(max_length=50, unique=True)
     parent = models.ForeignKey(
         'self', default=None, null=True, blank=True, on_delete=models.SET_NULL, related_name='subs'

@@ -2,9 +2,9 @@ from django.db.models import ProtectedError
 
 from products.models import Category, Product, ProductImageSet, Specification, Stock, Price
 from utils.mixins import CreatedAndUpdatedDateTimeMixin, ImageSetMixin, UUIDMixin
-from utils.models import Attribute
+from utils.models import Attribute, Image
 from utils.tests import CustomTestCase
-from utils.tests.creators import create_test_product, create_test_price
+from utils.tests.creators import create_test_product, create_test_price, create_test_image, create_test_category
 
 
 class PriceModelTest(CustomTestCase):
@@ -256,6 +256,20 @@ class CategoryModelTest(CustomTestCase):
         necessary_fields = ['uuid', 'name', 'parent']
         self.assertModelHasNecessaryFields(self.model, necessary_fields)
 
+    def test_image_field(self):
+        """
+        Tests:
+        field has relation many to one;
+        field has related model as Image;
+        field can be null;
+        field can be blank;
+        """
+        field = self.get_model_field(self.model, 'image')
+        self.assertTrue(field.many_to_one)
+        self.assertIs(field.related_model, Image)
+        self.assertTrue(field.null)
+        self.assertTrue(field.blank)
+
     def test_name_field(self):
         """
         Tests:
@@ -318,3 +332,10 @@ class CategoryModelTest(CustomTestCase):
 
         self.assertIsNone(parent.subs.first())
         self.assertFalse(parent.is_parent_category)
+
+    def test_model_is_protected_from_deleting_image(self):
+        image = create_test_image()
+        create_test_category(image=image)
+
+        with self.assertRaises(ProtectedError):
+            image.delete()
