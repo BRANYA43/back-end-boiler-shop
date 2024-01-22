@@ -1,11 +1,21 @@
+import os
+import shutil
+from pathlib import Path
 from typing import Type
 
+from django.conf import settings
 from django.db import models
 from rest_framework import serializers
 from rest_framework.test import APITestCase
 
 
 class CustomTestCase(APITestCase):
+    def tearDown(self) -> None:
+        images_path = Path(settings.MEDIA_ROOT, 'images/')
+        if images_path.exists():
+            shutil.rmtree(images_path)
+            os.makedirs(images_path)
+
     @staticmethod
     def get_meta_attr_of_model(model: Type[models.Model], name: str):
         return getattr(model._meta, name)
