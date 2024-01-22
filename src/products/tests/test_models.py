@@ -44,6 +44,16 @@ class PriceModelTest(CustomTestCase):
         field = self.get_model_field(self.model, 'created')
         self.assertTrue(field.auto_now_add)
 
+    def test_instance_model_is_deleted_after_deleting_product(self):
+        price = create_test_price()
+        product = price.product
+
+        self.assertEqual(Price.objects.count(), 1)
+
+        product.delete()
+
+        self.assertEqual(Price.objects.count(), 0)
+
 
 class ProductImageSetModelTest(CustomTestCase):
     def setUp(self) -> None:
