@@ -247,6 +247,10 @@ class ProductModelTest(CustomTestCase):
         self.assertNotEqual(price_1.price, product.price.price)
         self.assertEqual(price_2.price, product.price.price)
 
+    def test_price_property_returns_none_if_prices_is_empty(self):
+        product = create_test_product()
+        self.assertIsNone(product.price)
+
     def test_model_allows_category_to_be_deleted(self):
         product = create_test_product()
         category = product.category

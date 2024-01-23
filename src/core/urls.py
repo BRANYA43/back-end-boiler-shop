@@ -9,6 +9,7 @@ api_urls = [
     path('schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
     path('products/', include('products.urls')),
+    path('orders/', include('orders.urls')),
 ]
 
 urlpatterns = [

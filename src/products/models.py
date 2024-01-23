@@ -62,8 +62,10 @@ class Product(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
         return 0
 
     @property
-    def price(self) -> Price:
-        return self.prices.latest('created')
+    def price(self) -> Price | None:
+        if self.prices.exists():
+            return self.prices.latest('created')
+        return None
 
 
 class Category(UUIDMixin):
