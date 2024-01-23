@@ -11,9 +11,11 @@ class UUIDMixinTest(CustomTestCase):
         """
         Tests:
         field is primary key;
+        field isn't editable;
         """
         field = self.get_model_field(self.mixin, 'uuid')
         self.assertTrue(field.primary_key)
+        self.assertFalse(field.editable)
 
 
 class CreatedAndUpdatedDateTimeMixinTest(CustomTestCase):
