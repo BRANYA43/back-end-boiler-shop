@@ -9,6 +9,24 @@ class PriceInline(admin.TabularInline):
     readonly_fields = ['created']
     show_change_link = True
     extra = 1
+    ordering = ['-created']
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
+class ProductImageSetInline(admin.StackedInline):
+    model = ProductImageSet
+    fields = ['images']
+    can_delete = False
+    show_change_link = True
+
+
+class SpecificationInline(admin.StackedInline):
+    model = Specification
+    fields = ['attributes']
+    can_delete = False
+    show_change_link = True
 
 
 @admin.register(Price)
@@ -18,6 +36,9 @@ class PriceAdmin(admin.ModelAdmin):
     readonly_fields = ['created']
     ordering = ['-created']
 
+    def has_change_permission(self, request, obj=None):
+        return False
+
 
 @admin.register(ProductImageSet)
 class ProductImageSetAdmin(admin.ModelAdmin):
@@ -25,22 +46,10 @@ class ProductImageSetAdmin(admin.ModelAdmin):
     search_fields = ['product', 'images']
 
 
-class ProductImageSetInline(admin.StackedInline):
-    model = ProductImageSet
-    fields = ['images']
-    can_delete = False
-
-
 @admin.register(Specification)
 class SpecificationAdmin(admin.ModelAdmin):
     fields = ['product', 'attributes']
     search_fields = ['product', 'attributes']
-
-
-class SpecificationInline(admin.StackedInline):
-    model = Specification
-    fields = ['attributes']
-    can_delete = False
 
 
 @admin.register(Product)
@@ -75,6 +84,7 @@ class InlineCategory(admin.TabularInline):
     model = Category
     fields = ['name', 'image']
     extra = 1
+    show_change_link = True
 
 
 @admin.register(Category)
