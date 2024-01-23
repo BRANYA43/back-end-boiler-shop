@@ -1,7 +1,68 @@
-from orders.models import Order, Customer
+from django.db.models import PositiveIntegerField
+
+from orders.models import Order, Customer, OrderProduct
+from products.models import Product, Price
 from utils.mixins import UUIDMixin, CreatedAndUpdatedDateTimeMixin
 from utils.tests import CustomTestCase
 from utils.tests.creators import create_test_order
+
+
+class OrderProductModelTest(CustomTestCase):
+    def setUp(self) -> None:
+        self.model = OrderProduct
+
+    def test_model_inherit_necessary_mixins(self):
+        mixins = [UUIDMixin]
+        for mixin in mixins:
+            self.assertTrue(issubclass(self.model, mixin))
+
+    def test_model_has_necessary_fields(self):
+        necessary_field = ['uuid', 'order', 'product', 'quantity', 'price']
+        self.assertModelHasNecessaryFields(self.model, necessary_field)
+
+    def test_order_field(self):
+        """
+        Tests:
+        field has relation many to one;
+        field has related model as Order;
+        """
+        field = self.get_model_field(self.model, 'order')
+        self.assertTrue(field.one_to_one)
+        self.assertIs(field.related_model, Order)
+
+    def test_product_field(self):
+        """
+        Tests:
+        field has relation many to one;
+        field has related model as Product;
+        """
+        field = self.get_model_field(self.model, 'product')
+        self.assertTrue(field.many_to_one)
+        self.assertIs(field.related_model, Product)
+
+    def test_quantity_field(self):
+        """
+        Tests:
+        field has 1 by default;
+        field is only positive integer;
+        """
+        field = self.get_model_field(self.model, 'quantity')
+        self.assertEqual(field.default, 1)
+        self.assertIsInstance(field, PositiveIntegerField)
+
+    def test_price_field(self):
+        """
+        Tests:
+        field has relation many to one;
+        field has related model as Price;
+        field can be null;
+        field can be blank;
+        """
+        field = self.get_model_field(self.model, 'price')
+        self.assertTrue(field.many_to_one)
+        self.assertIs(field.related_model, Price)
+        self.assertTrue(field.null)
+        self.assertTrue(field.blank)
 
 
 class CustomerModelTest(CustomTestCase):

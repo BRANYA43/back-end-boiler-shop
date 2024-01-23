@@ -1,7 +1,18 @@
 from django.db import models
 
 from orders.validators import validate_phone
+from products.models import Product, Price
 from utils.mixins import UUIDMixin, CreatedAndUpdatedDateTimeMixin
+
+
+class OrderProduct(UUIDMixin):
+    order = models.OneToOneField('Order', on_delete=models.CASCADE, related_name='products')
+    product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='order_products')
+    quantity = models.PositiveIntegerField(default=1)
+    price = models.ForeignKey(Price, on_delete=models.PROTECT, related_name='order_products', null=True, blank=True)
+
+    def __str__(self):
+        return str(self.product)
 
 
 class PhoneField(models.CharField):
