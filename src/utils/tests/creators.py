@@ -47,7 +47,7 @@ def create_test_price(product=None, price=None, **extra_fields):
     if product is None:
         product = create_test_product()
     if price is None:
-        price = 1000
+        price = faker.random_number()
     return _create_test_model(Price, product=product, price=price, **extra_fields)
 
 
@@ -57,7 +57,7 @@ def create_test_customer(full_name=None, email=None, phone=None, **extra_fields)
     if email is None:
         email = f'{full_name.replace(" ", "_").lower}@example.test'
     if phone is None:
-        phone = '+38 ({}) {} {}-{}'.format(*[faker.randow_number(digits=i) for i in (3, 3, 2, 2)])
+        phone = '+38 ({}) {} {}-{}'.format(*[faker.random_number(digits=i) for i in (3, 3, 2, 2)])
     return _create_test_model(Customer, full_name=full_name, email=email, phone=phone, **extra_fields)
 
 
