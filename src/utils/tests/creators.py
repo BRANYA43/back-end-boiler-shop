@@ -1,3 +1,5 @@
+from _decimal import Decimal
+
 from django.core.files.uploadedfile import SimpleUploadedFile
 from faker import Faker
 
@@ -47,7 +49,7 @@ def create_test_price(product=None, price=None, **extra_fields):
     if product is None:
         product = create_test_product()
     if price is None:
-        price = str(faker.random_number())
+        price = Decimal(faker.random_number())
     return _create_test_model(Price, product=product, price=price, **extra_fields)
 
 
