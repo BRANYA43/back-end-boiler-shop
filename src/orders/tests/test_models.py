@@ -4,7 +4,7 @@ from orders.models import Order, Customer, OrderProduct
 from products.models import Product, Price
 from utils.mixins import UUIDMixin, CreatedAndUpdatedDateTimeMixin
 from utils.tests import CustomTestCase
-from utils.tests.creators import create_test_order
+from utils.tests.creators import create_test_order, create_test_order_product, create_test_price
 
 
 class OrderProductModelTest(CustomTestCase):
@@ -63,6 +63,13 @@ class OrderProductModelTest(CustomTestCase):
         self.assertIs(field.related_model, Price)
         self.assertTrue(field.null)
         self.assertTrue(field.blank)
+
+    def test_price_field_is_set_before_saving_model_from_price_property_of_product(self):
+        price = create_test_price()
+        product = price.product
+        order_product = create_test_order_product(product=product)
+
+        self.assertEqual(order_product.price.price, product.price.price)
 
 
 class CustomerModelTest(CustomTestCase):

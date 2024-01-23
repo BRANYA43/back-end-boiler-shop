@@ -7,3 +7,4 @@ class OrdersConfig(AppConfig):
 
     def ready(self):
         from orders.signals import create_customer  # noqa
+        from orders.signals import set_order_product_price  # noqa

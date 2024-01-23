@@ -1,7 +1,13 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
-from orders.models import Order, Customer
+from orders.models import Order, Customer, OrderProduct
+
+
+@receiver(pre_save, sender=OrderProduct)
+def set_order_product_price(sender, instance, *args, **kwargs):
+    if instance.price is None:
+        instance.price = instance.product.price
 
 
 @receiver(post_save, sender=Order)
