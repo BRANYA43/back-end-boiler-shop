@@ -47,7 +47,7 @@ def create_test_price(product=None, price=None, **extra_fields):
     if product is None:
         product = create_test_product()
     if price is None:
-        price = str(faker.random_number())
+        price = faker.random_number(digits=5)
     return _create_test_model(Price, product=product, price=price, **extra_fields)
 
 
