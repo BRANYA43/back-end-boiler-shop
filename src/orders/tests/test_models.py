@@ -1,4 +1,4 @@
-from django.db.models import PositiveIntegerField
+from django.db.models import PositiveIntegerField, ProtectedError
 
 from orders.models import Order, Customer, OrderProduct
 from products.models import Product, Price
@@ -70,6 +70,38 @@ class OrderProductModelTest(CustomTestCase):
         order_product = create_test_order_product(product=product)
 
         self.assertEqual(order_product.price.price, product.price.price)
+
+    def test_model_is_deleted_after_deleting_order(self):
+        self.assertEqual(OrderProduct.objects.count(), 0)
+
+        order_product = create_test_order_product()
+
+        self.assertEqual(OrderProduct.objects.count(), 1)
+
+        order_product.order.delete()
+
+        self.assertEqual(OrderProduct.objects.count(), 0)
+
+    def test_model_is_protected_for_deleting_product(self):
+        self.assertEqual(OrderProduct.objects.count(), 0)
+
+        order_product = create_test_order_product()
+
+        self.assertEqual(OrderProduct.objects.count(), 1)
+
+        with self.assertRaises(ProtectedError):
+            order_product.product.delete()
+
+    def test_model_is_protected_for_deleting_price(self):
+        self.assertEqual(OrderProduct.objects.count(), 0)
+
+        price = create_test_price()
+        order_product = create_test_order_product(product=price.product)
+
+        self.assertEqual(OrderProduct.objects.count(), 1)
+
+        with self.assertRaises(ProtectedError):
+            order_product.price.delete()
 
 
 class CustomerModelTest(CustomTestCase):
