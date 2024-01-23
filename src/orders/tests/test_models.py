@@ -1,6 +1,77 @@
-from orders.models import Order
+from orders.models import Order, Customer
 from utils.mixins import UUIDMixin, CreatedAndUpdatedDateTimeMixin
 from utils.tests import CustomTestCase
+from utils.tests.creators import create_test_order
+
+
+class CustomerModelTest(CustomTestCase):
+    def setUp(self) -> None:
+        self.model = Customer
+
+    def test_model_inherit_necessary_mixins(self):
+        mixins = [UUIDMixin]
+        for mixin in mixins:
+            self.assertTrue(issubclass(self.model, mixin))
+
+    def test_model_has_necessary_fields(self):
+        necessary_field = ['uuid', 'order', 'full_name', 'email', 'phone']
+        self.assertModelHasNecessaryFields(self.model, necessary_field)
+
+    def test_order_field(self):
+        """
+        Tests:
+        field has relation one to one;
+        field has related model as Order;
+        """
+        field = self.get_model_field(self.model, 'order')
+        self.assertTrue(field.one_to_one)
+        self.assertIs(field.related_model, Order)
+
+    def test_full_name_field(self):
+        """
+        Tests:
+        field has max length as 100;
+        field can be null;
+        """
+        field = self.get_model_field(self.model, 'full_name')
+        self.assertEqual(field.max_length, 100)
+        self.assertTrue(field.null)
+
+    def test_email_field(self):
+        """
+        Tests:
+        field can be null;
+        """
+        field = self.get_model_field(self.model, 'email')
+        self.assertTrue(field.null)
+
+    def test_phone_field(self):
+        """
+        Tests:
+        field can be null;
+        """
+        field = self.get_model_field(self.model, 'phone')
+        self.assertTrue(field.null)
+
+    def test_model_is_created_after_creating_order(self):
+        self.assertEqual(Customer.objects.count(), 0)
+
+        order = create_test_order()
+
+        self.assertEqual(Customer.objects.count(), 1)
+
+        customer = Customer.objects.first()
+
+        self.assertEqual(customer.uuid, order.customer.uuid)
+
+    def test_model_is_deleted_after_deleting_order(self):
+        order = create_test_order()
+
+        self.assertEqual(Customer.objects.count(), 1)
+
+        order.delete()
+
+        self.assertEqual(Customer.objects.count(), 0)
 
 
 class OrderModelTest(CustomTestCase):
