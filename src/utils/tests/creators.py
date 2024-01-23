@@ -1,6 +1,7 @@
 from django.core.files.uploadedfile import SimpleUploadedFile
 from faker import Faker
 
+from orders.models import Order
 from products.models import Category, Product, Price
 from utils.models import Attribute, Image
 
@@ -48,3 +49,7 @@ def create_test_price(product=None, price=None, **extra_fields):
     if price is None:
         price = 1000
     return _create_test_model(Price, product=product, price=price, **extra_fields)
+
+
+def create_test_order(**extra_fields):
+    return _create_test_model(Order, **extra_fields)
