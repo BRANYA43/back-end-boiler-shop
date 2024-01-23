@@ -1,7 +1,7 @@
 from django.core.files.uploadedfile import SimpleUploadedFile
 from faker import Faker
 
-from orders.models import Order, Customer
+from orders.models import Order, Customer, OrderProduct
 from products.models import Category, Product, Price
 from utils.models import Attribute, Image
 
@@ -63,3 +63,11 @@ def create_test_customer(full_name=None, email=None, phone=None, **extra_fields)
 
 def create_test_order(**extra_fields):
     return _create_test_model(Order, **extra_fields)
+
+
+def create_test_order_product(order=None, product=None, **extra_fields):
+    if order is None:
+        order = create_test_order()
+    if product is None:
+        product = create_test_product()
+    return _create_test_model(OrderProduct, order=order, product=product, **extra_fields)
