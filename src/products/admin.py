@@ -31,6 +31,7 @@ class SpecificationInline(admin.StackedInline):
 
 @admin.register(Price)
 class PriceAdmin(admin.ModelAdmin):
+    list_display = ['product', 'price', 'created']
     fields = ['product', 'price', 'created']
     search_fields = ['product', 'price']
     readonly_fields = ['created']
