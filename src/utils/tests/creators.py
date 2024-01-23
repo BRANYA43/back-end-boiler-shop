@@ -1,7 +1,7 @@
 from django.core.files.uploadedfile import SimpleUploadedFile
 from faker import Faker
 
-from orders.models import Order
+from orders.models import Order, Customer
 from products.models import Category, Product, Price
 from utils.models import Attribute, Image
 
@@ -49,6 +49,16 @@ def create_test_price(product=None, price=None, **extra_fields):
     if price is None:
         price = 1000
     return _create_test_model(Price, product=product, price=price, **extra_fields)
+
+
+def create_test_customer(full_name=None, email=None, phone=None, **extra_fields):
+    if full_name is None:
+        full_name = faker.name()
+    if email is None:
+        email = f'{full_name.replace(" ", "_").lower}@example.test'
+    if phone is None:
+        phone = '+38 ({}) {} {}-{}'.format(*[faker.randow_number(digits=i) for i in (3, 3, 2, 2)])
+    return _create_test_model(Customer, full_name=full_name, email=email, phone=phone, **extra_fields)
 
 
 def create_test_order(**extra_fields):
