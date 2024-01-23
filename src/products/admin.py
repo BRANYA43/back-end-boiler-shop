@@ -5,15 +5,17 @@ from products.models import Category, Product, ProductImageSet, Specification, P
 
 class PriceInline(admin.TabularInline):
     model = Price
-    fields = ['uuid', 'price', 'created']
-    readonly_fields = ['uuid', 'created']
+    fields = ['price', 'created']
+    readonly_fields = ['created']
     show_change_link = True
     extra = 1
 
 
+@admin.register(Price)
 class PriceAdmin(admin.ModelAdmin):
     fields = ['product', 'price', 'created']
     search_fields = ['product', 'price']
+    readonly_fields = ['created']
     ordering = ['-created']
 
 
@@ -25,8 +27,7 @@ class ProductImageSetAdmin(admin.ModelAdmin):
 
 class ProductImageSetInline(admin.StackedInline):
     model = ProductImageSet
-    fields = ['uuid', 'images']
-    readonly_fields = ['uuid']
+    fields = ['images']
     can_delete = False
 
 
@@ -38,8 +39,7 @@ class SpecificationAdmin(admin.ModelAdmin):
 
 class SpecificationInline(admin.StackedInline):
     model = Specification
-    fields = ['uuid', 'attributes']
-    readonly_fields = ['uuid']
+    fields = ['attributes']
     can_delete = False
 
 
@@ -73,8 +73,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 class InlineCategory(admin.TabularInline):
     model = Category
-    fields = ['uuid', 'name', 'image']
-    readonly_fields = ['uuid']
+    fields = ['name', 'image']
     extra = 1
 
 
