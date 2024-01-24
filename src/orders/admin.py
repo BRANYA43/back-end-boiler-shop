@@ -1,11 +1,22 @@
 from django.contrib import admin
 
-from orders.models import Order, Customer
+from orders.models import Order, Customer, OrderProduct
+
+
+class OrderProductInline(admin.TabularInline):
+    model = OrderProduct
+    fields = ['product', 'quantity', 'price']
 
 
 class CustomerInline(admin.StackedInline):
     model = Customer
     fields = ['full_name', 'email', 'phone']
+
+
+@admin.register(OrderProduct)
+class OrderProductAdmin(admin.ModelAdmin):
+    list_display = ['order', 'product', 'quantity', 'price']
+    fields = ['order', 'product', 'quantity', 'price']
 
 
 @admin.register(Customer)
@@ -23,4 +34,4 @@ class OrderAdmin(admin.ModelAdmin):
     ordering = ['created']
     list_filter = ['status', 'delivery', 'payment', 'is_paid']
     search_fields = ['comment', 'delivery_address']
-    inlines = [CustomerInline]
+    inlines = [CustomerInline, OrderProductInline]
