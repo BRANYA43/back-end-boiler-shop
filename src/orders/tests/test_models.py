@@ -277,5 +277,4 @@ class OrderModelTest(CustomTestCase):
 
     def test_total_cost_property_returns_0_if_order_products_are_empty(self):
         order = create_test_order()
-        print(order.total_cost)
         self.assertEqual(order.total_cost, 0)
