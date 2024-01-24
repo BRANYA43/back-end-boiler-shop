@@ -103,6 +103,13 @@ class OrderProductModelTest(CustomTestCase):
         with self.assertRaises(ProtectedError):
             order_product.price.delete()
 
+    def test_total_cost_property_returns_correct_value(self):
+        price = create_test_price(price=500)
+        order_product = create_test_order_product(product=price.product, quantity=20)
+        expected_total_cost = order_product.price.price * order_product.quantity
+
+        self.assertEqual(order_product.total_cost, expected_total_cost)
+
 
 class CustomerModelTest(CustomTestCase):
     def setUp(self) -> None:

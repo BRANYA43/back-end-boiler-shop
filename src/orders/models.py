@@ -14,6 +14,10 @@ class OrderProduct(UUIDMixin):
     def __str__(self):
         return str(self.product)
 
+    @property
+    def total_cost(self):
+        return self.price.price * self.quantity
+
 
 class PhoneField(models.CharField):
     default_validators = [validate_phone]
