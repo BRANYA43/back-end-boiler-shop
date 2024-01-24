@@ -63,3 +63,7 @@ class Order(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
 
     def __str__(self):
         return str(self.uuid)
+
+    @property
+    def total_cost(self):
+        return sum([order_product.total_cost for order_product in self.order_products.all()])

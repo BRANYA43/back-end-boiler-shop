@@ -263,3 +263,19 @@ class OrderModelTest(CustomTestCase):
         field = self.get_model_field(self.model, 'comment')
         self.assertTrue(field.null)
         self.assertTrue(field.blank)
+
+    def test_total_cost_property_returns_correct_value(self):
+        order = create_test_order()
+        price_1 = create_test_price(price=1000)
+        price_2 = create_test_price(price=2000)
+        order_product_1 = create_test_order_product(order=order, product=price_1.product, quantity=3)
+        order_product_2 = create_test_order_product(order=order, product=price_2.product, quantity=7)
+        expected_total_cost = order_product_1.total_cost + order_product_2.total_cost
+        order.refresh_from_db()
+
+        self.assertEqual(order.total_cost, expected_total_cost)
+
+    def test_total_cost_property_returns_0_if_order_products_are_empty(self):
+        order = create_test_order()
+        print(order.total_cost)
+        self.assertEqual(order.total_cost, 0)
