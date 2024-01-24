@@ -27,7 +27,7 @@ class OrderProductModelTest(CustomTestCase):
         field has related model as Order;
         """
         field = self.get_model_field(self.model, 'order')
-        self.assertTrue(field.one_to_one)
+        self.assertTrue(field.many_to_one)
         self.assertIs(field.related_model, Order)
 
     def test_product_field(self):
