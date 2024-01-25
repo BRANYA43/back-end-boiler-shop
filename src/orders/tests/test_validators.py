@@ -6,33 +6,41 @@ from utils.tests import CustomTestCase
 
 class ValidatePhoneTest(CustomTestCase):
     def test_validator_doesnt_raise_error(self):
-        value = '+38 (000) 000 00-00'
-        validate_phone(value)  # not raise
-
-    def test_validator_raise_error(self):
-        invalid_values = [
+        valid_phones = [
             '+380501234567',
             '+38 (050) 123-45-67',
-            '+38-050-123-45-67',
-            '050-123-45-67',
-            '38 (050) 123 45 67',
-            '38-050-123 45 67',
-            '050 123 45 67',
-            '+38050-123-45-67',
             '+38(050)123-45-67',
-            '38-050-123-45-67',
-            '050-123-45-67',
-            '38 (050) 123-4567',
-            '+38 050 123-4567',
-            '050 123-4567',
-            '+38050 123-4567',
-            '38 (050) 1234567',
-            '+38-050-1234567',
-            '050-1234567',
             '380501234567',
-            '38(050)1234567',
+            '0501234567',
+            '050-123-45-67',
+            '050 123 45 67',
+            '050-1234567',
+            '+380671234567',
+            '+38 (050) 123-45-67',
+            '+38(050)123-45-67',
+            '0501234567',
+            '050-123-45-67',
+            '050 123 45 67',
+            '050-1234567',
+            '+380991234567',
+            '+38 (050) 123-45-67',
+            '+38(050)123-45-67',
+            '0501234567',
+            '050-123-45-67',
+            '050 123 45 67',
+            '050-1234567',
         ]
+        for phone in valid_phones:
+            validate_phone(phone)  # not raise
 
-        with self.assertRaises(ValidationError):
-            for value in invalid_values:
-                validate_phone(value)
+    def test_validator_raise_error(self):
+        invalid_phones = [
+            '123456789',  # less than 12 digits
+            'abc123456789',  # contains letters
+            '+3805012345678',  # more than 12 digits
+            '+38-(050)123-45-67)',  # extra closing parenthesis
+            '+38050123a567',  # letters in the middle
+        ]
+        for phone in invalid_phones:
+            with self.assertRaises(ValidationError):
+                validate_phone(phone)
