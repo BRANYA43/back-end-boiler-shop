@@ -1,6 +1,21 @@
+import re
+
 from rest_framework import serializers
 
-from orders.models import Order, OrderProduct
+from orders.models import Order, OrderProduct, Customer
+from orders.validators import PHONE_PATTERN
+
+
+class CustomerSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Customer
+        fields = ['url', 'uuid', 'order', 'full_name', 'email', 'phone']
+        read_only_fields = ['uuid']
+
+    def validate_phone(self, phone):
+        if phone and (match := re.match(PHONE_PATTERN, phone)) is not None:
+            phone = '+38 ({}) {} {}-{}'.format(*match.groups()[1:])
+        return phone
 
 
 class OrderProductSerializer(serializers.HyperlinkedModelSerializer):
