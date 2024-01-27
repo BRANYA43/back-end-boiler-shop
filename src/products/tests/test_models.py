@@ -227,15 +227,6 @@ class ProductModelTest(CustomTestCase):
         self.assertTrue(field.null)
         self.assertTrue(field.blank)
 
-    def test_total_grade_property_returns_correct_grade_of_product(self):
-        product = self.model()
-        product.grade = {1: 5, 2: 10, 3: 10, 4: 20, 5: 40}
-        grade = sum([g * c for g, c in product.grade.items()])
-        count = sum(product.grade.values())
-        expected_total_grade = round(grade / count, 2)
-
-        self.assertEqual(product.total_grade, expected_total_grade)
-
     def test_price_property_returns_latest_created_price(self):
         product = create_test_product()
         price_1 = create_test_price(product, price=1000)

@@ -94,7 +94,6 @@ class ProductSerializerTest(CustomTestCase):
             'slug',
             'price',
             'stock',
-            'grade',
             'description',
             'is_displayed',
             'specification',

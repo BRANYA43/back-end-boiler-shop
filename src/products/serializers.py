@@ -35,7 +35,6 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
             'slug',
             'price',
             'stock',
-            'grade',
             'description',
             'is_displayed',
             'specification',

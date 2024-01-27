@@ -20,10 +20,6 @@ class ProductImageSet(ImageSetMixin):
         return str(self.product)
 
 
-def _set_grade_dict():
-    return {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
-
-
 class Specification(UUIDMixin):
     product = models.OneToOneField('Product', on_delete=models.CASCADE, related_name='specification')
     attributes = models.ManyToManyField(Attribute, related_name='specifications', blank=True)
@@ -45,21 +41,12 @@ class Product(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
     stock = models.CharField(max_length=20, choices=Stock.choices, default=Stock.IN_STOCK)
     description = models.TextField(blank=True, null=True)
     is_displayed = models.BooleanField(default=True)
-    grade = models.JSONField(default=_set_grade_dict)
 
     class Meta:
         pass
 
     def __str__(self):
         return self.name
-
-    @property
-    def total_grade(self):
-        grade = sum([int(g) * c for g, c in self.grade.items()])
-        count = sum(self.grade.values())
-        if count != 0:
-            return round(grade / count, 2)
-        return 0
 
     @property
     def price(self) -> Price | None:
