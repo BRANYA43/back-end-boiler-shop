@@ -1,3 +1,8 @@
+from rest_framework.routers import DefaultRouter
+
+
 app_name = 'products'
 
-urlpatterns: list = []
+router = DefaultRouter()
+
+urlpatterns = router.urls
