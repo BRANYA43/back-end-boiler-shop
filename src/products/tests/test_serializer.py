@@ -8,32 +8,9 @@ from products.serializers import (
     ProductImageSetSerializer,
     ProductSerializer,
     SpecificationSerializer,
-    PriceSerializer,
 )
 from utils.tests import CustomTestCase
 from utils.tests.creators import create_test_price
-
-
-class PriceSerializerTest(CustomTestCase):
-    def setUp(self) -> None:
-        self.serializer = PriceSerializer
-
-    def test_serializer_inherit_necessary_classes(self):
-        necessary_classes = [HyperlinkedModelSerializer]
-        for class_ in necessary_classes:
-            self.assertTrue(issubclass(self.serializer, class_))
-
-    def test_serializer_has_only_expected_fields(self):
-        expected_fields = ['url', 'uuid', 'product', 'price', 'created']
-        self.assertSerializerHasOnlyExpectedFields(self.serializer, expected_fields)
-
-    def test_uuid_field(self):
-        """
-        Tests:
-        field is read only;
-        """
-        field = self.get_serializer_field(self.serializer, 'uuid')
-        self.assertTrue(field.read_only)
 
 
 class ProductImageSetSerializerTest(CustomTestCase):

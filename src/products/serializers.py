@@ -1,13 +1,6 @@
 from rest_framework import serializers
 
-from products.models import Category, Product, ProductImageSet, Specification, Price
-
-
-class PriceSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Price
-        fields = ['url', 'uuid', 'product', 'price', 'created']
-        read_only_fields = ['uuid']
+from products.models import Category, Product, ProductImageSet, Specification
 
 
 class ProductImageSetSerializer(serializers.HyperlinkedModelSerializer):
