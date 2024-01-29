@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django import forms
 
 from products.models import Category, Product, ProductImageSet, Specification, Price
 
@@ -22,11 +23,20 @@ class ProductImageSetInline(admin.StackedInline):
     show_change_link = True
 
 
+class SpecificationInlineFormSet(forms.models.BaseInlineFormSet):
+    def add_fields(self, form, index):
+        super().add_fields(form, index)
+        form.fields['card_attributes'].queryset = form.instance.all_attributes
+        form.fields['detail_attributes'].queryset = form.instance.all_attributes
+
+
 class SpecificationInline(admin.StackedInline):
     model = Specification
-    fields = ['attributes']
+    fields = ['all_attributes', 'card_attributes', 'detail_attributes']
     can_delete = False
     show_change_link = True
+    filter_horizontal = ['all_attributes', 'card_attributes', 'detail_attributes']
+    formset = SpecificationInlineFormSet
 
 
 @admin.register(Price)
@@ -49,8 +59,19 @@ class ProductImageSetAdmin(admin.ModelAdmin):
 
 @admin.register(Specification)
 class SpecificationAdmin(admin.ModelAdmin):
-    fields = ['product', 'attributes']
-    search_fields = ['product', 'attributes']
+    fields = ['product', 'all_attributes', 'card_attributes', 'detail_attributes']
+    search_fields = ['product', 'all_attributes']
+    filter_horizontal = ['all_attributes', 'card_attributes', 'detail_attributes']
+
+    def get_object(self, request, object_id, from_field=None):
+        obj = super().get_object(request, object_id, from_field)
+        request.report_obj = obj
+        return obj
+
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        if db_field.name in ('card_attributes', 'detail_attributes'):
+            kwargs['queryset'] = request.report_obj.all_attributes
+        return super().formfield_for_manytomany(db_field, request, **kwargs)
 
 
 @admin.register(Product)
