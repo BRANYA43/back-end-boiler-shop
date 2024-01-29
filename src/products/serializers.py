@@ -20,7 +20,7 @@ class ProductImageSetSerializer(serializers.HyperlinkedModelSerializer):
 class SpecificationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Specification
-        fields = ['url', 'uuid', 'product', 'attributes']
+        fields = ['url', 'uuid', 'product', 'all_attributes', 'card_attributes', 'detail_attributes']
         read_only_fields = ['uuid']
 
 
