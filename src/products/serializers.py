@@ -25,6 +25,8 @@ class SpecificationSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
+    price = serializers.SerializerMethodField(method_name='get_decimal_price')
+
     class Meta:
         model = Product
         fields = [
@@ -43,6 +45,10 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
             'created',
         ]
         read_only_fields = ['uuid', 'updated', 'created']
+
+    @staticmethod
+    def get_decimal_price(obj):
+        return obj.price.price
 
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):

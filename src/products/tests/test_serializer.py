@@ -1,3 +1,6 @@
+from _decimal import Decimal
+from unittest.mock import MagicMock
+
 from rest_framework.serializers import HyperlinkedModelSerializer
 
 from products.serializers import (
@@ -8,6 +11,7 @@ from products.serializers import (
     PriceSerializer,
 )
 from utils.tests import CustomTestCase
+from utils.tests.creators import create_test_price
 
 
 class PriceSerializerTest(CustomTestCase):
@@ -126,6 +130,13 @@ class ProductSerializerTest(CustomTestCase):
         """
         field = self.get_serializer_field(self.serializer, 'created')
         self.assertTrue(field.read_only)
+
+    def test_serializer_returns_correct_price_in_data(self):
+        product = create_test_price(price=2000).product
+        context = {'request': MagicMock()}
+
+        serializer = self.serializer(instance=product, context=context)
+        self.assertEqual(serializer.data['price'], Decimal(2000))
 
 
 class CategorySerializerTest(CustomTestCase):
