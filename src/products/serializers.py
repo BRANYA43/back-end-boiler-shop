@@ -4,10 +4,16 @@ from products.models import Category, Product, ProductImageSet, Specification
 
 
 class ProductImageSetSerializer(serializers.HyperlinkedModelSerializer):
+    images = serializers.SerializerMethodField(method_name='get_image_url_list')
+
     class Meta:
         model = ProductImageSet
         fields = ['url', 'uuid', 'product', 'images']
         read_only_fields = ['uuid']
+
+    @staticmethod
+    def get_image_url_list(obj):
+        return [image.image.url for image in obj.images.all()]
 
 
 class SpecificationSerializer(serializers.HyperlinkedModelSerializer):

@@ -10,12 +10,13 @@ from products.serializers import (
     SpecificationSerializer,
 )
 from utils.tests import CustomTestCase
-from utils.tests.creators import create_test_price, create_test_product, create_test_attribute
+from utils.tests.creators import create_test_price, create_test_product, create_test_attribute, create_test_image
 
 
 class ProductImageSetSerializerTest(CustomTestCase):
     def setUp(self) -> None:
         self.serializer = ProductImageSetSerializer
+        self.context = {'request': MagicMock()}
 
     def test_serializer_inherit_necessary_classes(self):
         necessary_classes = [HyperlinkedModelSerializer]
@@ -33,6 +34,15 @@ class ProductImageSetSerializerTest(CustomTestCase):
         """
         field = self.get_serializer_field(self.serializer, 'uuid')
         self.assertTrue(field.read_only)
+
+    def test_serializer_returns_images_as_url_list_from_data(self):
+        images = [create_test_image() for i in range(10)]
+        image_set = create_test_product().image_set
+        image_set.images.set(images)
+        serializer = self.serializer(instance=image_set, context=self.context)
+        expected_image_set = [image.image.url for image in image_set.images.all()]
+
+        self.assertListEqual(serializer.data['images'], expected_image_set)
 
 
 class SpecificationSerializerTest(CustomTestCase):
