@@ -10,7 +10,7 @@ from products.serializers import (
     SpecificationSerializer,
 )
 from utils.tests import CustomTestCase
-from utils.tests.creators import create_test_price
+from utils.tests.creators import create_test_price, create_test_product, create_test_attribute
 
 
 class ProductImageSetSerializerTest(CustomTestCase):
@@ -38,6 +38,8 @@ class ProductImageSetSerializerTest(CustomTestCase):
 class SpecificationSerializerTest(CustomTestCase):
     def setUp(self) -> None:
         self.serializer = SpecificationSerializer
+        self.attributes = [create_test_attribute() for i in range(10)]
+        self.context = {'request': MagicMock()}
 
     def test_serializer_inherit_necessary_classes(self):
         necessary_classes = [HyperlinkedModelSerializer]
@@ -55,6 +57,32 @@ class SpecificationSerializerTest(CustomTestCase):
         """
         field = self.get_serializer_field(self.serializer, 'uuid')
         self.assertTrue(field.read_only)
+
+    def test_serializer_returns_all_attributes_as_dict_from_data(self):
+        specification = create_test_product().specification
+        specification.all_attributes.set(self.attributes)
+        expected_all_attributes = {attribute.name: attribute.value for attribute in specification.all_attributes.all()}
+        serializer = self.serializer(instance=specification, context=self.context)
+
+        self.assertDictEqual(serializer.data['all_attributes'], expected_all_attributes)
+
+    def test_serializer_returns_card_attributes_as_name_list_from_data(self):
+        specification = create_test_product().specification
+        specification.all_attributes.set(self.attributes)
+        specification.card_attributes.set(self.attributes[:3])
+        expected_card_attributes = [attribute.name for attribute in specification.card_attributes.all()]
+        serializer = self.serializer(instance=specification, context=self.context)
+
+        self.assertListEqual(serializer.data['card_attributes'], expected_card_attributes)
+
+    def test_serializer_returns_detail_attributes_as_name_list_from_data(self):
+        specification = create_test_product().specification
+        specification.all_attributes.set(self.attributes)
+        specification.detail_attributes.set(self.attributes[:5])
+        expected_detail_attributes = [attribute.name for attribute in specification.detail_attributes.all()]
+        serializer = self.serializer(instance=specification, context=self.context)
+
+        self.assertListEqual(serializer.data['detail_attributes'], expected_detail_attributes)
 
 
 class ProductSerializerTest(CustomTestCase):
