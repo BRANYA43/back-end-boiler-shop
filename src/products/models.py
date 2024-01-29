@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 
 from utils.mixins import CreatedAndUpdatedDateTimeMixin, ImageSetMixin, UUIDMixin
@@ -22,10 +23,23 @@ class ProductImageSet(ImageSetMixin):
 
 class Specification(UUIDMixin):
     product = models.OneToOneField('Product', on_delete=models.CASCADE, related_name='specification')
-    attributes = models.ManyToManyField(Attribute, related_name='specifications', blank=True)
+    all_attributes = models.ManyToManyField(Attribute, related_name='specifications', blank=True)
+    card_attributes = models.ManyToManyField(Attribute, related_name='_card_specifications', blank=True)
+    detail_attributes = models.ManyToManyField(Attribute, related_name='_detail_specifications', blank=True)
 
     def __str__(self):
         return str(self.product)
+
+    def _check_attributes_for_field(self, field, max_count):
+        if field.count() != 0:
+            if field.count() > max_count:
+                raise ValidationError(f'This field can have maximal {max_count} attributes.')
+            if field.difference(self.all_attributes.all()):
+                raise ValidationError('This field can have only attributes of all_attributes field.')
+
+    def clean(self):
+        self._check_attributes_for_field(self.card_attributes, 3)
+        self._check_attributes_for_field(self.detail_attributes, 5)
 
 
 class Stock(models.TextChoices):

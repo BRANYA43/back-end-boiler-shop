@@ -1,10 +1,17 @@
+from django.core.exceptions import ValidationError
 from django.db.models import ProtectedError
 
 from products.models import Category, Product, ProductImageSet, Specification, Stock, Price
 from utils.mixins import CreatedAndUpdatedDateTimeMixin, ImageSetMixin, UUIDMixin
 from utils.models import Attribute, Image
 from utils.tests import CustomTestCase
-from utils.tests.creators import create_test_product, create_test_price, create_test_image, create_test_category
+from utils.tests.creators import (
+    create_test_product,
+    create_test_price,
+    create_test_image,
+    create_test_category,
+    create_test_attribute,
+)
 
 
 class PriceModelTest(CustomTestCase):
@@ -96,6 +103,7 @@ class ProductImageSetModelTest(CustomTestCase):
 class SpecificationModelTest(CustomTestCase):
     def setUp(self) -> None:
         self.model = Specification
+        self.attributes = [create_test_attribute() for i in range(10)]
 
     def test_model_inherit_necessary_mixins(self):
         mixins = [UUIDMixin]
@@ -103,7 +111,7 @@ class SpecificationModelTest(CustomTestCase):
             self.assertTrue(issubclass(self.model, mixin))
 
     def test_model_has_necessary_fields(self):
-        necessary_field = ['uuid', 'product', 'attributes']
+        necessary_field = ['uuid', 'product', 'all_attributes', 'card_attributes', 'detail_attributes']
         self.assertModelHasNecessaryFields(self.model, necessary_field)
 
     def test_product_field(self):
@@ -116,14 +124,38 @@ class SpecificationModelTest(CustomTestCase):
         self.assertTrue(field.one_to_one)
         self.assertIs(field.related_model, Product)
 
-    def test_attributes_field(self):
+    def test_all_attributes_field(self):
         """
         Tests:
         field has relation many to many;
         field has related model as Attribute;
         field can be blank;
         """
-        field = self.get_model_field(self.model, 'attributes')
+        field = self.get_model_field(self.model, 'all_attributes')
+        self.assertTrue(field.many_to_many)
+        self.assertIs(field.related_model, Attribute)
+        self.assertTrue(field.blank)
+
+    def test_card_attributes_field(self):
+        """
+        Tests:
+        field has relation many to many;
+        field has related model as Attribute;
+        field can be blank;
+        """
+        field = self.get_model_field(self.model, 'card_attributes')
+        self.assertTrue(field.many_to_many)
+        self.assertIs(field.related_model, Attribute)
+        self.assertTrue(field.blank)
+
+    def test_detail_attributes_field(self):
+        """
+        Tests:
+        field has relation many to many;
+        field has related model as Attribute;
+        field can be blank;
+        """
+        field = self.get_model_field(self.model, 'detail_attributes')
         self.assertTrue(field.many_to_many)
         self.assertIs(field.related_model, Attribute)
         self.assertTrue(field.blank)
@@ -145,6 +177,38 @@ class SpecificationModelTest(CustomTestCase):
         product.delete()
 
         self.assertEqual(Specification.objects.count(), 0)
+
+    def test_card_attributes_field_cannot_have_different_attributes_from_attributes_of_all_attributes_field(self):
+        specification = create_test_product().specification
+        specification.all_attributes.set(self.attributes[:3])
+        specification.card_attributes.set(self.attributes[1:4])
+
+        with self.assertRaises(ValidationError):
+            specification.full_clean()
+
+    def test_card_attributes_field_cannot_have_more_3_attributes(self):
+        specification = create_test_product().specification
+        specification.all_attributes.set(self.attributes)
+        specification.card_attributes.set(self.attributes[:4])
+
+        with self.assertRaises(ValidationError):
+            specification.full_clean()
+
+    def test_detail_attributes_field_cannot_have_different_attributes_from_attributes_of_all_attributes_field(self):
+        specification = create_test_product().specification
+        specification.all_attributes.set(self.attributes[:5])
+        specification.card_attributes.set(self.attributes[1:5])
+
+        with self.assertRaises(ValidationError):
+            specification.full_clean()
+
+    def test_detail_attributes_field_cannot_have_more_5_attributes(self):
+        specification = create_test_product().specification
+        specification.all_attributes.set(self.attributes)
+        specification.card_attributes.set(self.attributes[:6])
+
+        with self.assertRaises(ValidationError):
+            specification.full_clean()
 
 
 class ProductModelTest(CustomTestCase):

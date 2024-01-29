@@ -45,7 +45,7 @@ class SpecificationSerializerTest(CustomTestCase):
             self.assertTrue(issubclass(self.serializer, class_))
 
     def test_serializer_has_only_expected_fields(self):
-        expected_fields = ['url', 'uuid', 'product', 'attributes']
+        expected_fields = ['url', 'uuid', 'product', 'all_attributes', 'card_attributes', 'detail_attributes']
         self.assertSerializerHasOnlyExpectedFields(self.serializer, expected_fields)
 
     def test_uuid_field(self):
