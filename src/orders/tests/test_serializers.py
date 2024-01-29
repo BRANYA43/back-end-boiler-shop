@@ -4,7 +4,7 @@ from rest_framework.serializers import HyperlinkedModelSerializer
 
 from orders.serializers import OrderSerializer, OrderProductSerializer, CustomerSerializer
 from utils.tests import CustomTestCase
-from utils.tests.creators import create_test_order
+from utils.tests.creators import create_test_order, create_test_order_product, create_test_price
 
 
 class CustomerSerializerTest(CustomTestCase):
@@ -68,6 +68,7 @@ class CustomerSerializerTest(CustomTestCase):
 class OrderProductSerializerTest(CustomTestCase):
     def setUp(self) -> None:
         self.serializer = OrderProductSerializer
+        self.context = {'request': MagicMock()}
 
     def test_serializer_inherit_necessary_classes(self):
         necessary_classes = [HyperlinkedModelSerializer]
@@ -93,6 +94,13 @@ class OrderProductSerializerTest(CustomTestCase):
         """
         field = self.get_serializer_field(self.serializer, 'total_cost')
         self.assertTrue(field.read_only)
+
+    def test_price_field_returns_decimal_value(self):
+        product = create_test_price().product
+        order_product = create_test_order_product(product=product)
+        serializer = self.serializer(instance=order_product, context=self.context)
+
+        self.assertEqual(serializer.data['price'], order_product.price.price)
 
 
 class OrderSerializerTest(CustomTestCase):
