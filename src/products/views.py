@@ -3,6 +3,11 @@ from rest_framework import viewsets
 from products import models, serializers
 
 
+class SpecificationViewSet(viewsets.mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+    queryset = models.Specification.objects.filter(product__is_displayed=True)
+    serializer_class = serializers.SpecificationSerializer
+
+
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = models.Product.objects.filter(is_displayed=True)
     serializer_class = serializers.ProductSerializer
