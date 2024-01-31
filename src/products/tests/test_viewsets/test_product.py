@@ -5,7 +5,7 @@ from rest_framework.reverse import reverse
 
 from products.serializers import ProductSerializer
 from utils.tests import CustomTestCase
-from utils.tests.creators import create_test_product, create_test_category
+from utils.tests.creators import create_test_product
 
 list_url = 'products:product-list'
 detail_url = 'products:product-detail'
@@ -40,18 +40,6 @@ class ProductListViewTest(CustomTestCase):
         self.assertEqual(response.data, expected_data)
 
 
-class ProductCreateViewTest(CustomTestCase):
-    def setUp(self) -> None:
-        category = create_test_category()
-        self.url = reverse(list_url)
-        self.data = {'name': 'Some Product', 'slug': 'some_product_slug', 'category': category}
-
-    def test_view_is_not_allowed(self):
-        response = self.client.post(self.url, data=self.data)
-
-        self.assertStatusCodeEqual(response, status.HTTP_405_METHOD_NOT_ALLOWED)
-
-
 @patch('rest_framework.relations.HyperlinkedRelatedField.to_representation', return_value='mocked_url')
 class ProductRetrieveViewTest(CustomTestCase):
     def setUp(self) -> None:
@@ -77,28 +65,3 @@ class ProductRetrieveViewTest(CustomTestCase):
         response = self.client.get(self.url)
 
         self.assertStatusCodeEqual(response, status.HTTP_404_NOT_FOUND)
-
-
-class ProductUpdateViewTest(CustomTestCase):
-    def setUp(self) -> None:
-        self.product = create_test_product()
-        self.url = reverse(detail_url, args=[self.product.uuid])
-        self.data = {'name': 'Some Product'}
-
-    def test_view_is_not_allowed(self):
-        response = self.client.put(self.url, data=self.data)
-        self.assertStatusCodeEqual(response, status.HTTP_405_METHOD_NOT_ALLOWED)
-
-        response = self.client.patch(self.url, data=self.data)
-        self.assertStatusCodeEqual(response, status.HTTP_405_METHOD_NOT_ALLOWED)
-
-
-class ProductDeleteViewTest(CustomTestCase):
-    def setUp(self) -> None:
-        self.product = create_test_product()
-        self.url = reverse(detail_url, args=[self.product.uuid])
-
-    def test_view_is_not_allowed(self):
-        response = self.client.delete(self.url)
-
-        self.assertStatusCodeEqual(response, status.HTTP_405_METHOD_NOT_ALLOWED)

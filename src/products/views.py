@@ -3,18 +3,20 @@ from rest_framework import viewsets
 from products import models, serializers
 
 
+class ListRetrieveModelMixin(viewsets.mixins.ListModelMixin, viewsets.mixins.RetrieveModelMixin):
+    pass
+
+
 class SpecificationViewSet(viewsets.mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = models.Specification.objects.filter(product__is_displayed=True)
     serializer_class = serializers.SpecificationSerializer
 
 
-class ProductViewSet(viewsets.ModelViewSet):
+class ProductViewSet(ListRetrieveModelMixin, viewsets.GenericViewSet):
     queryset = models.Product.objects.filter(is_displayed=True)
     serializer_class = serializers.ProductSerializer
-    http_method_names = ['get']
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
+class CategoryViewSet(ListRetrieveModelMixin, viewsets.GenericViewSet):
     queryset = models.Category.objects.all()
     serializer_class = serializers.CategorySerializer
-    http_method_names = ['get']
