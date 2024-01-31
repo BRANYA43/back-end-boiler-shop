@@ -7,7 +7,7 @@ from products.serializers import SpecificationSerializer
 from utils.tests import CustomTestCase
 from utils.tests.creators import create_test_product
 
-detail_url = 'products:specification-detail'
+detail_url = 'specification-detail'
 
 
 @patch('rest_framework.relations.HyperlinkedRelatedField.to_representation', return_value='mocked_url')

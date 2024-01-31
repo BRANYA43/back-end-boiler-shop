@@ -7,8 +7,8 @@ from products.serializers import CategorySerializer
 from utils.tests import CustomTestCase
 from utils.tests.creators import create_test_category
 
-list_url = 'products:category-list'
-detail_url = 'products:category-detail'
+list_url = 'category-list'
+detail_url = 'category-detail'
 
 
 @patch('rest_framework.relations.HyperlinkedRelatedField.to_representation', return_value='mocked_url')

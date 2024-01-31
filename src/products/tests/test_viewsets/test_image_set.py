@@ -7,7 +7,7 @@ from products.serializers import ProductImageSetSerializer
 from utils.tests import CustomTestCase
 from utils.tests.creators import create_test_product
 
-detail_url = 'products:product-image-set-detail'
+detail_url = 'product-image-set-detail'
 
 
 @patch('rest_framework.relations.HyperlinkedRelatedField.to_representation', return_value='mocked_url')
