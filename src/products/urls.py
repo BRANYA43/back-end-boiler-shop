@@ -1,3 +1,12 @@
-app_name = 'products'
+from rest_framework.routers import DefaultRouter
 
-urlpatterns: list = []
+from products import views
+
+
+router = DefaultRouter()
+router.register(r'category', views.CategoryViewSet)
+router.register(r'product', views.ProductViewSet)
+router.register(r'specification', views.SpecificationViewSet)
+router.register(r'product-image-set', views.ProductImageSetViewSet)
+
+urlpatterns = router.urls
