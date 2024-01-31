@@ -7,6 +7,11 @@ class ListRetrieveModelMixin(viewsets.mixins.ListModelMixin, viewsets.mixins.Ret
     pass
 
 
+class ProductImageSetViewSet(viewsets.mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+    queryset = models.ProductImageSet.objects.filter(product__is_displayed=True)
+    serializer_class = serializers.ProductImageSetSerializer
+
+
 class SpecificationViewSet(viewsets.mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = models.Specification.objects.filter(product__is_displayed=True)
     serializer_class = serializers.SpecificationSerializer
