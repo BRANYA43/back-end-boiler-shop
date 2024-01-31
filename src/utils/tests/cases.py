@@ -44,3 +44,6 @@ class CustomTestCase(APITestCase):
         expected_fields.sort()
 
         self.assertListEqual(serializer_fields, expected_fields)
+
+    def assertStatusCodeEqual(self, response, status_code, msg=None):
+        self.assertEqual(response.status_code, status_code, msg=msg)

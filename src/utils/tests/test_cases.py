@@ -1,3 +1,5 @@
+from unittest.mock import MagicMock
+
 from django.db import models
 from rest_framework import serializers
 
@@ -19,6 +21,10 @@ class TestSerializer(serializers.Serializer):
 
 
 class TestCaseTest(CustomTestCase):
+    def setUp(self) -> None:
+        self.response = MagicMock()
+        self.response.status_code = 200
+
     def test_get_meta_attr_of_model(self):
         attr = self.get_meta_attr_of_model(TestModel, 'abstract')
         self.assertTrue(attr)
@@ -51,3 +57,10 @@ class TestCaseTest(CustomTestCase):
     def test_assertSerializerHasOnlyExpectedFields_raises_error(self):
         with self.assertRaises(AssertionError):
             self.assertSerializerHasOnlyExpectedFields(TestSerializer, ['none_field'])
+
+    def test_test_assertStatusCodeEqual_doesnt_raise_error(self):
+        self.assertStatusCodeEqual(self.response, status_code=200)
+
+    def test_assertStatusCodeEqual_raises_error(self):
+        with self.assertRaises(AssertionError):
+            self.assertStatusCodeEqual(self.response, status_code=100)
