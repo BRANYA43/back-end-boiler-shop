@@ -4,7 +4,7 @@ from orders.models import Order, Customer, OrderProduct
 from products.models import Product, Price
 from utils.mixins import UUIDMixin, CreatedAndUpdatedDateTimeMixin
 from utils.tests import CustomTestCase
-from utils.tests.creators import create_test_order, create_test_order_product, create_test_price
+from utils.tests.creators import create_test_order, create_test_order_product, create_test_product
 
 
 class OrderProductModelTest(CustomTestCase):
@@ -65,8 +65,7 @@ class OrderProductModelTest(CustomTestCase):
         self.assertTrue(field.blank)
 
     def test_price_field_is_set_before_saving_model_from_price_property_of_product(self):
-        price = create_test_price()
-        product = price.product
+        product = create_test_product(price=1000)
         order_product = create_test_order_product(product=product)
 
         self.assertEqual(order_product.price.value, product.price.value)
@@ -95,8 +94,7 @@ class OrderProductModelTest(CustomTestCase):
     def test_model_is_protected_for_deleting_price(self):
         self.assertEqual(OrderProduct.objects.count(), 0)
 
-        price = create_test_price()
-        order_product = create_test_order_product(product=price.product)
+        order_product = create_test_order_product()
 
         self.assertEqual(OrderProduct.objects.count(), 1)
 
@@ -104,8 +102,7 @@ class OrderProductModelTest(CustomTestCase):
             order_product.price.delete()
 
     def test_total_cost_property_returns_correct_value(self):
-        price = create_test_price(value=500)
-        order_product = create_test_order_product(product=price.product, quantity=20)
+        order_product = create_test_order_product(price=500, quantity=20)
         expected_total_cost = order_product.price.value * order_product.quantity
 
         self.assertEqual(order_product.total_cost, expected_total_cost)
@@ -266,10 +263,8 @@ class OrderModelTest(CustomTestCase):
 
     def test_total_cost_property_returns_correct_value(self):
         order = create_test_order()
-        price_1 = create_test_price(value=1000)
-        price_2 = create_test_price(value=2000)
-        order_product_1 = create_test_order_product(order=order, product=price_1.product, quantity=3)
-        order_product_2 = create_test_order_product(order=order, product=price_2.product, quantity=7)
+        order_product_1 = create_test_order_product(order=order, price=500, quantity=3)
+        order_product_2 = create_test_order_product(order=order, price=1000, quantity=7)
         expected_total_cost = order_product_1.total_cost + order_product_2.total_cost
         order.refresh_from_db()
 

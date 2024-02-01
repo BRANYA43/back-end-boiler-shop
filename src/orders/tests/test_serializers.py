@@ -4,7 +4,7 @@ from rest_framework.serializers import HyperlinkedModelSerializer
 
 from orders.serializers import OrderSerializer, OrderProductSerializer, CustomerSerializer
 from utils.tests import CustomTestCase
-from utils.tests.creators import create_test_order, create_test_order_product, create_test_price
+from utils.tests.creators import create_test_order, create_test_order_product
 
 
 class CustomerSerializerTest(CustomTestCase):
@@ -96,8 +96,7 @@ class OrderProductSerializerTest(CustomTestCase):
         self.assertTrue(field.read_only)
 
     def test_price_field_returns_decimal_value(self):
-        product = create_test_price().product
-        order_product = create_test_order_product(product=product)
+        order_product = create_test_order_product(price=1000)
         serializer = self.serializer(instance=order_product, context=self.context)
 
         self.assertEqual(serializer.data['price'], order_product.price.value)
