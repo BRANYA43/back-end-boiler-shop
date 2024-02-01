@@ -1,7 +1,6 @@
 from decimal import Decimal
 
 from rest_framework import serializers
-
 from products.models import Category, Product, ProductImageSet, Specification
 
 
