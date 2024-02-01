@@ -1,9 +1,10 @@
-from unittest.mock import patch
+from unittest.mock import MagicMock
 
 from rest_framework.serializers import HyperlinkedModelSerializer
 
 from orders.serializers import OrderSerializer, OrderProductSerializer, CustomerSerializer
 from utils.tests import CustomTestCase
+from utils.tests.creators import create_test_order, create_test_order_product, create_test_price
 
 
 class CustomerSerializerTest(CustomTestCase):
@@ -27,8 +28,7 @@ class CustomerSerializerTest(CustomTestCase):
         field = self.get_serializer_field(self.serializer, 'uuid')
         self.assertTrue(field.read_only)
 
-    @patch('rest_framework.serializers.HyperlinkedRelatedField.validate_empty_values', return_value=(True, None))
-    def test_serializer_validates_and_formats_phone(self, mock):
+    def test_serializer_validates_and_formats_phone(self):
         valid_phones = [
             '+380501234567',
             '+38 (050) 123-45-67',
@@ -55,8 +55,12 @@ class CustomerSerializerTest(CustomTestCase):
         ]
         expected_phone = '+38 (050) 123 45-67'
 
+        customer = create_test_order().customer
+
         for phone in valid_phones:
-            serializer = self.serializer(data={'phone': phone})
+            serializer = self.serializer(
+                instance=customer, data={'phone': phone}, context={'request': MagicMock()}, partial=True
+            )
             serializer.is_valid()
             self.assertEqual(serializer.validated_data['phone'], expected_phone)
 
@@ -64,6 +68,7 @@ class CustomerSerializerTest(CustomTestCase):
 class OrderProductSerializerTest(CustomTestCase):
     def setUp(self) -> None:
         self.serializer = OrderProductSerializer
+        self.context = {'request': MagicMock()}
 
     def test_serializer_inherit_necessary_classes(self):
         necessary_classes = [HyperlinkedModelSerializer]
@@ -89,6 +94,13 @@ class OrderProductSerializerTest(CustomTestCase):
         """
         field = self.get_serializer_field(self.serializer, 'total_cost')
         self.assertTrue(field.read_only)
+
+    def test_price_field_returns_decimal_value(self):
+        product = create_test_price().product
+        order_product = create_test_order_product(product=product)
+        serializer = self.serializer(instance=order_product, context=self.context)
+
+        self.assertEqual(serializer.data['price'], order_product.price.price)
 
 
 class OrderSerializerTest(CustomTestCase):
