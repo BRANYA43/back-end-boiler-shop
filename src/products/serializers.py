@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from rest_framework import serializers
 
 from products.models import Category, Product, ProductImageSet, Specification
@@ -63,7 +65,9 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
 
     @staticmethod
     def get_decimal_price(obj):
-        return obj.price.price
+        if obj.price is not None:
+            return obj.price.price
+        return Decimal(0)
 
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
