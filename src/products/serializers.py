@@ -65,7 +65,7 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
     @staticmethod
     def get_decimal_price(obj):
         if obj.price is not None:
-            return obj.price.price
+            return obj.price.value
         return Decimal(0)
 
 

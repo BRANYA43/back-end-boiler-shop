@@ -147,7 +147,7 @@ class ProductSerializerTest(CustomTestCase):
         self.assertTrue(field.read_only)
 
     def test_serializer_returns_correct_price_in_data(self):
-        product = create_test_price(price=2000).product
+        product = create_test_price(value=2000).product
         context = {'request': MagicMock()}
 
         serializer = self.serializer(instance=product, context=context)

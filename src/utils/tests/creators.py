@@ -43,12 +43,12 @@ def create_test_product(category=None, name=None, slug=None, **extra_fields):
     return _create_test_model(Product, category=category, name=name, slug=slug, **extra_fields)
 
 
-def create_test_price(product=None, price=None, **extra_fields):
+def create_test_price(product=None, value=None, **extra_fields):
     if product is None:
         product = create_test_product()
-    if price is None:
-        price = faker.random_number(digits=5)
-    return _create_test_model(Price, product=product, price=price, **extra_fields)
+    if value is None:
+        value = faker.random_number(digits=5)
+    return _create_test_model(Price, product=product, value=value, **extra_fields)
 
 
 def create_test_customer(full_name=None, email=None, phone=None, **extra_fields):

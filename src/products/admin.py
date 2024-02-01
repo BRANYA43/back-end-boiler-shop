@@ -41,9 +41,9 @@ class SpecificationInline(admin.StackedInline):
 
 @admin.register(Price)
 class PriceAdmin(admin.ModelAdmin):
-    list_display = ['product', 'price', 'created']
-    fields = ['product', 'price', 'created']
-    search_fields = ['product', 'price']
+    list_display = ['product', 'value', 'created']
+    fields = ['product', 'value', 'created']
+    search_fields = ['product', 'value']
     readonly_fields = ['created']
     ordering = ['-created']
 
@@ -99,7 +99,7 @@ class ProductAdmin(admin.ModelAdmin):
         return str(instance.total_grade)
 
     def price(self, instance):
-        return str(instance.price.price)
+        return str(instance.price.value)
 
 
 class InlineCategory(admin.TabularInline):

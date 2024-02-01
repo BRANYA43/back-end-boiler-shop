@@ -16,7 +16,7 @@ class OrderProduct(UUIDMixin):
 
     @property
     def total_cost(self):
-        return self.price.price * self.quantity
+        return self.price.value * self.quantity
 
 
 class PhoneField(models.CharField):

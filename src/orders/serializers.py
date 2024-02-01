@@ -28,7 +28,7 @@ class OrderProductSerializer(serializers.HyperlinkedModelSerializer):
 
     @staticmethod
     def get_price_as_decimal(obj):
-        return obj.price.price
+        return obj.price.value
 
 
 class OrderSerializer(serializers.HyperlinkedModelSerializer):

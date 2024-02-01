@@ -69,7 +69,7 @@ class OrderProductModelTest(CustomTestCase):
         product = price.product
         order_product = create_test_order_product(product=product)
 
-        self.assertEqual(order_product.price.price, product.price.price)
+        self.assertEqual(order_product.price.value, product.price.value)
 
     def test_model_is_deleted_after_deleting_order(self):
         self.assertEqual(OrderProduct.objects.count(), 0)
@@ -104,9 +104,9 @@ class OrderProductModelTest(CustomTestCase):
             order_product.price.delete()
 
     def test_total_cost_property_returns_correct_value(self):
-        price = create_test_price(price=500)
+        price = create_test_price(value=500)
         order_product = create_test_order_product(product=price.product, quantity=20)
-        expected_total_cost = order_product.price.price * order_product.quantity
+        expected_total_cost = order_product.price.value * order_product.quantity
 
         self.assertEqual(order_product.total_cost, expected_total_cost)
 
@@ -266,8 +266,8 @@ class OrderModelTest(CustomTestCase):
 
     def test_total_cost_property_returns_correct_value(self):
         order = create_test_order()
-        price_1 = create_test_price(price=1000)
-        price_2 = create_test_price(price=2000)
+        price_1 = create_test_price(value=1000)
+        price_2 = create_test_price(value=2000)
         order_product_1 = create_test_order_product(order=order, product=price_1.product, quantity=3)
         order_product_2 = create_test_order_product(order=order, product=price_2.product, quantity=7)
         expected_total_cost = order_product_1.total_cost + order_product_2.total_cost

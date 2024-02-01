@@ -100,7 +100,7 @@ class OrderProductSerializerTest(CustomTestCase):
         order_product = create_test_order_product(product=product)
         serializer = self.serializer(instance=order_product, context=self.context)
 
-        self.assertEqual(serializer.data['price'], order_product.price.price)
+        self.assertEqual(serializer.data['price'], order_product.price.value)
 
 
 class OrderSerializerTest(CustomTestCase):

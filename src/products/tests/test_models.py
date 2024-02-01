@@ -33,13 +33,13 @@ class PriceModelTest(CustomTestCase):
         self.assertTrue(field.many_to_one)
         self.assertIs(field.related_model, Product)
 
-    def test_price_field(self):
+    def test_value_field(self):
         """
         Tests:
         field has max digits as 10;
         field has decimal places as 2;
         """
-        field = self.get_model_field(self.model, 'price')
+        field = self.get_model_field(self.model, 'value')
         self.assertEqual(field.max_digits, 10)
         self.assertEqual(field.decimal_places, 2)
 
@@ -293,14 +293,14 @@ class ProductModelTest(CustomTestCase):
 
     def test_price_property_returns_latest_created_price(self):
         product = create_test_product()
-        price_1 = create_test_price(product, price=1000)
+        price_1 = create_test_price(product, value=1000)
 
-        self.assertEqual(price_1.price, product.price.price)
+        self.assertEqual(price_1.value, product.price.value)
 
-        price_2 = create_test_price(product, price=2000)
+        price_2 = create_test_price(product, value=2000)
 
-        self.assertNotEqual(price_1.price, product.price.price)
-        self.assertEqual(price_2.price, product.price.price)
+        self.assertNotEqual(price_1.value, product.price.value)
+        self.assertEqual(price_2.value, product.price.value)
 
     def test_price_property_returns_none_if_prices_is_empty(self):
         product = create_test_product()
