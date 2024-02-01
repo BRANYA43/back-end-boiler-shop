@@ -19,3 +19,8 @@ migrate:
 
 run_tests:
 	python $(MANAGER_PATH) test $(if $(app),$(app),src)
+
+create_super_user:
+	python $(MANAGER_PATH) createsuperuser
+						   --email=$(if $(email),$(email),admin@admin.com)
+						   --username=$(if $(username),$(username),admin)
