@@ -1,4 +1,3 @@
-from decimal import Decimal
 from unittest.mock import MagicMock
 
 from products.serializers import (
@@ -9,7 +8,7 @@ from products.serializers import (
 )
 from utils.serializers import ReadOnlyHyperlinkedModelSerializer
 from utils.tests import CustomTestCase
-from utils.tests.creators import create_test_price, create_test_product, create_test_attribute, create_test_image
+from utils.tests.creators import create_test_product, create_test_attribute, create_test_image
 
 
 class ProductImageSetSerializerTest(CustomTestCase):
@@ -95,22 +94,34 @@ class ProductSerializerTest(CustomTestCase):
             'name',
             'slug',
             'price',
+            'price_value',
             'stock',
             'description',
-            'is_displayed',
             'specification',
             'image_set',
+            'is_displayed',
             'updated',
             'created',
         ]
         self.assertSerializerHasOnlyExpectedFields(self.serializer, expected_fields)
 
-    def test_serializer_returns_correct_price_in_data(self):
-        product = create_test_price(value=2000).product
-        context = {'request': MagicMock()}
+    def test_price_value_field(self):
+        """
+        Tests:
+        field uses get_price_value method;
+        """
+        field = self.get_serializer_field(self.serializer, 'price_value')
+        self.assertEqual(field.method_name, 'get_price_value')
 
-        serializer = self.serializer(instance=product, context=context)
-        self.assertEqual(serializer.data['price'], Decimal(2000))
+    def test_get_price_value_returns_0_if_price_is_none(self):
+        product = create_test_product()
+
+        self.assertEqual(self.serializer.get_price_value(product), 0)
+
+    def test_get_price_value_returns_correct_price(self):
+        product = create_test_product(price=1000)
+
+        self.assertEqual(self.serializer.get_price_value(product), product.price.value)
 
 
 class CategorySerializerTest(CustomTestCase):

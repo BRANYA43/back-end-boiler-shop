@@ -40,7 +40,7 @@ class SpecificationSerializer(ReadOnlyHyperlinkedModelSerializer):
 
 
 class ProductSerializer(ReadOnlyHyperlinkedModelSerializer):
-    price = serializers.SerializerMethodField(method_name='get_decimal_price')
+    price_value = serializers.SerializerMethodField(method_name='get_price_value')
 
     class Meta:
         model = Product
@@ -51,20 +51,19 @@ class ProductSerializer(ReadOnlyHyperlinkedModelSerializer):
             'name',
             'slug',
             'price',
+            'price_value',
             'stock',
             'description',
-            'is_displayed',
             'specification',
             'image_set',
+            'is_displayed',
             'updated',
             'created',
         ]
 
     @staticmethod
-    def get_decimal_price(obj):
-        if obj.price is not None:
-            return obj.price.value
-        return Decimal(0)
+    def get_price_value(obj):
+        return Decimal(0) if obj.price is None else obj.price.value
 
 
 class CategorySerializer(ReadOnlyHyperlinkedModelSerializer):
