@@ -118,7 +118,13 @@ class ProductAdmin(admin.ModelAdmin):
     ]
     prepopulated_fields = {'slug': ['name']}
     readonly_fields = ['price', 'updated', 'created']
-    search_fields = ['name', 'slug', 'description']
+    search_fields = [
+        'name',
+        'slug',
+        'description',
+        'specification__all_attributes__name',
+        'specification__all_attributes__value',
+    ]
     list_filter = ['category', 'stock', 'is_displayed']
     inlines = [SpecificationInline, ProductImageSetInline, PriceInline]
     actions = [switch_displaying, make_in_stock, make_out_of_stock, make_to_order]
