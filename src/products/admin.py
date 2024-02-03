@@ -22,6 +22,9 @@ class ProductImageSetAdmin(admin.ModelAdmin):
     search_fields = ['product__name', 'images']
     filter_horizontal = ['images']
 
+    def has_add_permission(self, request):
+        return False
+
 
 @admin.register(Specification)
 class SpecificationAdmin(admin.ModelAdmin):
