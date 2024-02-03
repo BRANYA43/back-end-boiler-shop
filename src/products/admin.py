@@ -19,7 +19,8 @@ class PriceAdmin(admin.ModelAdmin):
 @admin.register(ProductImageSet)
 class ProductImageSetAdmin(admin.ModelAdmin):
     fields = ['product', 'images']
-    search_fields = ['product', 'images']
+    search_fields = ['product__name', 'images']
+    filter_horizontal = ['images']
 
 
 @admin.register(Specification)
