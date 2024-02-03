@@ -1,6 +1,7 @@
+from django.core import validators
 from django.db import models
 
-from orders.validators import validate_phone
+from orders.validators import validate_phone, validate_name
 from products.models import Product, Price
 from utils.mixins import UUIDMixin, CreatedAndUpdatedDateTimeMixin
 
@@ -28,7 +29,9 @@ class PhoneField(models.CharField):
 
 class Customer(UUIDMixin):
     order = models.OneToOneField('Order', on_delete=models.CASCADE, related_name='customer')
-    full_name = models.CharField(max_length=100, null=True)
+    full_name = models.CharField(
+        max_length=100, null=True, validators=[validators.MinLengthValidator(3), validate_name]
+    )
     email = models.EmailField(null=True)
     phone = PhoneField(null=True)
 
