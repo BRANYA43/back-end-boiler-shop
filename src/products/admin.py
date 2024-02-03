@@ -29,7 +29,7 @@ class ProductImageSetAdmin(admin.ModelAdmin):
 @admin.register(Specification)
 class SpecificationAdmin(admin.ModelAdmin):
     fields = ['product', 'all_attributes', 'card_attributes', 'detail_attributes']
-    search_fields = ['product', 'all_attributes']
+    search_fields = ['product__name', 'all_attributes__name', 'all_attributes__value']
     filter_horizontal = ['all_attributes', 'card_attributes', 'detail_attributes']
 
     def get_object(self, request, object_id, from_field=None):
