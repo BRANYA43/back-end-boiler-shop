@@ -1,7 +1,5 @@
-from _decimal import Decimal
+from decimal import Decimal
 from unittest.mock import MagicMock
-
-from rest_framework.serializers import HyperlinkedModelSerializer
 
 from products.serializers import (
     CategorySerializer,
@@ -9,6 +7,7 @@ from products.serializers import (
     ProductSerializer,
     SpecificationSerializer,
 )
+from utils.serializers import ReadOnlyHyperlinkedModelSerializer
 from utils.tests import CustomTestCase
 from utils.tests.creators import create_test_price, create_test_product, create_test_attribute, create_test_image
 
@@ -19,21 +18,13 @@ class ProductImageSetSerializerTest(CustomTestCase):
         self.context = {'request': MagicMock()}
 
     def test_serializer_inherit_necessary_classes(self):
-        necessary_classes = [HyperlinkedModelSerializer]
+        necessary_classes = [ReadOnlyHyperlinkedModelSerializer]
         for class_ in necessary_classes:
             self.assertTrue(issubclass(self.serializer, class_))
 
     def test_serializer_has_only_expected_fields(self):
         expected_fields = ['url', 'uuid', 'product', 'images']
         self.assertSerializerHasOnlyExpectedFields(self.serializer, expected_fields)
-
-    def test_uuid_field(self):
-        """
-        Tests:
-        field is read only;
-        """
-        field = self.get_serializer_field(self.serializer, 'uuid')
-        self.assertTrue(field.read_only)
 
     def test_serializer_returns_images_as_url_list_from_data(self):
         images = [create_test_image() for i in range(10)]
@@ -52,21 +43,13 @@ class SpecificationSerializerTest(CustomTestCase):
         self.context = {'request': MagicMock()}
 
     def test_serializer_inherit_necessary_classes(self):
-        necessary_classes = [HyperlinkedModelSerializer]
+        necessary_classes = [ReadOnlyHyperlinkedModelSerializer]
         for class_ in necessary_classes:
             self.assertTrue(issubclass(self.serializer, class_))
 
     def test_serializer_has_only_expected_fields(self):
         expected_fields = ['url', 'uuid', 'product', 'all_attributes', 'card_attributes', 'detail_attributes']
         self.assertSerializerHasOnlyExpectedFields(self.serializer, expected_fields)
-
-    def test_uuid_field(self):
-        """
-        Tests:
-        field is read only;
-        """
-        field = self.get_serializer_field(self.serializer, 'uuid')
-        self.assertTrue(field.read_only)
 
     def test_serializer_returns_all_attributes_as_dict_from_data(self):
         specification = create_test_product().specification
@@ -100,7 +83,7 @@ class ProductSerializerTest(CustomTestCase):
         self.serializer = ProductSerializer
 
     def test_serializer_inherit_necessary_classes(self):
-        necessary_classes = [HyperlinkedModelSerializer]
+        necessary_classes = [ReadOnlyHyperlinkedModelSerializer]
         for class_ in necessary_classes:
             self.assertTrue(issubclass(self.serializer, class_))
 
@@ -122,30 +105,6 @@ class ProductSerializerTest(CustomTestCase):
         ]
         self.assertSerializerHasOnlyExpectedFields(self.serializer, expected_fields)
 
-    def test_uuid_field(self):
-        """
-        Tests:
-        field is read only;
-        """
-        field = self.get_serializer_field(self.serializer, 'uuid')
-        self.assertTrue(field.read_only)
-
-    def test_updated_field(self):
-        """
-        Tests:
-        field is read only;
-        """
-        field = self.get_serializer_field(self.serializer, 'updated')
-        self.assertTrue(field.read_only)
-
-    def test_created_field_is_read_only(self):
-        """
-        Tests:
-        field is read only;
-        """
-        field = self.get_serializer_field(self.serializer, 'created')
-        self.assertTrue(field.read_only)
-
     def test_serializer_returns_correct_price_in_data(self):
         product = create_test_price(value=2000).product
         context = {'request': MagicMock()}
@@ -159,18 +118,10 @@ class CategorySerializerTest(CustomTestCase):
         self.serializer = CategorySerializer
 
     def test_serializer_inherit_necessary_classes(self):
-        necessary_classes = [HyperlinkedModelSerializer]
+        necessary_classes = [ReadOnlyHyperlinkedModelSerializer]
         for class_ in necessary_classes:
             self.assertTrue(issubclass(self.serializer, class_))
 
     def test_serializer_has_only_expected_fields(self):
         expected_fields = ['url', 'uuid', 'name', 'parent', 'subs']
         self.assertSerializerHasOnlyExpectedFields(self.serializer, expected_fields)
-
-    def test_uuid_field(self):
-        """
-        Tests:
-        field is read only;
-        """
-        field = self.get_serializer_field(self.serializer, 'uuid')
-        self.assertTrue(field.read_only)

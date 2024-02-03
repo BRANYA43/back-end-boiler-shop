@@ -2,22 +2,22 @@ from decimal import Decimal
 
 from rest_framework import serializers
 from products.models import Category, Product, ProductImageSet, Specification
+from utils.serializers import ReadOnlyHyperlinkedModelSerializer
 
 
-class ProductImageSetSerializer(serializers.HyperlinkedModelSerializer):
+class ProductImageSetSerializer(ReadOnlyHyperlinkedModelSerializer):
     images = serializers.SerializerMethodField(method_name='get_image_url_list')
 
     class Meta:
         model = ProductImageSet
         fields = ['url', 'uuid', 'product', 'images']
-        read_only_fields = ['uuid']
 
     @staticmethod
     def get_image_url_list(obj):
         return [image.image.url for image in obj.images.all()]
 
 
-class SpecificationSerializer(serializers.HyperlinkedModelSerializer):
+class SpecificationSerializer(ReadOnlyHyperlinkedModelSerializer):
     all_attributes = serializers.SerializerMethodField(method_name='get_all_attributes_as_dict')
     card_attributes = serializers.SerializerMethodField(method_name='get_card_attributes_as_list')
     detail_attributes = serializers.SerializerMethodField(method_name='get_detail_attributes_as_list')
@@ -25,7 +25,6 @@ class SpecificationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Specification
         fields = ['url', 'uuid', 'product', 'all_attributes', 'card_attributes', 'detail_attributes']
-        read_only_fields = ['uuid']
 
     @staticmethod
     def get_all_attributes_as_dict(obj):
@@ -40,7 +39,7 @@ class SpecificationSerializer(serializers.HyperlinkedModelSerializer):
         return [attribute.name for attribute in obj.detail_attributes.all()]
 
 
-class ProductSerializer(serializers.HyperlinkedModelSerializer):
+class ProductSerializer(ReadOnlyHyperlinkedModelSerializer):
     price = serializers.SerializerMethodField(method_name='get_decimal_price')
 
     class Meta:
@@ -60,7 +59,6 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
             'updated',
             'created',
         ]
-        read_only_fields = ['uuid', 'updated', 'created']
 
     @staticmethod
     def get_decimal_price(obj):
@@ -69,8 +67,7 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
         return Decimal(0)
 
 
-class CategorySerializer(serializers.HyperlinkedModelSerializer):
+class CategorySerializer(ReadOnlyHyperlinkedModelSerializer):
     class Meta:
         model = Category
         fields = ['url', 'uuid', 'name', 'parent', 'subs']
-        read_only_fields = ['uuid']
