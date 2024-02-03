@@ -99,7 +99,9 @@ class ProductAdmin(admin.ModelAdmin):
         return str(instance.total_grade)
 
     def price(self, instance):
-        return str(instance.price.value)
+        if instance.price is not None:
+            return str(instance.price.value)
+        return None
 
 
 class InlineCategory(admin.TabularInline):
