@@ -51,8 +51,9 @@ class PriceInline(admin.TabularInline):
     fields = ['value', 'created']
     readonly_fields = ['created']
     ordering = ['-created']
-    extra = 1
+    extra = 0
     show_change_link = True
+    min_num = 1
 
     def has_change_permission(self, request, obj=None):
         return False
