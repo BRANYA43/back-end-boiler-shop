@@ -32,6 +32,9 @@ class SpecificationAdmin(admin.ModelAdmin):
     search_fields = ['product__name', 'all_attributes__name', 'all_attributes__value']
     filter_horizontal = ['all_attributes', 'card_attributes', 'detail_attributes']
 
+    def has_add_permission(self, request):
+        return False
+
     def get_object(self, request, object_id, from_field=None):
         obj = super().get_object(request, object_id, from_field)
         request.report_obj = obj
