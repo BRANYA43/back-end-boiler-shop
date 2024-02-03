@@ -18,24 +18,24 @@ class ProductImageSetSerializer(ReadOnlyHyperlinkedModelSerializer):
 
 
 class SpecificationSerializer(ReadOnlyHyperlinkedModelSerializer):
-    all_attributes = serializers.SerializerMethodField(method_name='get_all_attributes_as_dict')
-    card_attributes = serializers.SerializerMethodField(method_name='get_card_attributes_as_list')
-    detail_attributes = serializers.SerializerMethodField(method_name='get_detail_attributes_as_list')
+    all_attributes = serializers.SerializerMethodField(method_name='get_all_attribute_items')
+    card_attributes = serializers.SerializerMethodField(method_name='get_card_attribute_names')
+    detail_attributes = serializers.SerializerMethodField(method_name='get_detail_attribute_names')
 
     class Meta:
         model = Specification
         fields = ['url', 'uuid', 'product', 'all_attributes', 'card_attributes', 'detail_attributes']
 
     @staticmethod
-    def get_all_attributes_as_dict(obj):
+    def get_all_attribute_items(obj) -> dict:
         return {attribute.name: attribute.value for attribute in obj.all_attributes.all()}
 
     @staticmethod
-    def get_card_attributes_as_list(obj):
+    def get_card_attribute_names(obj) -> list[str]:
         return [attribute.name for attribute in obj.card_attributes.all()]
 
     @staticmethod
-    def get_detail_attributes_as_list(obj):
+    def get_detail_attribute_names(obj) -> list[str]:
         return [attribute.name for attribute in obj.detail_attributes.all()]
 
 

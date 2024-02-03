@@ -39,7 +39,6 @@ class SpecificationSerializerTest(CustomTestCase):
     def setUp(self) -> None:
         self.serializer = SpecificationSerializer
         self.attributes = [create_test_attribute() for i in range(10)]
-        self.context = {'request': MagicMock()}
 
     def test_serializer_inherit_necessary_classes(self):
         necessary_classes = [ReadOnlyHyperlinkedModelSerializer]
@@ -50,31 +49,61 @@ class SpecificationSerializerTest(CustomTestCase):
         expected_fields = ['url', 'uuid', 'product', 'all_attributes', 'card_attributes', 'detail_attributes']
         self.assertSerializerHasOnlyExpectedFields(self.serializer, expected_fields)
 
-    def test_serializer_returns_all_attributes_as_dict_from_data(self):
+    def test_all_attributes_field(self):
+        """
+        Tests:
+        field uses get_all_attribute_items method;
+        """
+        field = self.get_serializer_field(self.serializer, 'all_attributes')
+        self.assertEqual(field.method_name, 'get_all_attribute_items')
+
+    def test_card_attributes_field(self):
+        """
+        Tests:
+        field uses get_card_attribute_names method;
+        """
+        field = self.get_serializer_field(self.serializer, 'card_attributes')
+        self.assertEqual(field.method_name, 'get_card_attribute_names')
+
+    def test_detail_attributes_field(self):
+        """
+        Tests:
+        field uses get_detail_attribute_names method;
+        """
+        field = self.get_serializer_field(self.serializer, 'detail_attributes')
+        self.assertEqual(field.method_name, 'get_detail_attribute_names')
+
+    def test_get_all_attribute_items_method_returns_correct_dict(self):
         specification = create_test_product().specification
         specification.all_attributes.set(self.attributes)
-        expected_all_attributes = {attribute.name: attribute.value for attribute in specification.all_attributes.all()}
-        serializer = self.serializer(instance=specification, context=self.context)
 
-        self.assertDictEqual(serializer.data['all_attributes'], expected_all_attributes)
+        expected_dict = {attribute.name: attribute.value for attribute in self.attributes}
 
-    def test_serializer_returns_card_attributes_as_name_list_from_data(self):
+        self.assertDictEqual(self.serializer.get_all_attribute_items(specification), expected_dict)
+
+    def test_get_card_attribute_names_method_returns_correct_names(self):
         specification = create_test_product().specification
         specification.all_attributes.set(self.attributes)
         specification.card_attributes.set(self.attributes[:3])
-        expected_card_attributes = [attribute.name for attribute in specification.card_attributes.all()]
-        serializer = self.serializer(instance=specification, context=self.context)
 
-        self.assertListEqual(serializer.data['card_attributes'], expected_card_attributes)
+        expected_names = [attribute.name for attribute in self.attributes[:3]]
+        names = self.serializer.get_card_attribute_names(specification)
+        names.sort()
+        expected_names.sort()
 
-    def test_serializer_returns_detail_attributes_as_name_list_from_data(self):
+        self.assertListEqual(names, expected_names)
+
+    def test_get_detail_attribute_names_method_returns_correct_names(self):
         specification = create_test_product().specification
         specification.all_attributes.set(self.attributes)
         specification.detail_attributes.set(self.attributes[:5])
-        expected_detail_attributes = [attribute.name for attribute in specification.detail_attributes.all()]
-        serializer = self.serializer(instance=specification, context=self.context)
 
-        self.assertListEqual(serializer.data['detail_attributes'], expected_detail_attributes)
+        expected_names = [attribute.name for attribute in self.attributes[:5]]
+        names = self.serializer.get_detail_attribute_names(specification)
+        names.sort()
+        expected_names.sort()
+
+        self.assertListEqual(names, expected_names)
 
 
 class ProductSerializerTest(CustomTestCase):
