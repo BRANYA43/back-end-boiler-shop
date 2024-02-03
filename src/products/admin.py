@@ -81,6 +81,27 @@ class SpecificationInline(admin.StackedInline):
     formset = SpecificationInlineFormSet
 
 
+@admin.action(description='Set stock as "in stock"')
+def make_in_stock(modeladmin, request, queryset):
+    queryset.update(stock=Product.Stock.IN_STOCK)
+
+
+@admin.action(description='Set stock as "out of stock"')
+def make_out_of_stock(modeladmin, request, queryset):
+    queryset.update(stock=Product.Stock.OUT_OF_STOCK)
+
+
+@admin.action(description='Set stock as "to order"')
+def make_to_order(modeladmin, request, queryset):
+    queryset.update(stock=Product.Stock.TO_ORDER)
+
+
+@admin.action(description='Switch displaying')
+def switch_displaying(modeladmin, request, queryset):
+    for instance in queryset:
+        instance.update(is_displayed=not instance.is_displayed)
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug', 'category', 'is_displayed', 'stock', 'updated', 'created']
@@ -100,6 +121,7 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ['name', 'slug', 'description']
     list_filter = ['category', 'stock', 'is_displayed']
     inlines = [SpecificationInline, ProductImageSetInline, PriceInline]
+    actions = [switch_displaying, make_in_stock, make_out_of_stock, make_to_order]
 
     def price(self, instance):
         if instance.price is not None:
