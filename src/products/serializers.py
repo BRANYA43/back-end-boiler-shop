@@ -6,14 +6,14 @@ from utils.serializers import ReadOnlyHyperlinkedModelSerializer
 
 
 class ProductImageSetSerializer(ReadOnlyHyperlinkedModelSerializer):
-    images = serializers.SerializerMethodField(method_name='get_image_url_list')
+    images = serializers.SerializerMethodField(method_name='get_image_urls')
 
     class Meta:
         model = ProductImageSet
         fields = ['url', 'uuid', 'product', 'images']
 
     @staticmethod
-    def get_image_url_list(obj):
+    def get_image_urls(obj) -> list[str]:
         return [image.image.url for image in obj.images.all()]
 
 
