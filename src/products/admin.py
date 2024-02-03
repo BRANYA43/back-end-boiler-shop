@@ -104,7 +104,7 @@ def switch_displaying(modeladmin, request, queryset):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug', 'category', 'is_displayed', 'stock', 'updated', 'created']
+    list_display = ['name', 'slug', 'category', 'stock', 'price', 'is_displayed', 'updated', 'created']
     fields = [
         'category',
         'name',
