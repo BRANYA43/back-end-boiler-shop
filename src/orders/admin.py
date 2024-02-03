@@ -33,7 +33,7 @@ class CustomerAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['uuid', 'status', 'delivery', 'payment', 'is_paid', 'total_cost', 'updated', 'created']
+    list_display = ['uuid', 'status', 'is_paid', 'delivery', 'payment', 'total_cost', 'updated', 'created']
     fields = [
         'uuid',
         'status',
@@ -45,10 +45,17 @@ class OrderAdmin(admin.ModelAdmin):
         'updated',
         'created',
     ]
-    readonly_fields = ['uuid', 'total_cost', 'updated', 'created']
-    ordering = ['created']
+    readonly_fields = ['uuid', 'status', 'is_paid', 'total_cost', 'updated', 'created']
+    ordering = ['-created']
     list_filter = ['status', 'delivery', 'payment', 'is_paid']
-    search_fields = ['comment', 'delivery_address']
+    search_fields = [
+        'comment',
+        'delivery_address',
+        'customer__full_name',
+        'customer__email',
+        'customer__phone',
+        'products__name',
+    ]
     inlines = [CustomerInline, OrderProductInline]
 
     def total_cost(self, instance):
