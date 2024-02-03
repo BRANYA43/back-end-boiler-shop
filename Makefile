@@ -12,10 +12,10 @@ startapp:
   		  $(APP_PATH)/urls.py
 
 make_migrations:
-	python $(MANAGER_PATH) makemigrations $(if $(app),$(app),src)
+	python $(MANAGER_PATH) makemigrations $(app)
 
 migrate:
-	python $(MANAGER_PATH) migrate $(if $(app),$(app),src)
+	python $(MANAGER_PATH) migrate $(app)
 
 run_tests:
 	python $(MANAGER_PATH) test $(if $(app),$(app),src)
