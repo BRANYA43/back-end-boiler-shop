@@ -79,7 +79,6 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug', 'category', 'is_displayed', 'stock', 'updated', 'created']
     fields = [
         'category',
-        'total_grade',
         'name',
         'slug',
         'price',
@@ -90,13 +89,10 @@ class ProductAdmin(admin.ModelAdmin):
         'created',
     ]
     prepopulated_fields = {'slug': ['name']}
-    readonly_fields = ['price', 'total_grade', 'updated', 'created']
+    readonly_fields = ['price', 'updated', 'created']
     search_fields = ['name', 'slug', 'description']
     list_filter = ['category', 'stock', 'is_displayed']
     inlines = [SpecificationInline, ProductImageSetInline, PriceInline]
-
-    def total_grade(self, instance):
-        return str(instance.total_grade)
 
     def price(self, instance):
         if instance.price is not None:
