@@ -15,16 +15,6 @@ class CustomerInline(admin.StackedInline):
     fields = ['full_name', 'email', 'phone']
 
 
-@admin.register(OrderProduct)
-class OrderProductAdmin(admin.ModelAdmin):
-    list_display = ['order', 'product', 'quantity', 'price']
-    fields = ['order', 'product', 'quantity', 'price', 'total_cost']
-    readonly_fields = ['total_cost']
-
-    def total_cost(self, instance):
-        return str(instance.total_cost)
-
-
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ['order', 'full_name', 'email', 'phone']
