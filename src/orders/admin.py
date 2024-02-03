@@ -31,6 +31,9 @@ class CustomerAdmin(admin.ModelAdmin):
     fields = ['order', 'full_name', 'email', 'phone']
     search_fields = ['full_name', 'email', 'phone']
 
+    def has_add_permission(self, request):
+        return False
+
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
