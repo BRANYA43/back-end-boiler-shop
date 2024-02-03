@@ -4,41 +4,6 @@ from django import forms
 from products.models import Category, Product, ProductImageSet, Specification, Price
 
 
-class PriceInline(admin.TabularInline):
-    model = Price
-    fields = ['price', 'created']
-    readonly_fields = ['created']
-    show_change_link = True
-    extra = 1
-    ordering = ['-created']
-
-    def has_change_permission(self, request, obj=None):
-        return False
-
-
-class ProductImageSetInline(admin.StackedInline):
-    model = ProductImageSet
-    fields = ['images']
-    can_delete = False
-    show_change_link = True
-
-
-class SpecificationInlineFormSet(forms.models.BaseInlineFormSet):
-    def add_fields(self, form, index):
-        super().add_fields(form, index)
-        form.fields['card_attributes'].queryset = form.instance.all_attributes
-        form.fields['detail_attributes'].queryset = form.instance.all_attributes
-
-
-class SpecificationInline(admin.StackedInline):
-    model = Specification
-    fields = ['all_attributes', 'card_attributes', 'detail_attributes']
-    can_delete = False
-    show_change_link = True
-    filter_horizontal = ['all_attributes', 'card_attributes', 'detail_attributes']
-    formset = SpecificationInlineFormSet
-
-
 @admin.register(Price)
 class PriceAdmin(admin.ModelAdmin):
     list_display = ['product', 'value', 'created']
@@ -72,6 +37,41 @@ class SpecificationAdmin(admin.ModelAdmin):
         if db_field.name in ('card_attributes', 'detail_attributes'):
             kwargs['queryset'] = request.report_obj.all_attributes
         return super().formfield_for_manytomany(db_field, request, **kwargs)
+
+
+class PriceInline(admin.TabularInline):
+    model = Price
+    fields = ['value', 'created']
+    readonly_fields = ['created']
+    ordering = ['-created']
+    extra = 1
+    show_change_link = True
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
+class ProductImageSetInline(admin.StackedInline):
+    model = ProductImageSet
+    fields = ['images']
+    can_delete = False
+    show_change_link = True
+
+
+class SpecificationInlineFormSet(forms.models.BaseInlineFormSet):
+    def add_fields(self, form, index):
+        super().add_fields(form, index)
+        form.fields['card_attributes'].queryset = form.instance.all_attributes
+        form.fields['detail_attributes'].queryset = form.instance.all_attributes
+
+
+class SpecificationInline(admin.StackedInline):
+    model = Specification
+    fields = ['all_attributes', 'card_attributes', 'detail_attributes']
+    filter_horizontal = ['all_attributes', 'card_attributes', 'detail_attributes']
+    can_delete = False
+    show_change_link = True
+    formset = SpecificationInlineFormSet
 
 
 @admin.register(Product)
