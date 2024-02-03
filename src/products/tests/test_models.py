@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.db.models import ProtectedError
 
-from products.models import Category, Product, ProductImageSet, Specification, Stock, Price
+from products.models import Category, Product, ProductImageSet, Specification, Price
 from utils.mixins import CreatedAndUpdatedDateTimeMixin, ImageSetMixin, UUIDMixin
 from utils.models import Attribute, Image
 from utils.tests import CustomTestCase
@@ -270,8 +270,8 @@ class ProductModelTest(CustomTestCase):
         field has Stock.choices;
         """
         field = self.get_model_field(self.model, 'stock')
-        self.assertEqual(field.default, Stock.IN_STOCK)
-        self.assertEqual(field.choices, Stock.choices)
+        self.assertEqual(field.default, self.model.Stock.IN_STOCK)
+        self.assertEqual(field.choices, self.model.Stock.choices)
 
     def test_is_displayed_field(self):
         """
