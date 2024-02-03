@@ -8,8 +8,8 @@ from products.models import Category, Product, ProductImageSet, Specification, P
 class PriceAdmin(admin.ModelAdmin):
     list_display = ['product', 'value', 'created']
     fields = ['product', 'value', 'created']
-    search_fields = ['product', 'value']
     readonly_fields = ['created']
+    search_fields = ['product__name', 'value']
     ordering = ['-created']
 
     def has_change_permission(self, request, obj=None):
