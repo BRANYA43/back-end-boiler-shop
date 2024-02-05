@@ -11,7 +11,7 @@ from utils.mixins import UUIDMixin, CreatedAndUpdatedDateTimeMixin
 class OrderProduct(UUIDMixin):
     order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='products')
     product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='order_products')
-    quantity = models.PositiveIntegerField(default=1)
+    quantity = models.PositiveIntegerField(default=1, validators=[validators.MinValueValidator(1)])
     price = models.ForeignKey(Price, on_delete=models.PROTECT, related_name='order_products', null=True, blank=True)
 
     def __str__(self):

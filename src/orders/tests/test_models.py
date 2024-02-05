@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.core.exceptions import ValidationError
 from django.db.models import PositiveIntegerField, ProtectedError
 
 from orders.models import Order, Customer, OrderProduct
@@ -109,6 +110,11 @@ class OrderProductModelTest(CustomTestCase):
 
         self.assertIsInstance(order_product.total_cost, Decimal)
         self.assertEqual(order_product.total_cost, expected_total_cost)
+
+    def test_quantity_cannot_be_less_1(self):
+        with self.assertRaises(ValidationError):
+            product = create_test_order_product(quantity=0)
+            product.full_clean()
 
 
 class CustomerModelTest(CustomTestCase):
