@@ -4,7 +4,7 @@ from rest_framework.serializers import HyperlinkedModelSerializer
 
 from orders.serializers import OrderSerializer, OrderProductSerializer, CustomerSerializer
 from utils.tests import CustomTestCase
-from utils.tests.creators import create_test_order, create_test_order_product
+from utils.tests.creators import create_test_order, create_test_order_product, create_test_product
 
 
 class CustomerSerializerTest(CustomTestCase):
@@ -87,19 +87,32 @@ class OrderProductSerializerTest(CustomTestCase):
         field = self.get_serializer_field(self.serializer, 'uuid')
         self.assertTrue(field.read_only)
 
-    def test_total_cost_field(self):
+    def test_price_field(self):
         """
-        Test:
+        Tests:
         field is read only;
         """
-        field = self.get_serializer_field(self.serializer, 'total_cost')
+        field = self.get_serializer_field(self.serializer, 'price')
         self.assertTrue(field.read_only)
 
-    def test_price_field_returns_decimal_value(self):
-        order_product = create_test_order_product(price=1000)
-        serializer = self.serializer(instance=order_product, context=self.context)
+    def test_price_value_field(self):
+        """
+        Tests:
+        field uses get_price_value method;
+        """
+        field = self.get_serializer_field(self.serializer, 'price_value')
+        self.assertEqual(field.method_name, 'get_price_value')
 
-        self.assertEqual(serializer.data['price'], order_product.price.value)
+    def test_get_price_value_returns_0_if_price_is_none(self):
+        product = create_test_product()
+        order_product = create_test_order_product(product=product)
+
+        self.assertEqual(self.serializer.get_price_value(order_product), 0)
+
+    def test_get_price_value_returns_correct_price(self):
+        order_product = create_test_order_product(price=1000)
+
+        self.assertEqual(self.serializer.get_price_value(order_product), order_product.price.value)
 
 
 class OrderSerializerTest(CustomTestCase):

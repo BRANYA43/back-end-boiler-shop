@@ -19,16 +19,16 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class OrderProductSerializer(serializers.HyperlinkedModelSerializer):
-    price = serializers.SerializerMethodField(method_name='get_price_as_decimal')
+    price_value = serializers.SerializerMethodField(method_name='get_price_value')
 
     class Meta:
         model = OrderProduct
-        fields = ['url', 'uuid', 'order', 'product', 'quantity', 'price', 'total_cost']
-        read_only_fields = ['uuid', 'total_cost']
+        fields = ['url', 'uuid', 'order', 'product', 'quantity', 'price', 'price_value', 'total_cost']
+        read_only_fields = ['uuid', 'price', 'price_value']
 
     @staticmethod
-    def get_price_as_decimal(obj):
-        return obj.price.value
+    def get_price_value(obj):
+        return 0 if obj.price is None else obj.price.value
 
 
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
