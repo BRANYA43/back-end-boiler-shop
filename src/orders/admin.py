@@ -9,6 +9,9 @@ class OrderProductInline(admin.TabularInline):
     readonly_fields = ['price']
     extra = 0
 
+    def has_change_permission(self, request, obj=None):
+        return False
+
 
 class CustomerInline(admin.StackedInline):
     model = Customer
