@@ -134,10 +134,18 @@ class OrderSerializerTest(CustomTestCase):
         field = self.get_serializer_field(self.serializer, 'uuid')
         self.assertTrue(field.read_only)
 
-    def test_total_cost_field(self):
+    def test_updated_field(self):
         """
-        Test:
+        Tests:
         field is read only;
         """
-        field = self.get_serializer_field(self.serializer, 'total_cost')
+        field = self.get_serializer_field(self.serializer, 'updated')
+        self.assertTrue(field.read_only)
+
+    def test_created_field(self):
+        """
+        Tests:
+        field is read only;
+        """
+        field = self.get_serializer_field(self.serializer, 'created')
         self.assertTrue(field.read_only)
