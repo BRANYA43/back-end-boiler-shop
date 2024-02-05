@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.db.models import PositiveIntegerField, ProtectedError
 
 from orders.models import Order, Customer, OrderProduct
@@ -105,6 +107,7 @@ class OrderProductModelTest(CustomTestCase):
         order_product = create_test_order_product(price=500, quantity=20)
         expected_total_cost = order_product.price.value * order_product.quantity
 
+        self.assertIsInstance(order_product.total_cost, Decimal)
         self.assertEqual(order_product.total_cost, expected_total_cost)
 
 
@@ -268,6 +271,7 @@ class OrderModelTest(CustomTestCase):
         expected_total_cost = order_product_1.total_cost + order_product_2.total_cost
         order.refresh_from_db()
 
+        self.assertIsInstance(order.total_cost, Decimal)
         self.assertEqual(order.total_cost, expected_total_cost)
 
     def test_total_cost_property_returns_0_if_order_products_are_empty(self):

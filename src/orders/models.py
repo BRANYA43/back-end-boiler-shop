@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.core import validators
 from django.db import models
 
@@ -16,7 +18,7 @@ class OrderProduct(UUIDMixin):
         return str(self.product)
 
     @property
-    def total_cost(self):
+    def total_cost(self) -> Decimal:
         return self.price.value * self.quantity
 
 
@@ -68,5 +70,5 @@ class Order(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
         return str(self.uuid)
 
     @property
-    def total_cost(self):
+    def total_cost(self) -> Decimal:
         return sum([product.total_cost for product in self.products.all()])
