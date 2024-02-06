@@ -17,7 +17,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # External apps
-    'taggit',
     'rest_framework',
     'drf_spectacular',
     # Internal apps
