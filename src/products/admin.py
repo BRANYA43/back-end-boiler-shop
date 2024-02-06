@@ -18,9 +18,9 @@ class PriceAdmin(admin.ModelAdmin):
 
 @admin.register(ProductImageSet)
 class ProductImageSetAdmin(admin.ModelAdmin):
-    fields = ['product', 'images']
-    search_fields = ['product__name', 'images']
-    filter_horizontal = ['images']
+    fields = ('product', 'images')
+    search_fields = ('product__name', 'images')
+    filter_horizontal = ('images',)
 
     def has_add_permission(self, request):
         return False
@@ -28,9 +28,9 @@ class ProductImageSetAdmin(admin.ModelAdmin):
 
 @admin.register(Specification)
 class SpecificationAdmin(admin.ModelAdmin):
-    fields = ['product', 'all_attributes', 'card_attributes', 'detail_attributes']
-    search_fields = ['product__name', 'all_attributes__name', 'all_attributes__value']
-    filter_horizontal = ['all_attributes', 'card_attributes', 'detail_attributes']
+    fields = ('product', 'all_attributes', 'card_attributes', 'detail_attributes')
+    search_fields = ('product__name', 'all_attributes__name', 'all_attributes__value')
+    filter_horizontal = ('all_attributes', 'card_attributes', 'detail_attributes')
 
     def has_add_permission(self, request):
         return False
@@ -48,9 +48,9 @@ class SpecificationAdmin(admin.ModelAdmin):
 
 class PriceInline(admin.TabularInline):
     model = Price
-    fields = ['value', 'created']
-    readonly_fields = ['created']
-    ordering = ['-created']
+    fields = ('value', 'created')
+    readonly_fields = ('created',)
+    ordering = ('-created',)
     extra = 0
     show_change_link = True
     min_num = 1
@@ -61,7 +61,8 @@ class PriceInline(admin.TabularInline):
 
 class ProductImageSetInline(admin.StackedInline):
     model = ProductImageSet
-    fields = ['images']
+    fields = ('images',)
+    filter_horizontal = ('images',)
     can_delete = False
     show_change_link = True
 
@@ -75,8 +76,8 @@ class SpecificationInlineFormSet(forms.models.BaseInlineFormSet):
 
 class SpecificationInline(admin.StackedInline):
     model = Specification
-    fields = ['all_attributes', 'card_attributes', 'detail_attributes']
-    filter_horizontal = ['all_attributes', 'card_attributes', 'detail_attributes']
+    fields = ('all_attributes', 'card_attributes', 'detail_attributes')
+    filter_horizontal = ('all_attributes', 'card_attributes', 'detail_attributes')
     can_delete = False
     show_change_link = True
     formset = SpecificationInlineFormSet
@@ -105,8 +106,8 @@ def switch_displaying(modeladmin, request, queryset):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug', 'category', 'stock', 'price', 'is_displayed', 'updated', 'created']
-    fields = [
+    list_display = ('name', 'slug', 'category', 'stock', 'price', 'is_displayed', 'updated', 'created')
+    fields = (
         'category',
         'name',
         'slug',
@@ -116,17 +117,17 @@ class ProductAdmin(admin.ModelAdmin):
         'is_displayed',
         'updated',
         'created',
-    ]
-    prepopulated_fields = {'slug': ['name']}
-    readonly_fields = ['price', 'updated', 'created']
-    search_fields = [
+    )
+    prepopulated_fields = {'slug': ('name',)}
+    readonly_fields = ('price', 'updated', 'created')
+    search_fields = (
         'name',
         'slug',
         'description',
         'specification__all_attributes__name',
         'specification__all_attributes__value',
-    ]
-    list_filter = ['category', 'stock', 'is_displayed']
+    )
+    list_filter = ('category', 'stock', 'is_displayed')
     inlines = [SpecificationInline, ProductImageSetInline, PriceInline]
     actions = [switch_displaying, make_in_stock, make_out_of_stock, make_to_order]
 
@@ -138,18 +139,21 @@ class ProductAdmin(admin.ModelAdmin):
 
 class InlineCategory(admin.TabularInline):
     model = Category
-    fields = ['name', 'image']
+    fields = (
+        'name',
+        'image',
+    )
     extra = 1
     show_change_link = True
 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['name', 'is_parent_category', 'is_sub_category']
-    fields = ['name', 'parent', 'image']
-    search_fields = ['name']
-    ordering = ['parent', 'name']
-    inlines = [InlineCategory]
+    list_display = ('name', 'is_parent_category', 'is_sub_category')
+    fields = ('name', 'parent', 'image')
+    search_fields = ('name',)
+    ordering = ('parent', 'name')
+    inlines = (InlineCategory,)
 
     @staticmethod
     def is_parent_category(instance: Category):
