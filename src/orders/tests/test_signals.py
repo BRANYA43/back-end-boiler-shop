@@ -1,29 +1,26 @@
 from orders.models import Customer
 from utils.tests import CustomTestCase
-from utils.tests.creators import create_test_order, create_test_order_product, create_test_price
+from utils.tests.creators import create_test_order, create_test_order_product, create_test_product
 
 
 class SetOrderProductPriceSignalTest(CustomTestCase):
     def test_signal_sets_price_before_saving_order_product(self):
-        price = create_test_price()
-        product = price.product
+        product = create_test_product(price=1000)
         order_product = create_test_order_product(product=product)
 
-        self.assertEqual(order_product.price.price, product.price.price)
+        self.assertEqual(order_product.price.value, product.price.value)
 
     def test_signal_doesnt_set_price_before_saving_order_product_if_price_is_already_set(self):
-        price_1 = create_test_price(price=1000)
-        price_2 = create_test_price(price=2000)
-        product_1 = price_1.product
-        product_2 = price_2.product
+        product_1 = create_test_product(price=1000)
+        product_2 = create_test_product(price=2000)
         order_product = create_test_order_product(product=product_1)
 
-        self.assertEqual(order_product.price.price, product_1.price.price)
+        self.assertEqual(order_product.price.value, product_1.price.value)
 
         order_product.product = product_2
         order_product.save()
 
-        self.assertEqual(order_product.price.price, product_1.price.price)
+        self.assertEqual(order_product.price.value, product_1.price.value)
 
 
 class CreateSpecificationOfProductSignalTest(CustomTestCase):

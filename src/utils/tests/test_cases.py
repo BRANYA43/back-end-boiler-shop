@@ -25,7 +25,7 @@ class TestCaseTest(CustomTestCase):
         self.response = MagicMock()
         self.response.status_code = 200
 
-    def test_get_meta_attr_of_model(self):
+    def test_get_meta_attr_of_model_method_returns_correct_attr(self):
         attr = self.get_meta_attr_of_model(TestModel, 'abstract')
         self.assertTrue(attr)
 

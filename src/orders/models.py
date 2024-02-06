@@ -1,22 +1,25 @@
+from decimal import Decimal
+
+from django.core import validators
 from django.db import models
 
-from orders.validators import validate_phone
+from orders.validators import validate_phone, validate_name
 from products.models import Product, Price
 from utils.mixins import UUIDMixin, CreatedAndUpdatedDateTimeMixin
 
 
 class OrderProduct(UUIDMixin):
-    order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='order_products')
+    order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='products')
     product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='order_products')
-    quantity = models.PositiveIntegerField(default=1)
+    quantity = models.PositiveIntegerField(default=1, validators=[validators.MinValueValidator(1)])
     price = models.ForeignKey(Price, on_delete=models.PROTECT, related_name='order_products', null=True, blank=True)
 
     def __str__(self):
         return str(self.product)
 
     @property
-    def total_cost(self):
-        return self.price.price * self.quantity
+    def total_cost(self) -> Decimal:
+        return self.price.value * self.quantity
 
 
 class PhoneField(models.CharField):
@@ -28,7 +31,9 @@ class PhoneField(models.CharField):
 
 class Customer(UUIDMixin):
     order = models.OneToOneField('Order', on_delete=models.CASCADE, related_name='customer')
-    full_name = models.CharField(max_length=100, null=True)
+    full_name = models.CharField(
+        max_length=100, null=True, validators=[validators.MinLengthValidator(3), validate_name]
+    )
     email = models.EmailField(null=True)
     phone = PhoneField(null=True)
 
@@ -65,5 +70,5 @@ class Order(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
         return str(self.uuid)
 
     @property
-    def total_cost(self):
-        return sum([order_product.total_cost for order_product in self.order_products.all()])
+    def total_cost(self) -> Decimal:
+        return sum([product.total_cost for product in self.products.all()])

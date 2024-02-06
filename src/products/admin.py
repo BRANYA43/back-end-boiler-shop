@@ -4,13 +4,56 @@ from django import forms
 from products.models import Category, Product, ProductImageSet, Specification, Price
 
 
+@admin.register(Price)
+class PriceAdmin(admin.ModelAdmin):
+    list_display = ['product', 'value', 'created']
+    fields = ['product', 'value', 'created']
+    readonly_fields = ['created']
+    search_fields = ['product__name', 'value']
+    ordering = ['-created']
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(ProductImageSet)
+class ProductImageSetAdmin(admin.ModelAdmin):
+    fields = ['product', 'images']
+    search_fields = ['product__name', 'images']
+    filter_horizontal = ['images']
+
+    def has_add_permission(self, request):
+        return False
+
+
+@admin.register(Specification)
+class SpecificationAdmin(admin.ModelAdmin):
+    fields = ['product', 'all_attributes', 'card_attributes', 'detail_attributes']
+    search_fields = ['product__name', 'all_attributes__name', 'all_attributes__value']
+    filter_horizontal = ['all_attributes', 'card_attributes', 'detail_attributes']
+
+    def has_add_permission(self, request):
+        return False
+
+    def get_object(self, request, object_id, from_field=None):
+        obj = super().get_object(request, object_id, from_field)
+        request.report_obj = obj
+        return obj
+
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        if db_field.name in ('card_attributes', 'detail_attributes'):
+            kwargs['queryset'] = request.report_obj.all_attributes
+        return super().formfield_for_manytomany(db_field, request, **kwargs)
+
+
 class PriceInline(admin.TabularInline):
     model = Price
-    fields = ['price', 'created']
+    fields = ['value', 'created']
     readonly_fields = ['created']
-    show_change_link = True
-    extra = 1
     ordering = ['-created']
+    extra = 0
+    show_change_link = True
+    min_num = 1
 
     def has_change_permission(self, request, obj=None):
         return False
@@ -33,53 +76,38 @@ class SpecificationInlineFormSet(forms.models.BaseInlineFormSet):
 class SpecificationInline(admin.StackedInline):
     model = Specification
     fields = ['all_attributes', 'card_attributes', 'detail_attributes']
+    filter_horizontal = ['all_attributes', 'card_attributes', 'detail_attributes']
     can_delete = False
     show_change_link = True
-    filter_horizontal = ['all_attributes', 'card_attributes', 'detail_attributes']
     formset = SpecificationInlineFormSet
 
 
-@admin.register(Price)
-class PriceAdmin(admin.ModelAdmin):
-    list_display = ['product', 'price', 'created']
-    fields = ['product', 'price', 'created']
-    search_fields = ['product', 'price']
-    readonly_fields = ['created']
-    ordering = ['-created']
-
-    def has_change_permission(self, request, obj=None):
-        return False
+@admin.action(description='Set stock as "in stock"')
+def make_in_stock(modeladmin, request, queryset):
+    queryset.update(stock=Product.Stock.IN_STOCK)
 
 
-@admin.register(ProductImageSet)
-class ProductImageSetAdmin(admin.ModelAdmin):
-    fields = ['product', 'images']
-    search_fields = ['product', 'images']
+@admin.action(description='Set stock as "out of stock"')
+def make_out_of_stock(modeladmin, request, queryset):
+    queryset.update(stock=Product.Stock.OUT_OF_STOCK)
 
 
-@admin.register(Specification)
-class SpecificationAdmin(admin.ModelAdmin):
-    fields = ['product', 'all_attributes', 'card_attributes', 'detail_attributes']
-    search_fields = ['product', 'all_attributes']
-    filter_horizontal = ['all_attributes', 'card_attributes', 'detail_attributes']
+@admin.action(description='Set stock as "to order"')
+def make_to_order(modeladmin, request, queryset):
+    queryset.update(stock=Product.Stock.TO_ORDER)
 
-    def get_object(self, request, object_id, from_field=None):
-        obj = super().get_object(request, object_id, from_field)
-        request.report_obj = obj
-        return obj
 
-    def formfield_for_manytomany(self, db_field, request, **kwargs):
-        if db_field.name in ('card_attributes', 'detail_attributes'):
-            kwargs['queryset'] = request.report_obj.all_attributes
-        return super().formfield_for_manytomany(db_field, request, **kwargs)
+@admin.action(description='Switch displaying')
+def switch_displaying(modeladmin, request, queryset):
+    for instance in queryset:
+        instance.update(is_displayed=not instance.is_displayed)
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug', 'category', 'is_displayed', 'stock', 'updated', 'created']
+    list_display = ['name', 'slug', 'category', 'stock', 'price', 'is_displayed', 'updated', 'created']
     fields = [
         'category',
-        'total_grade',
         'name',
         'slug',
         'price',
@@ -90,16 +118,22 @@ class ProductAdmin(admin.ModelAdmin):
         'created',
     ]
     prepopulated_fields = {'slug': ['name']}
-    readonly_fields = ['price', 'total_grade', 'updated', 'created']
-    search_fields = ['name', 'slug', 'description']
+    readonly_fields = ['price', 'updated', 'created']
+    search_fields = [
+        'name',
+        'slug',
+        'description',
+        'specification__all_attributes__name',
+        'specification__all_attributes__value',
+    ]
     list_filter = ['category', 'stock', 'is_displayed']
     inlines = [SpecificationInline, ProductImageSetInline, PriceInline]
-
-    def total_grade(self, instance):
-        return str(instance.total_grade)
+    actions = [switch_displaying, make_in_stock, make_out_of_stock, make_to_order]
 
     def price(self, instance):
-        return str(instance.price.price)
+        if instance.price is not None:
+            return str(instance.price.value)
+        return None
 
 
 class InlineCategory(admin.TabularInline):

@@ -7,11 +7,11 @@ from utils.models import Attribute, Image
 
 class Price(UUIDMixin):
     product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='prices')
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    value = models.DecimalField(max_digits=10, decimal_places=2)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.product}: {self.price}'
+        return f'{self.value}'
 
 
 class ProductImageSet(ImageSetMixin):
@@ -42,13 +42,12 @@ class Specification(UUIDMixin):
         self._check_attributes_for_field(self.detail_attributes, 5)
 
 
-class Stock(models.TextChoices):
-    IN_STOCK = 'in_stock', 'In stock'
-    OUT_OF_STOCK = 'out_of_stock', 'Out of stock'
-    TO_ORDER = 'to_order', 'To order'
-
-
 class Product(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
+    class Stock(models.TextChoices):
+        IN_STOCK = 'in_stock', 'In stock'
+        OUT_OF_STOCK = 'out_of_stock', 'Out of stock'
+        TO_ORDER = 'to_order', 'To order'
+
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50, unique=True)
     category = models.ForeignKey('Category', on_delete=models.PROTECT, related_name='products')
