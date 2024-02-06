@@ -7,26 +7,59 @@ from utils.models import Attribute, Image
 
 
 class Price(UUIDMixin):
-    product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='prices')
+    product = models.ForeignKey(
+        to='Product',
+        on_delete=models.CASCADE,
+        related_name='prices',
+    )
     value = models.DecimalField(max_digits=10, decimal_places=2)
     created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        pass
 
     def __str__(self):
         return f'{self.value}'
 
 
 class ProductImageSet(ImageSetMixin):
-    product = models.OneToOneField('Product', on_delete=models.CASCADE, related_name='image_set')
+    product = models.OneToOneField(
+        to='Product',
+        on_delete=models.CASCADE,
+        related_name='image_set',
+    )
+
+    class Meta:
+        pass
 
     def __str__(self):
         return str(self.product)
 
 
 class Specification(UUIDMixin):
-    product = models.OneToOneField('Product', on_delete=models.CASCADE, related_name='specification')
-    all_attributes = models.ManyToManyField(Attribute, related_name='specifications', blank=True)
-    card_attributes = models.ManyToManyField(Attribute, related_name='_card_specifications', blank=True)
-    detail_attributes = models.ManyToManyField(Attribute, related_name='_detail_specifications', blank=True)
+    product = models.OneToOneField(
+        to='Product',
+        on_delete=models.CASCADE,
+        related_name='specification',
+    )
+    all_attributes = models.ManyToManyField(
+        to=Attribute,
+        related_name='specifications',
+        blank=True,
+    )
+    card_attributes = models.ManyToManyField(
+        to=Attribute,
+        related_name='_card_specifications',
+        blank=True,
+    )
+    detail_attributes = models.ManyToManyField(
+        to=Attribute,
+        related_name='_detail_specifications',
+        blank=True,
+    )
+
+    class Meta:
+        pass
 
     def __str__(self):
         return str(self.product)
@@ -64,8 +97,16 @@ class Product(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
 
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50, unique=True)
-    category = models.ForeignKey('Category', on_delete=models.PROTECT, related_name='products')
-    stock = models.CharField(max_length=20, choices=Stock.choices, default=Stock.IN_STOCK)
+    category = models.ForeignKey(
+        to='Category',
+        on_delete=models.PROTECT,
+        related_name='products',
+    )
+    stock = models.CharField(
+        max_length=20,
+        choices=Stock.choices,
+        default=Stock.IN_STOCK,
+    )
     description = models.TextField(blank=True, null=True)
     is_displayed = models.BooleanField(default=True)
 
@@ -83,11 +124,25 @@ class Product(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
 
 
 class Category(UUIDMixin):
-    image = models.ForeignKey(Image, on_delete=models.PROTECT, related_name='categories', null=True, blank=True)
+    image = models.ForeignKey(
+        to=Image,
+        on_delete=models.PROTECT,
+        related_name='categories',
+        null=True,
+        blank=True,
+    )
     name = models.CharField(max_length=50, unique=True)
     parent = models.ForeignKey(
-        'self', default=None, null=True, blank=True, on_delete=models.SET_NULL, related_name='subs'
+        to='self',
+        default=None,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='subs',
     )
+
+    class Meta:
+        pass
 
     def __str__(self):
         return self.name
