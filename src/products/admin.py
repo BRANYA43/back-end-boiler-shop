@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 from products.models import Category, Product, ProductImageSet, Specification, Price
 
@@ -71,22 +72,22 @@ class SpecificationInline(admin.StackedInline):
     formset = SpecificationInlineFormSet
 
 
-@admin.action(description='Set stock as "in stock"')
+@admin.action(description=_('Set stock as "in stock"'))
 def make_in_stock(modeladmin, request, queryset):
     queryset.update(stock=Product.Stock.IN_STOCK)
 
 
-@admin.action(description='Set stock as "out of stock"')
+@admin.action(description=_('Set stock as "out of stock"'))
 def make_out_of_stock(modeladmin, request, queryset):
     queryset.update(stock=Product.Stock.OUT_OF_STOCK)
 
 
-@admin.action(description='Set stock as "to order"')
+@admin.action(description=_('Set stock as "to order"'))
 def make_to_order(modeladmin, request, queryset):
     queryset.update(stock=Product.Stock.TO_ORDER)
 
 
-@admin.action(description='Switch displaying')
+@admin.action(description=_('Switch displaying'))
 def switch_displaying(modeladmin, request, queryset):
     for instance in queryset:
         instance.update(is_displayed=not instance.is_displayed)
@@ -94,12 +95,12 @@ def switch_displaying(modeladmin, request, queryset):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug', 'category', 'stock', 'price', 'is_displayed', 'updated', 'created')
+    list_display = ('name', 'slug', 'category', 'stock', 'get_price', 'is_displayed', 'updated', 'created')
     fields = (
         'category',
         'name',
         'slug',
-        'price',
+        'get_price',
         'stock',
         'description',
         'is_displayed',
@@ -107,7 +108,7 @@ class ProductAdmin(admin.ModelAdmin):
         'created',
     )
     prepopulated_fields = {'slug': ('name',)}
-    readonly_fields = ('price', 'updated', 'created')
+    readonly_fields = ('get_price', 'updated', 'created')
     search_fields = (
         'name',
         'slug',
@@ -119,7 +120,8 @@ class ProductAdmin(admin.ModelAdmin):
     inlines = [SpecificationInline, ProductImageSetInline, PriceInline]
     actions = [switch_displaying, make_in_stock, make_out_of_stock, make_to_order]
 
-    def price(self, instance):
+    @admin.display(description=_('Price'))
+    def get_price(self, instance):
         if instance.price is not None:
             return str(instance.price.value)
         return None
@@ -143,10 +145,10 @@ class CategoryAdmin(admin.ModelAdmin):
     ordering = ('parent', 'name')
     inlines = (InlineCategory,)
 
-    @staticmethod
-    def is_parent_category(instance: Category):
-        return instance.is_parent_category
+    @admin.display(boolean=True, description=_('Is parent category'))
+    def is_parent_category(self, obj: Category):
+        return obj.is_parent_category
 
-    @staticmethod
-    def is_sub_category(instance: Category):
-        return instance.is_sub_category
+    @admin.display(boolean=True, description=_('Is parent category'))
+    def is_sub_category(self, obj: Category):
+        return obj.is_sub_category
