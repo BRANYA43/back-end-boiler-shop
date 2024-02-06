@@ -12,36 +12,34 @@ list_url = 'order-list'
 detail_url = 'order-detail'
 
 
-@patch('rest_framework.relations.HyperlinkedRelatedField.to_representation', return_value='mocked_url')
 class OrderListViewTest(CustomTestCase):
     def setUp(self) -> None:
         self.url = reverse(list_url)
 
-    def test_view_is_allowed(self, mock):
+    def test_view_is_allowed(self):
         response = self.client.get(self.url)
 
         self.assertStatusCodeEqual(response, status.HTTP_200_OK)
 
-    def test_view_returns_correct_data(self, mock):
+    def test_view_returns_correct_data(self):
         orders = [create_test_order() for i in range(5)]
-        expected_data = serializers.OrderSerializer(orders, many=True).data
+        expected_data = serializers.OrderSerializer(orders, many=True, context=self.get_fake_context()).data
 
         response = self.client.get(self.url)
 
         self.assertEqual(response.data, expected_data)
 
 
-@patch('rest_framework.relations.HyperlinkedRelatedField.to_representation', return_value='mocked_url')
 class OrderCreateViewTest(CustomTestCase):
     def setUp(self) -> None:
         self.url = reverse(list_url)
 
-    def test_view_is_allowed(self, mock):
+    def test_view_is_allowed(self):
         response = self.client.post(self.url, data={})
 
         self.assertStatusCodeEqual(response, status.HTTP_201_CREATED)
 
-    def test_view_returns_correct_data(self, mock):
+    def test_view_returns_correct_data(self):
         data = {
             'delivery': Order.Delivery.NOVA_POST,
             'delivery_address': 'some delivery address',
@@ -51,24 +49,23 @@ class OrderCreateViewTest(CustomTestCase):
 
         self.assertEqual(Order.objects.count(), 1)
 
-        expected_data = serializers.OrderSerializer(Order.objects.first()).data
+        expected_data = serializers.OrderSerializer(Order.objects.first(), context=self.get_fake_context()).data
 
         self.assertEqual(response.data, expected_data)
 
 
-@patch('rest_framework.relations.HyperlinkedRelatedField.to_representation', return_value='mocked_url')
 class OrderRetrieveViewTest(CustomTestCase):
     def setUp(self) -> None:
         self.order = create_test_order()
         self.url = reverse(detail_url, args=[self.order.uuid])
 
-    def test_view_is_allowed(self, mock):
+    def test_view_is_allowed(self):
         response = self.client.get(self.url)
 
         self.assertStatusCodeEqual(response, status.HTTP_200_OK)
 
-    def test_view_returns_correct_data(self, mock):
-        expected_data = serializers.OrderSerializer(self.order).data
+    def test_view_returns_correct_data(self):
+        expected_data = serializers.OrderSerializer(self.order, context=self.get_fake_context()).data
 
         response = self.client.get(self.url)
 
