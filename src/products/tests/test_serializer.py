@@ -130,7 +130,6 @@ class ProductSerializerTest(CustomTestCase):
             'name',
             'slug',
             'price',
-            'price_value',
             'stock',
             'description',
             'specification',
@@ -141,12 +140,12 @@ class ProductSerializerTest(CustomTestCase):
         ]
         self.assertSerializerHasOnlyExpectedFields(self.serializer, expected_fields)
 
-    def test_price_value_field(self):
+    def test_price_field(self):
         """
         Tests:
         field uses get_price_value method;
         """
-        field = self.get_serializer_field(self.serializer, 'price_value')
+        field = self.get_serializer_field(self.serializer, 'price')
         self.assertEqual(field.method_name, 'get_price_value')
 
     def test_get_price_value_returns_0_if_price_is_none(self):

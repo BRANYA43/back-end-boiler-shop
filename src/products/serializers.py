@@ -40,7 +40,7 @@ class SpecificationSerializer(ReadOnlyHyperlinkedModelSerializer):
 
 
 class ProductSerializer(ReadOnlyHyperlinkedModelSerializer):
-    price_value = serializers.SerializerMethodField(method_name='get_price_value')
+    price = serializers.SerializerMethodField(method_name='get_price_value')
 
     class Meta:
         model = Product
@@ -51,7 +51,6 @@ class ProductSerializer(ReadOnlyHyperlinkedModelSerializer):
             'name',
             'slug',
             'price',
-            'price_value',
             'stock',
             'description',
             'specification',
