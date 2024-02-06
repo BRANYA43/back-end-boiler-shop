@@ -43,7 +43,9 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
             'delivery',
             'delivery_address',
             'total_cost',
+            'customer',
+            'products',
             'updated',
             'created',
         ]
-        read_only_fields = ['uuid', 'updated', 'created']
+        read_only_fields = ['uuid', 'products', 'customer', 'updated', 'created']

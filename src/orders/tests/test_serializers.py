@@ -134,6 +134,8 @@ class OrderSerializerTest(CustomTestCase):
             'delivery',
             'delivery_address',
             'total_cost',
+            'customer',
+            'products',
             'updated',
             'created',
         ]
@@ -145,6 +147,22 @@ class OrderSerializerTest(CustomTestCase):
         field is read only;
         """
         field = self.get_serializer_field(self.serializer, 'uuid')
+        self.assertTrue(field.read_only)
+
+    def test_customer_field(self):
+        """
+        Tests:
+        field is read only;
+        """
+        field = self.get_serializer_field(self.serializer, 'customer')
+        self.assertTrue(field.read_only)
+
+    def test_products_field(self):
+        """
+        Tests:
+        field is read only;
+        """
+        field = self.get_serializer_field(self.serializer, 'products')
         self.assertTrue(field.read_only)
 
     def test_updated_field(self):
