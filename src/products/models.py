@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import QuerySet
 
 from utils.mixins import CreatedAndUpdatedDateTimeMixin, ImageSetMixin, UUIDMixin
 from utils.models import Attribute, Image
@@ -30,16 +31,29 @@ class Specification(UUIDMixin):
     def __str__(self):
         return str(self.product)
 
-    def _check_attributes_for_field(self, field, max_count):
-        if field.count() != 0:
-            if field.count() > max_count:
-                raise ValidationError(f'This field can have maximal {max_count} attributes.')
-            if field.difference(self.all_attributes.all()):
-                raise ValidationError('This field can have only attributes of all_attributes field.')
+    def _validate_max_attribute_count(self, attributes: QuerySet, max: int):
+        message = 'This field can have maximal {max} attributes.'
+        code = 'invalid_attribute_count'
+        if 0 < attributes.count() > max:
+            raise ValidationError(message, code, params={'max': max})
+
+    def _validate_attributes_is_in_all_attributes(self, attributes: QuerySet):
+        message = 'This field can have only attributes of all_attributes field.'
+        code = 'invalid_attribute'
+        if 0 < attributes.count() and attributes.difference(self.all_attributes):
+            raise ValidationError(message, code)
+
+    def clean_card_attributes(self):
+        self._validate_max_attribute_count(self.card_attributes, 3)
+        self._validate_attributes_is_in_all_attributes(self.card_attributes)
+
+    def clean_detail_attributes(self):
+        self._validate_max_attribute_count(self.detail_attributes, 5)
+        self._validate_attributes_is_in_all_attributes(self.detail_attributes)
 
     def clean(self):
-        self._check_attributes_for_field(self.card_attributes, 3)
-        self._check_attributes_for_field(self.detail_attributes, 5)
+        self.clean_card_attributes()
+        self.clean_detail_attributes()
 
 
 class Product(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
