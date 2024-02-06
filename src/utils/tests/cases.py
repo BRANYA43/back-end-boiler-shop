@@ -1,6 +1,8 @@
 from typing import Type
 
+from django.core.handlers.wsgi import WSGIRequest
 from django.db import models
+from django.test import RequestFactory
 from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.test import APITestCase
@@ -12,6 +14,20 @@ class CustomTestCase(APITestCase):
     def tearDown(self) -> None:
         for image in Image.objects.all():
             image.image.delete()
+
+    @staticmethod
+    def get_fake_request() -> WSGIRequest:
+        """
+        Return fake request.
+        """
+        factory = RequestFactory()
+        return factory.get('/')
+
+    def get_fake_context(self) -> dict:
+        """
+        Return a fake context with a fake request by key 'request'.
+        """
+        return {'request': self.get_fake_request()}
 
     @staticmethod
     def get_meta_attr_of_model(model, name: str):
