@@ -1,11 +1,13 @@
+import admin_thumbnails
 from django.contrib import admin
 
 from utils.models import Attribute, Image
 
 
 @admin.register(Image)
+@admin_thumbnails.thumbnail('image')
 class ImageAdmin(admin.ModelAdmin):
-    list_display = ('name', 'updated', 'created')
+    list_display = ('name', 'image_thumbnail', 'updated', 'created')
     fields = ('name', 'image', 'updated', 'created')
     readonly_fields = ('updated', 'created')
     search_fields = ('name',)
