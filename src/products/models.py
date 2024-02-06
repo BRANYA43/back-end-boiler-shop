@@ -73,7 +73,7 @@ class Specification(UUIDMixin):
     def _validate_attributes_is_in_all_attributes(self, attributes: QuerySet):
         message = 'This field can have only attributes of all_attributes field.'
         code = 'invalid_attribute'
-        if 0 < attributes.count() and attributes.difference(self.all_attributes):
+        if 0 < attributes.count() and attributes.difference(self.all_attributes.all()):
             raise ValidationError(message, code)
 
     def clean_card_attributes(self):
