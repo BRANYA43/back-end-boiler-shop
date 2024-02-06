@@ -4,18 +4,6 @@ from django import forms
 from products.models import Category, Product, ProductImageSet, Specification, Price
 
 
-@admin.register(Price)
-class PriceAdmin(admin.ModelAdmin):
-    list_display = ['product', 'value', 'created']
-    fields = ['product', 'value', 'created']
-    readonly_fields = ['created']
-    search_fields = ['product__name', 'value']
-    ordering = ['-created']
-
-    def has_change_permission(self, request, obj=None):
-        return False
-
-
 @admin.register(ProductImageSet)
 class ProductImageSetAdmin(admin.ModelAdmin):
     fields = ('product', 'images')
