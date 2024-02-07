@@ -1,0 +1,323 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-02-07 14:09+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != "
+"11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
+"100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
+"(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+
+#: core/settings/components/baton.py:10
+msgid "Site Administration"
+msgstr "Сайт Адміністрації"
+
+#: core/settings/components/baton.py:27
+msgid "Authentication and Authorization"
+msgstr "Автентифікація та авторизація"
+
+#: core/settings/components/baton.py:28
+msgid "Users"
+msgstr "Користувачі"
+
+#: core/settings/components/baton.py:29
+msgid "Groups"
+msgstr "Групи"
+
+#: core/settings/components/baton.py:30
+msgid "Catalog"
+msgstr "Каталог"
+
+#: core/settings/components/baton.py:31 products/apps.py:8
+#: products/models.py:127
+msgid "Products"
+msgstr "Продукти"
+
+#: core/settings/components/baton.py:32 products/models.py:161
+msgid "Categories"
+msgstr "Категорії"
+
+#: core/settings/components/baton.py:33 orders/apps.py:8 orders/models.py:98
+msgid "Orders"
+msgstr "Замовлення"
+
+#: core/settings/components/baton.py:34
+msgid "Characteristics"
+msgstr "Характеристики"
+
+#: core/settings/components/baton.py:35 utils/mixins.py:29 utils/models.py:14
+msgid "Images"
+msgstr "Зображення"
+
+#: orders/admin.py:59
+msgid "Total Cost"
+msgstr "Загальна Вартість"
+
+#: orders/models.py:14 orders/models.py:50 orders/models.py:97
+msgid "Order"
+msgstr "Замовлення"
+
+#: orders/models.py:16 products/models.py:13 products/models.py:47
+#: products/models.py:126
+msgid "Product"
+msgstr "Продукт"
+
+#: orders/models.py:19
+msgid "Quantity"
+msgstr "Кількість"
+
+#: orders/models.py:27 products/admin.py:123 products/models.py:19
+msgid "Price"
+msgstr "Ціна"
+
+#: orders/models.py:31
+msgid "Order Product"
+msgstr "Замовлений Продукт"
+
+#: orders/models.py:32
+msgid "Order Products"
+msgstr "Замовлені Продукти"
+
+#: orders/models.py:55
+msgid "Full Name"
+msgstr "Прізвище та Ім'я"
+
+#: orders/models.py:57
+msgid "Email"
+msgstr "Електронна пошта"
+
+#: orders/models.py:58
+msgid "Phone"
+msgstr "Телефон"
+
+#: orders/models.py:61
+msgid "Customer"
+msgstr "Клієнт"
+
+#: orders/models.py:62
+msgid "Customers"
+msgstr "Клієнти"
+
+#: orders/models.py:70
+msgid "Pickup"
+msgstr "Самовивіз"
+
+#: orders/models.py:71
+msgid "Nova post"
+msgstr "Нова Пошта"
+
+#: orders/models.py:74
+msgid "Visa"
+msgstr ""
+
+#: orders/models.py:75
+msgid "Mastercard"
+msgstr ""
+
+#: orders/models.py:76
+msgid "Cash on delivery"
+msgstr "Накладений Платіж"
+
+#: orders/models.py:79
+msgid "In processing"
+msgstr "Обробляється"
+
+#: orders/models.py:80
+msgid "Completed"
+msgstr "Виконаний"
+
+#: orders/models.py:81
+msgid "Canceled"
+msgstr "Відмінений"
+
+#: orders/models.py:84
+msgid "Delivery Way"
+msgstr "Спосіб Доставки"
+
+#: orders/models.py:86
+msgid "Delivery Address"
+msgstr "Адреса Доставки"
+
+#: orders/models.py:88
+msgid "Payment"
+msgstr "Оплата"
+
+#: orders/models.py:90
+msgid "Is Paid"
+msgstr "Оплачений"
+
+#: orders/models.py:92
+msgid "Status"
+msgstr "Статус"
+
+#: orders/models.py:94
+msgid "Comment"
+msgstr "Коментар"
+
+#: orders/validators.py:11
+msgid ""
+"Invalid phone. Please enter correct phone by this pattern 380501234567 or "
+"0501234567."
+msgstr "Не вірно набраний номер. Будь-ласка введіть телефон за шаблоном 380501234567 або 0501234567."
+
+#: orders/validators.py:18
+#, python-brace-format
+msgid "Invalid characters: {characters}. Please enter correct name."
+msgstr "Недопустимі символи: {characters}. Будь-ласка введіть коректне прізвище та ім'я."
+
+#: products/admin.py:75
+msgid "Set stock as \"in stock\""
+msgstr "Встановити значення складу як \"Є в наявності\""
+
+#: products/admin.py:80
+msgid "Set stock as \"out of stock\""
+msgstr "Встановити значення складу як \"Немає в наявності\""
+
+#: products/admin.py:85
+msgid "Set stock as \"to order\""
+msgstr "Встановити значення складу як \"Під замовлення\""
+
+#: products/admin.py:90
+msgid "Switch displaying"
+msgstr "Змінити відображення"
+
+#: products/admin.py:148 products/admin.py:152
+msgid "Is parent category"
+msgstr "Батьківська категорія"
+
+#: products/models.py:15 utils/models.py:22
+msgid "Value"
+msgstr "Значення"
+
+#: products/models.py:16 utils/mixins.py:20
+msgid "Created Date"
+msgstr "Дата Створення"
+
+#: products/models.py:20
+msgid "Prices"
+msgstr "Ціни"
+
+#: products/models.py:31
+msgid "Image Set"
+msgstr "Набір Зображень"
+
+#: products/models.py:35
+msgid "Product Image Set"
+msgstr "Набір Зображень Продукту"
+
+#: products/models.py:36
+msgid "Product Image Sets"
+msgstr "Набори Зображень Продуктів"
+
+#: products/models.py:53
+msgid "All Characteristics"
+msgstr "Всі Характеристики"
+
+#: products/models.py:59
+msgid "Characteristics of Card"
+msgstr "Характеристики Картки"
+
+#: products/models.py:65
+msgid "Characteristic of Detail Page"
+msgstr "Характеристики Детальної Сторінки"
+
+#: products/models.py:69
+msgid "Specification"
+msgstr "Технічні Характеристики"
+
+#: products/models.py:70
+msgid "Specifications"
+msgstr "Технічні Характеристики"
+
+#: products/models.py:77
+#, python-brace-format
+msgid "This field can have maximal {max} attribute."
+msgid_plural "This field can have maximal {max} attributes."
+msgstr[0] "Це поле може мати максимум {max} атрибутів."
+msgstr[1] "Це поле може мати максимум {max} атрибут."
+msgstr[2] "Це поле може мати максимум {max} атрибута."
+msgstr[3] "Це поле може мати максимум {max} атрибута."
+msgstr[4] "Це поле може мати максимум {max} атрибута."
+msgstr[5] "Це поле може мати максимум {max} атрибутів."
+
+#: products/models.py:84
+msgid "This field can have only attributes of all_attributes field."
+msgstr "Це поле може мати тільки ті атрибути що має поле \"Всі Атрибути\"."
+
+#: products/models.py:104
+msgid "In stock"
+msgstr "Є в наявності"
+
+#: products/models.py:105
+msgid "Out of stock"
+msgstr "Немає в наявності"
+
+#: products/models.py:106
+msgid "To order"
+msgstr "Під замовлення"
+
+#: products/models.py:108 products/models.py:148 utils/models.py:9
+#: utils/models.py:21
+msgid "Title"
+msgstr "Назва"
+
+#: products/models.py:109
+msgid "Slug"
+msgstr "Слаг"
+
+#: products/models.py:114 products/models.py:160
+msgid "Category"
+msgstr "Категорія"
+
+#: products/models.py:120
+msgid "Stock"
+msgstr "Склад"
+
+#: products/models.py:122
+msgid "Description"
+msgstr "Опис"
+
+#: products/models.py:123
+msgid "Is Displayed"
+msgstr "Відображення"
+
+#: products/models.py:146 utils/models.py:10 utils/models.py:13
+msgid "Image"
+msgstr "Зображення"
+
+#: products/models.py:156
+msgid "Parent Category"
+msgstr "Батьківська Категорія"
+
+#: utils/admin.py:9
+msgid "Preview"
+msgstr "Перегляд"
+
+#: utils/apps.py:8
+msgid "Utilities"
+msgstr "Утиліти"
+
+#: utils/mixins.py:19
+msgid "Updated Date"
+msgstr "Дата Оновлення"
+
+#: utils/models.py:25
+msgid "Attribute"
+msgstr "Атрибут"
+
+#: utils/models.py:26
+msgid "Attributes"
+msgstr "Атрибути"

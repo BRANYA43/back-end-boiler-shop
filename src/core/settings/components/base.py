@@ -77,7 +77,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'uk'
+
+LOCALE_PATHS = [BASE_DIR / 'locales']
 
 TIME_ZONE = 'UTC'
 
