@@ -4,12 +4,13 @@ from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
+from core.router import router
+
 api_urls = [
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
     path('schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
-    path('products/', include('products.urls')),
-    path('orders/', include('orders.urls')),
+    path('', include(router.urls)),
 ]
 
 urlpatterns = [
