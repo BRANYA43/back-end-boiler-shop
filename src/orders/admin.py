@@ -19,16 +19,6 @@ class CustomerInline(admin.StackedInline):
     fields = ('full_name', 'email', 'phone')
 
 
-@admin.register(Customer)
-class CustomerAdmin(admin.ModelAdmin):
-    list_display = ('order', 'full_name', 'email', 'phone')
-    fields = ('order', 'full_name', 'email', 'phone')
-    search_fields = ('full_name', 'email', 'phone')
-
-    def has_add_permission(self, request):
-        return False
-
-
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('uuid', 'status', 'is_paid', 'delivery', 'payment', 'get_total_cost', 'updated', 'created')

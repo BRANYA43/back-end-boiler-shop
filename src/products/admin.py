@@ -5,36 +5,6 @@ from django.utils.translation import gettext_lazy as _
 from products.models import Category, Product, ProductImageSet, Specification, Price
 
 
-@admin.register(ProductImageSet)
-class ProductImageSetAdmin(admin.ModelAdmin):
-    fields = ('product', 'images')
-    search_fields = ('product__name', 'images')
-    filter_horizontal = ('images',)
-
-    def has_add_permission(self, request):
-        return False
-
-
-@admin.register(Specification)
-class SpecificationAdmin(admin.ModelAdmin):
-    fields = ('product', 'all_attributes', 'card_attributes', 'detail_attributes')
-    search_fields = ('product__name', 'all_attributes__name', 'all_attributes__value')
-    filter_horizontal = ('all_attributes', 'card_attributes', 'detail_attributes')
-
-    def has_add_permission(self, request):
-        return False
-
-    def get_object(self, request, object_id, from_field=None):
-        obj = super().get_object(request, object_id, from_field)
-        request.report_obj = obj
-        return obj
-
-    def formfield_for_manytomany(self, db_field, request, **kwargs):
-        if db_field.name in ('card_attributes', 'detail_attributes'):
-            kwargs['queryset'] = request.report_obj.all_attributes
-        return super().formfield_for_manytomany(db_field, request, **kwargs)
-
-
 class PriceInline(admin.TabularInline):
     model = Price
     fields = ('value', 'created')
