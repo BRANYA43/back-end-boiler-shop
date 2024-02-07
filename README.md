@@ -19,3 +19,6 @@ docker-compose down -v
 
 #### Redoc
 - http://127.0.0.1:8000/api/schema/redoc/
+
+#### API
+- http://127.0.0.1:8000/api/
