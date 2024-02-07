@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.translation import gettext as _
 
 from orders.models import Order, Customer, OrderProduct
 
@@ -30,7 +31,7 @@ class CustomerAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('uuid', 'status', 'is_paid', 'delivery', 'payment', 'total_cost', 'updated', 'created')
+    list_display = ('uuid', 'status', 'is_paid', 'delivery', 'payment', 'get_total_cost', 'updated', 'created')
     fields = (
         'uuid',
         'status',
@@ -38,11 +39,11 @@ class OrderAdmin(admin.ModelAdmin):
         'is_paid',
         'delivery',
         'delivery_address',
-        'total_cost',
+        'get_total_cost',
         'updated',
         'created',
     )
-    readonly_fields = ('uuid', 'status', 'is_paid', 'total_cost', 'updated', 'created')
+    readonly_fields = ('uuid', 'status', 'is_paid', 'get_total_cost', 'updated', 'created')
     ordering = ('-created',)
     list_filter = ('status', 'delivery', 'payment', 'is_paid')
     search_fields = (
@@ -55,5 +56,6 @@ class OrderAdmin(admin.ModelAdmin):
     )
     inlines = (CustomerInline, OrderProductInline)
 
-    def total_cost(self, instance):
+    @admin.display(description=_('Total Cost'))
+    def get_total_cost(self, instance):
         return str(instance.total_cost)
