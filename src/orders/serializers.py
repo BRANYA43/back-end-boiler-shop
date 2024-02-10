@@ -9,8 +9,7 @@ from orders.validators import PHONE_PATTERN
 class CustomerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Customer
-        fields = ['url', 'uuid', 'order', 'full_name', 'email', 'phone']
-        read_only_fields = ['uuid']
+        fields = ['url', 'order', 'full_name', 'email', 'phone']
 
     def validate_phone(self, phone):
         if phone and (match := re.match(PHONE_PATTERN, phone)) is not None:
@@ -23,8 +22,8 @@ class OrderProductSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = OrderProduct
-        fields = ['url', 'uuid', 'order', 'product', 'quantity', 'price', 'total_cost']
-        read_only_fields = ['uuid', 'price', 'price_value']
+        fields = ['url', 'order', 'product', 'quantity', 'price', 'total_cost']
+        read_only_fields = ['price', 'price_value']
 
     @staticmethod
     def get_price_value(obj):
