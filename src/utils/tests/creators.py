@@ -3,7 +3,7 @@ from decimal import Decimal
 from django.core.files.uploadedfile import SimpleUploadedFile
 from faker import Faker
 
-from orders.models import Order, OrderProduct
+from orders.models import Order, OrderProduct, Customer
 from products.models import Category, Product, Price
 from utils.models import Attribute, Image
 
@@ -129,3 +129,23 @@ def create_test_order_product(
     if product is None:
         product = create_test_product(price=price if price else faker.random_number(digits=5))
     return _create_test_model(OrderProduct, order=order, product=product, **extra_fields)
+
+
+def create_test_customer(order: Order = None, full_name: str = None, email: str = None, phone: str = None) -> Customer:
+    """
+    Create test customer.
+    If order, full name, email or phone is none, they will be generated.
+    :param order: instance of Order.
+    :param full_name: full name of customer.
+    :param email: email of customer.
+    :param phone: phone number of customer.
+    """
+    if order is None:
+        order = create_test_order()
+    if full_name is None:
+        full_name = faker.name()
+    if email is None:
+        email = '{}@test.com'.format(full_name.lower().replace(' ', '.'))
+    if phone is None:
+        phone = '+38' + faker.phone_number()
+    return _create_test_model(Customer, order=order, full_name=full_name, email=email, phone=phone)

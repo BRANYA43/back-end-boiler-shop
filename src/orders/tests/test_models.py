@@ -7,7 +7,7 @@ from orders.models import Order, Customer, OrderProduct
 from products.models import Product, Price
 from utils.mixins import UUIDMixin, CreatedAndUpdatedDateTimeMixin
 from utils.tests import CustomTestCase
-from utils.tests.creators import create_test_order, create_test_order_product, create_test_product
+from utils.tests.creators import create_test_order, create_test_order_product, create_test_product, create_test_customer
 
 
 class OrderProductModelTest(CustomTestCase):
@@ -166,19 +166,8 @@ class CustomerModelTest(CustomTestCase):
         field = self.get_model_field(self.model, 'phone')
         self.assertTrue(field.null)
 
-    def test_model_is_created_after_creating_order(self):
-        self.assertEqual(Customer.objects.count(), 0)
-
-        order = create_test_order()
-
-        self.assertEqual(Customer.objects.count(), 1)
-
-        customer = Customer.objects.first()
-
-        self.assertEqual(customer.uuid, order.customer.uuid)
-
     def test_model_is_deleted_after_deleting_order(self):
-        order = create_test_order()
+        order = create_test_customer().order
 
         self.assertEqual(Customer.objects.count(), 1)
 

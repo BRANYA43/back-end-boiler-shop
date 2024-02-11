@@ -4,7 +4,7 @@ from rest_framework.serializers import HyperlinkedModelSerializer
 
 from orders.serializers import OrderSerializer, OrderProductSerializer, CustomerSerializer
 from utils.tests import CustomTestCase
-from utils.tests.creators import create_test_order, create_test_order_product, create_test_product
+from utils.tests.creators import create_test_order_product, create_test_product, create_test_customer
 
 
 class CustomerSerializerTest(CustomTestCase):
@@ -47,7 +47,7 @@ class CustomerSerializerTest(CustomTestCase):
         ]
         expected_phone = '+38 (050) 123 45-67'
 
-        customer = create_test_order().customer
+        customer = create_test_customer()
 
         for phone in valid_phones:
             serializer = self.serializer(

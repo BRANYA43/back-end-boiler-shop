@@ -3,14 +3,14 @@ from rest_framework.reverse import reverse
 
 from orders import serializers
 from utils.tests import CustomTestCase
-from utils.tests.creators import create_test_order
+from utils.tests.creators import create_test_customer
 
 detail_url = 'customer-detail'
 
 
 class CustomerRetrieveViewTest(CustomTestCase):
     def setUp(self) -> None:
-        self.customer = create_test_order().customer
+        self.customer = create_test_customer()
         self.url = reverse(detail_url, args=[self.customer.uuid])
 
     def test_view_is_allowed(self):
@@ -27,7 +27,7 @@ class CustomerRetrieveViewTest(CustomTestCase):
 
 class CustomerUpdateViewTest(CustomTestCase):
     def setUp(self) -> None:
-        self.customer = create_test_order().customer
+        self.customer = create_test_customer()
         self.url = reverse(detail_url, args=[self.customer.uuid])
 
     def test_view_is_allowed_for_PATCH(self):
