@@ -31,7 +31,7 @@ BATON = {
         {'type': 'model', 'label': _('Products'), 'name': 'product', 'app': 'products'},
         {'type': 'model', 'label': _('Categories'), 'name': 'category', 'app': 'products'},
         {'type': 'model', 'label': _('Orders'), 'name': 'order', 'app': 'orders'},
-        {'type': 'model', 'label': _('Characteristics'), 'name': 'attribute', 'app': 'utils'},
+        {'type': 'model', 'label': _('Attributes'), 'name': 'attribute', 'app': 'utils'},
         {'type': 'model', 'label': _('Images'), 'name': 'image', 'app': 'utils'},
     ),
 }
