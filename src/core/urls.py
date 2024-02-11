@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic import RedirectView
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 from core.router import router
@@ -17,6 +18,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('baton/', include('baton.urls')),
     path('api/', include(api_urls)),
+    path('', RedirectView.as_view(url='/api/')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
