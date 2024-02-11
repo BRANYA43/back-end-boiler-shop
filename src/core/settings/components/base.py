@@ -70,7 +70,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'uk'
+LANGUAGE_CODE = 'en'
 
 LOCALE_PATHS = [BASE_DIR / 'locales']
 
