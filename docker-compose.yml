@@ -29,7 +29,7 @@ services:
     restart: always
 
   db:
-    image: postgres:16.0-alpine
+    build: ./postgres
     container_name: db
     volumes:
       - db_volume:/var/lib/postgresql/data/
@@ -38,7 +38,7 @@ services:
 #    ports:
 #      - "5439:5432"
     healthcheck:
-      test: ["CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres"]
+      test: ["CMD", "/usr/src/healthcheck.sh"]
       interval: 30s
       timeout: 2s
       retries: 5
