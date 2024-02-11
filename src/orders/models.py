@@ -50,12 +50,11 @@ class Customer(UUIDMixin):
     order = models.OneToOneField(to='Order', on_delete=models.CASCADE, related_name='customer', verbose_name=_('Order'))
     full_name = models.CharField(
         max_length=100,
-        null=True,
         validators=[validators.MinLengthValidator(3), validate_name],
         verbose_name=_('Full Name'),
     )
-    email = models.EmailField(null=True, verbose_name=_('Email'))
-    phone = PhoneField(null=True, verbose_name=_('Phone'))
+    email = models.EmailField(verbose_name=_('Email'))
+    phone = PhoneField(verbose_name=_('Phone'))
 
     class Meta:
         verbose_name = _('Customer')

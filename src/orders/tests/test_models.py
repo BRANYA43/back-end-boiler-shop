@@ -144,27 +144,9 @@ class CustomerModelTest(CustomTestCase):
         """
         Tests:
         field has max length as 100;
-        field can be null;
         """
         field = self.get_model_field(self.model, 'full_name')
         self.assertEqual(field.max_length, 100)
-        self.assertTrue(field.null)
-
-    def test_email_field(self):
-        """
-        Tests:
-        field can be null;
-        """
-        field = self.get_model_field(self.model, 'email')
-        self.assertTrue(field.null)
-
-    def test_phone_field(self):
-        """
-        Tests:
-        field can be null;
-        """
-        field = self.get_model_field(self.model, 'phone')
-        self.assertTrue(field.null)
 
     def test_model_is_deleted_after_deleting_order(self):
         order = create_test_customer().order
