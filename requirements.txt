@@ -7,4 +7,5 @@ django-admin-thumbnails==0.2.8
 drf-spectacular==0.27.0
 python-dotenv==1.0.0
 pillow==10.2.0
+psycopg2==2.9.9
 regex==2023.12.25
