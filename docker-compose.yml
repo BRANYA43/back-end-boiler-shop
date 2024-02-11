@@ -5,24 +5,24 @@ services:
     build: .
     container_name: api
     volumes:
-      - ./src:/app
-      - media_volume:/media/
-      - static_volume:/static/
+      - static_volume:/opt/src/static
+      - media_volume:/opt/src/media
     command: >
       bash -c "
       python manage.py makemigrations;
       python manage.py migrate;
       python manage.py createsuperuser --no-input; 
+      python manage.py collectstatic --no-input;
       python manage.py runserver 0.0.0.0:8000 "
     env_file:
       - ./.env
-    ports:
-      - "8000:8000"
+#    ports:
+#      - "8000:8000"
     depends_on:
       db:
         condition: service_healthy
     healthcheck:
-      test: curl --fail -s http://localhost:8000 || exit 1
+      test: curl --fail -s http://localhost:8000/api/ || exit 1
       interval: 30s
       timeout: 10s
       retries: 3
@@ -35,14 +35,35 @@ services:
       - db_volume:/var/lib/postgresql/data/
     env_file:
       - ./.env
-    ports:
-      - "5439:5432"
+#    ports:
+#      - "5439:5432"
     healthcheck:
       test: ["CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres"]
       interval: 30s
       timeout: 2s
       retries: 5
     restart: always
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    volumes:
+      - static_volume:/opt/src/static
+      - media_volume:/opt/src/media
+    ports:
+      - "80:80"
+    depends_on:
+      db:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/usr/src/healthcheck.sh"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    restart: always
+
 
 
 volumes:
