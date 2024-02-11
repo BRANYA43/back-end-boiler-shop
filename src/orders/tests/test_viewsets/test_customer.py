@@ -1,50 +1,35 @@
 from rest_framework import status
 from rest_framework.reverse import reverse
 
-from orders import serializers
+from orders.models import Customer
+from orders.serializers import CustomerSerializer
 from utils.tests import CustomTestCase
-from utils.tests.creators import create_test_customer
+from utils.tests.creators import create_test_order
 
-detail_url = 'customer-detail'
+list_url = 'customer-list'
 
 
-class CustomerRetrieveViewTest(CustomTestCase):
+class CustomerCreateViewTest(CustomTestCase):
     def setUp(self) -> None:
-        self.customer = create_test_customer()
-        self.url = reverse(detail_url, args=[self.customer.uuid])
+        self.url = reverse(list_url)
+        self.data = {
+            'order': create_test_order().uuid,
+            'full_name': 'Rick Sanchez',
+            'email': 'rick.sanchez@test.com',
+            'phone': '+38 000 000 00 00',
+        }
 
     def test_view_is_allowed(self):
-        response = self.client.get(self.url)
+        response = self.client.post(self.url, data=self.data)
 
-        self.assertStatusCodeEqual(response, status.HTTP_200_OK)
-
-    def test_view_returns_correct_data(self):
-        expected_data = serializers.CustomerSerializer(self.customer, context=self.get_fake_context()).data
-        response = self.client.get(self.url)
-
-        self.assertEqual(response.data, expected_data)
-
-
-class CustomerUpdateViewTest(CustomTestCase):
-    def setUp(self) -> None:
-        self.customer = create_test_customer()
-        self.url = reverse(detail_url, args=[self.customer.uuid])
-
-    def test_view_is_allowed_for_PATCH(self):
-        response = self.client.patch(self.url, data={})
-
-        self.assertStatusCodeEqual(response, status.HTTP_200_OK)
-
-    def test_view_is_not_allowed_for_PUT(self):
-        response = self.client.put(self.url, data={})
-
-        self.assertStatusCodeEqual(response, status.HTTP_405_METHOD_NOT_ALLOWED)
+        self.assertStatusCodeEqual(response, status.HTTP_201_CREATED)
 
     def test_view_returns_correct_data(self):
-        data = {'full_name': 'Test Full Name', 'phone': '000 000 00 00', 'email': 'test@test.com'}
-        response = self.client.patch(self.url, data=data, context=self.get_fake_context())
+        response = self.client.post(self.url, data=self.data)
 
-        self.customer.refresh_from_db()
-        expected_data = serializers.CustomerSerializer(self.customer, context=self.get_fake_context()).data
+        self.assertEqual(Customer.objects.count(), 1)
+
+        customer = Customer.objects.first()
+        expected_data = CustomerSerializer(instance=customer).data
 
         self.assertEqual(response.data, expected_data)
