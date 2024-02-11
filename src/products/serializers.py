@@ -10,7 +10,7 @@ class ProductImageSetSerializer(ReadOnlyHyperlinkedModelSerializer):
 
     class Meta:
         model = ProductImageSet
-        fields = ['url', 'product', 'images']
+        fields = ['url', 'uuid', 'product', 'images']
 
     @staticmethod
     def get_image_urls(obj) -> list[str]:
@@ -46,6 +46,7 @@ class ProductSerializer(ReadOnlyHyperlinkedModelSerializer):
         model = Product
         fields = [
             'url',
+            'uuid',
             'category',
             'name',
             'slug',
@@ -67,4 +68,4 @@ class ProductSerializer(ReadOnlyHyperlinkedModelSerializer):
 class CategorySerializer(ReadOnlyHyperlinkedModelSerializer):
     class Meta:
         model = Category
-        fields = ['url', 'name', 'parent', 'subs']
+        fields = ['url', 'uuid', 'name', 'parent', 'subs']

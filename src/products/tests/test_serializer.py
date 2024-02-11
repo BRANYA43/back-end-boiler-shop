@@ -20,8 +20,16 @@ class ProductImageSetSerializerTest(CustomTestCase):
             self.assertTrue(issubclass(self.serializer, class_))
 
     def test_serializer_has_only_expected_fields(self):
-        expected_fields = ['url', 'product', 'images']
+        expected_fields = ['url', 'uuid', 'product', 'images']
         self.assertSerializerHasOnlyExpectedFields(self.serializer, expected_fields)
+
+    def test_uuid_field(self):
+        """
+        Tests:
+        field is read only;
+        """
+        field = self.get_serializer_field(self.serializer, 'uuid')
+        self.assertTrue(field.read_only)
 
     def test_images_field(self):
         """
@@ -53,8 +61,16 @@ class SpecificationSerializerTest(CustomTestCase):
             self.assertTrue(issubclass(self.serializer, class_))
 
     def test_serializer_has_only_expected_fields(self):
-        expected_fields = ['url', 'product', 'all_attributes', 'card_attributes', 'detail_attributes']
+        expected_fields = ['url', 'uuid', 'product', 'all_attributes', 'card_attributes', 'detail_attributes']
         self.assertSerializerHasOnlyExpectedFields(self.serializer, expected_fields)
+
+    def test_uuid_field(self):
+        """
+        Tests:
+        field is read only;
+        """
+        field = self.get_serializer_field(self.serializer, 'uuid')
+        self.assertTrue(field.read_only)
 
     def test_all_attributes_field(self):
         """
@@ -125,6 +141,7 @@ class ProductSerializerTest(CustomTestCase):
     def test_serializer_has_only_expected_fields(self):
         expected_fields = [
             'url',
+            'uuid',
             'category',
             'name',
             'slug',
@@ -138,6 +155,14 @@ class ProductSerializerTest(CustomTestCase):
             'created',
         ]
         self.assertSerializerHasOnlyExpectedFields(self.serializer, expected_fields)
+
+    def test_uuid_field(self):
+        """
+        Tests:
+        field is read only;
+        """
+        field = self.get_serializer_field(self.serializer, 'uuid')
+        self.assertTrue(field.read_only)
 
     def test_price_field(self):
         """
@@ -168,5 +193,13 @@ class CategorySerializerTest(CustomTestCase):
             self.assertTrue(issubclass(self.serializer, class_))
 
     def test_serializer_has_only_expected_fields(self):
-        expected_fields = ['url', 'name', 'parent', 'subs']
+        expected_fields = ['url', 'uuid', 'name', 'parent', 'subs']
         self.assertSerializerHasOnlyExpectedFields(self.serializer, expected_fields)
+
+    def test_uuid_field(self):
+        """
+        Tests:
+        field is read only;
+        """
+        field = self.get_serializer_field(self.serializer, 'uuid')
+        self.assertTrue(field.read_only)
