@@ -38,6 +38,9 @@ It's `postgres` by default.
 name of docker compose service for Postgres. 
 - **POSTGRES_PORT** - port for Postgres listening. It's `5432` by default.
 
+#### Gunicorn environment values
+- **GUNICORN_WORKERS** - quantity workers for gunicorn. It's `2` by default.
+
 ### Template of .env file with required environment values
 ```dotenv
 DJANGO_SECRET_KEY=<secret key>
