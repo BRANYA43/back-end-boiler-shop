@@ -9,3 +9,4 @@ python-dotenv==1.0.0
 pillow==10.2.0
 psycopg2==2.9.9
 regex==2023.12.25
+gunicorn==21.2.0
