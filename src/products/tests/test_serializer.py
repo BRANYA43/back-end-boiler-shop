@@ -58,6 +58,47 @@ class ProductListSerializerTest(CustomTestCase):
         self.assertEqual(data['card_attributes'], {attribute.name: attribute.value})
 
 
+class ProductDetailSerializerTest(CustomTestCase):
+    def setUp(self) -> None:
+        self.serializer_class = serializers.ProductDetailSerializer
+
+    def test_serializer_inherit_necessary_classes(self):
+        classes = [serializers.ProductSerializerMixin]
+        for class_ in classes:
+            self.assertTrue(self.serializer_class, class_)
+
+    def test_serializer_has_only_expected_fields(self):
+        expected_fields = [
+            'uuid',
+            'category',
+            'name',
+            'price',
+            'stock',
+            'description',
+            'all_attributes',
+            'detail_attributes',
+            'images',
+        ]
+        self.assertSerializerHasOnlyExpectedFields(self.serializer_class, expected_fields)
+
+    def test_detail_attributes_returns_correct_attributes(self):
+        attribute = creators.create_test_attribute()
+        product = creators.create_test_product()
+        product.specification.all_attributes.set([attribute])
+        data = self.serializer_class(product).data
+
+        self.assertEqual(data['all_attributes'], {attribute.name: attribute.value})
+
+    def test_all_attributes_returns_correct_attributes(self):
+        attribute = creators.create_test_attribute()
+        product = creators.create_test_product()
+        product.specification.all_attributes.set([attribute])
+        product.specification.detail_attributes.set([attribute])
+        data = self.serializer_class(product).data
+
+        self.assertEqual(data['detail_attributes'], {attribute.name: attribute.value})
+
+
 class CategoryListSerializerTest(CustomTestCase):
     def setUp(self) -> None:
         self.serializer_class = serializers.CategoryListSerializer

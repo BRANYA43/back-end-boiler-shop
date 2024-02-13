@@ -36,6 +36,31 @@ class ProductListSerializer(ProductSerializerMixin):
         return self.get_attributes(obj, 'all_attributes')
 
 
+class ProductDetailSerializer(ProductSerializerMixin):
+    all_attributes = serializers.SerializerMethodField('get_all_attributes')
+    detail_attributes = serializers.SerializerMethodField('get_detail_attributes')
+
+    class Meta:
+        model = Product
+        fields = [
+            'uuid',
+            'category',
+            'name',
+            'price',
+            'stock',
+            'description',
+            'all_attributes',
+            'detail_attributes',
+            'images',
+        ]
+
+    def get_all_attributes(self, obj):
+        return self.get_attributes(obj, 'all_attributes')
+
+    def get_detail_attributes(self, obj):
+        return self.get_attributes(obj, 'detail_attributes')
+
+
 class FilterListSerializer(serializers.ListSerializer):
     def to_representation(self, data):
         data = data.filter(parent=None)
