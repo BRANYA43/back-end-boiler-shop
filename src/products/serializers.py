@@ -25,6 +25,17 @@ class ProductSerializerMixin(serializers.ModelSerializer):
         return [image.image.url for image in obj.image_set.images.all()]
 
 
+class ProductListSerializer(ProductSerializerMixin):
+    card_attributes = serializers.SerializerMethodField('get_card_attributes')
+
+    class Meta:
+        model = Product
+        fields = ['uuid', 'category', 'name', 'price', 'stock', 'images', 'card_attributes']
+
+    def get_card_attributes(self, obj):
+        return self.get_attributes(obj, 'all_attributes')
+
+
 class FilterListSerializer(serializers.ListSerializer):
     def to_representation(self, data):
         data = data.filter(parent=None)

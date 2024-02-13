@@ -35,6 +35,29 @@ class ProductSerializerMixinTest(CustomTestCase):
         self.assertEqual(data['images'], [image.image.url])
 
 
+class ProductListSerializerTest(CustomTestCase):
+    def setUp(self) -> None:
+        self.serializer_class = serializers.ProductListSerializer
+
+    def test_serializer_inherit_necessary_classes(self):
+        classes = [serializers.ProductSerializerMixin]
+        for class_ in classes:
+            self.assertTrue(self.serializer_class, class_)
+
+    def test_serializer_has_only_expected_fields(self):
+        expected_fields = ['uuid', 'category', 'name', 'price', 'stock', 'images', 'card_attributes']
+        self.assertSerializerHasOnlyExpectedFields(self.serializer_class, expected_fields)
+
+    def test_card_attributes_returns_correct_attributes(self):
+        attribute = creators.create_test_attribute()
+        product = creators.create_test_product()
+        product.specification.all_attributes.set([attribute])
+        product.specification.card_attributes.set([attribute])
+        data = self.serializer_class(product).data
+
+        self.assertEqual(data['card_attributes'], {attribute.name: attribute.value})
+
+
 class CategoryListSerializerTest(CustomTestCase):
     def setUp(self) -> None:
         self.serializer_class = serializers.CategoryListSerializer
