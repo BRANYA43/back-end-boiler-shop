@@ -5,6 +5,7 @@ from products import views as product_views
 router = DefaultRouter()
 
 router.register(r'category', product_views.CategoryViewSet)
+router.register(r'product', product_views.ProductViewSet)
 
 router.register(r'order', orders_views.OrderViewSet)
 router.register(r'customer', orders_views.CustomerViewSet)
