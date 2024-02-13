@@ -5,6 +5,36 @@ from products.models import Category
 from utils.tests import CustomTestCase, creators
 
 
+class ProductSerializerMixinTest(CustomTestCase):
+    def setUp(self) -> None:
+        self.serializer_class = type('ProductSerializer', (serializers.ProductSerializerMixin,), {})
+
+    def test_serializer_inherit_necessary_classes(self):
+        classes = [ModelSerializer]
+        for class_ in classes:
+            self.assertTrue(self.serializer_class, class_)
+
+    def test_price_field_returns_correct_price_value(self):
+        product = creators.create_test_product(price=1000)
+        data = self.serializer_class(product).data
+
+        self.assertEqual(data['price'], product.price.value)
+
+    def test_price_field_returns_0_if_price_is_none(self):
+        product = creators.create_test_product()
+        data = self.serializer_class(product).data
+
+        self.assertEqual(data['price'], 0)
+
+    def test_images_field_returns_correct_image_urls(self):
+        image = creators.create_test_image()
+        product = creators.create_test_product()
+        product.image_set.images.set([image])
+        data = self.serializer_class(product).data
+
+        self.assertEqual(data['images'], [image.image.url])
+
+
 class CategoryListSerializerTest(CustomTestCase):
     def setUp(self) -> None:
         self.serializer_class = serializers.CategoryListSerializer
