@@ -109,7 +109,7 @@ class InlineCategory(admin.TabularInline):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'is_parent_category', 'is_sub_category')
+    list_display = ('name', 'is_parent_category', 'is_child_category')
     fields = ('name', 'parent', 'image')
     search_fields = ('name',)
     ordering = ('parent', 'name')
@@ -119,6 +119,6 @@ class CategoryAdmin(admin.ModelAdmin):
     def is_parent_category(self, obj: Category):
         return obj.is_parent_category
 
-    @admin.display(boolean=True, description=_('Is parent category'))
-    def is_sub_category(self, obj: Category):
-        return obj.is_sub_category
+    @admin.display(boolean=True, description=_('Is child category'))
+    def is_child_category(self, obj: Category):
+        return obj.is_child_category

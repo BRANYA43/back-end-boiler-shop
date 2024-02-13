@@ -369,39 +369,39 @@ class CategoryModelTest(CustomTestCase):
 
     def test_parent_field_is_set_as_null_if_parent_category_is_deleted(self):
         parent = Category.objects.create(name='parent')
-        sub = Category.objects.create(name='sub', parent=parent)
+        child = Category.objects.create(name='child', parent=parent)
 
-        self.assertIsNotNone(sub.parent)
+        self.assertIsNotNone(child.parent)
 
         parent.delete()
-        sub.refresh_from_db()
+        child.refresh_from_db()
 
-        self.assertIsNone(sub.parent)
+        self.assertIsNone(child.parent)
 
-    def test_is_sub_category_property_is_true_if_parent_is_not_none(self):
+    def test_is_child_category_property_is_true_if_parent_is_not_none(self):
         parent = Category.objects.create(name='parent')
-        sub = Category.objects.create(name='sub', parent=parent)
+        child = Category.objects.create(name='child', parent=parent)
 
-        self.assertIsNotNone(sub.parent)
-        self.assertTrue(sub.is_sub_category)
+        self.assertIsNotNone(child.parent)
+        self.assertTrue(child.is_child_category)
 
-    def test_is_sub_category_property_is_false_if_parent_is_none(self):
-        sub = Category.objects.create(name='sub')
+    def test_is_child_category_property_is_false_if_parent_is_none(self):
+        child = Category.objects.create(name='child')
 
-        self.assertIsNone(sub.parent)
-        self.assertFalse(sub.is_sub_category)
+        self.assertIsNone(child.parent)
+        self.assertFalse(child.is_child_category)
 
     def test_is_parent_category_property_is_true_if_sub_categories_are_not_none(self):
         parent = Category.objects.create(name='parent')
-        sub = Category.objects.create(name='sub', parent=parent)  # noqa
+        child = Category.objects.create(name='child', parent=parent)  # noqa
 
-        self.assertIsNotNone(parent.subs.first())
+        self.assertIsNotNone(parent.children.first())
         self.assertTrue(parent.is_parent_category)
 
     def test_is_parent_category_property_is_false_if_sub_categories_are_none(self):
         parent = Category.objects.create(name='parent')
 
-        self.assertIsNone(parent.subs.first())
+        self.assertIsNone(parent.children.first())
         self.assertFalse(parent.is_parent_category)
 
     def test_model_is_protected_from_deleting_image(self):
