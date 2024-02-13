@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     # External apps
     'rest_framework',
     'drf_spectacular',
+    'django_filters',
     # Internal apps
     'products',
     'utils',
