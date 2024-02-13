@@ -94,4 +94,6 @@ class CategoryDetailSerializer(serializers.ModelSerializer):
         return [{'uuid': child.uuid, 'name': child.name} for child in obj.children.all()]
 
     def get_products(self, obj):
-        return [{'uuid': product.uuid, 'name': product.name} for product in obj.products.all()]
+        return [
+            {'uuid': product.uuid, 'name': product.name} for product in obj.products.all().filter(is_displayed=True)
+        ]
