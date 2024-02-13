@@ -49,9 +49,9 @@ class ProductDetailSerializer(ProductSerializerMixin):
             'price',
             'stock',
             'description',
+            'images',
             'all_attributes',
             'detail_attributes',
-            'images',
         ]
 
     def get_all_attributes(self, obj):
