@@ -20,7 +20,7 @@ class Price(UUIDMixin):
         verbose_name_plural = _('Prices')
 
     def __str__(self):
-        return f'{self.value}'
+        return f'{self.product}:{self.value}'
 
 
 class ProductImageSet(ImageSetMixin):
