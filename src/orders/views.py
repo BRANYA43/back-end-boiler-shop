@@ -1,8 +1,17 @@
 from rest_framework import mixins, viewsets
 from rest_framework.response import Response
 
-from orders.models import Order, OrderProduct
+from orders.models import Order, OrderProduct, Customer
 from orders import serializers
+
+
+class CustomerViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    queryset = Customer.objects.all()
+    serializer_class = serializers.CustomerCreateSerializer
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        return Response(status=response.status_code, headers=response.headers)
 
 
 class OrderProductViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
