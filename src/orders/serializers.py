@@ -3,7 +3,13 @@ from rest_framework.exceptions import ValidationError
 
 from django.utils.translation import gettext as _
 
-from orders.models import Order
+from orders.models import Order, OrderProduct
+
+
+class OrderProductCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderProduct
+        fields = ['order', 'product', 'quantity']
 
 
 class OrderCreateSerializer(serializers.ModelSerializer):

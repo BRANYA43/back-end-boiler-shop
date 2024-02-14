@@ -4,6 +4,20 @@ from orders import serializers
 from utils.tests import CustomTestCase
 
 
+class OrderProductCreateSerializerTest(CustomTestCase):
+    def setUp(self) -> None:
+        self.serializer_class = serializers.OrderProductCreateSerializer
+
+    def test_serializer_inherit_necessary_classes(self):
+        classes = [ModelSerializer]
+        for class_ in classes:
+            self.assertTrue(self.serializer_class, class_)
+
+    def test_serializer_has_only_expected_fields(self):
+        expected_fields = ['order', 'product', 'quantity']
+        self.assertSerializerHasOnlyExpectedFields(self.serializer_class, expected_fields)
+
+
 class OrderCreateSerializerTest(CustomTestCase):
     def setUp(self) -> None:
         self.serializer_class = serializers.OrderCreateSerializer
