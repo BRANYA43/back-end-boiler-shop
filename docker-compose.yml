@@ -3,7 +3,7 @@ version: "3.9"
 services:
   api:
     build: .
-    image: branya/boiler_shop_api:1.0.0
+    image: branya/boiler_shop_api:2.0.0
     container_name: api
     volumes:
       - static_volume:/opt/src/static
@@ -29,7 +29,7 @@ services:
 
   db:
     build: ./postgres
-    image: branya/boiler_shop_db:1.0.0
+    image: branya/boiler_shop_db:2.0.0
     container_name: db
     volumes:
       - db_volume:/var/lib/postgresql/data/
@@ -44,7 +44,7 @@ services:
 
   nginx:
     build: ./nginx
-    image: branya/boiler_shop_nginx:1.0.0
+    image: branya/boiler_shop_nginx:2.0.0
     container_name: nginx
     volumes:
       - static_volume:/opt/src/static
