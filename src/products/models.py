@@ -20,7 +20,7 @@ class Price(UUIDMixin):
         verbose_name_plural = _('Prices')
 
     def __str__(self):
-        return f'{self.value}'
+        return f'{self.product}:{self.value}'
 
 
 class ProductImageSet(ImageSetMixin):
@@ -152,7 +152,7 @@ class Category(UUIDMixin):
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name='subs',
+        related_name='children',
         verbose_name=_('Parent Category'),
     )
 
@@ -164,13 +164,13 @@ class Category(UUIDMixin):
         return self.name
 
     @property
-    def is_sub_category(self):
+    def is_child_category(self):
         if self.parent:
             return True
         return False
 
     @property
     def is_parent_category(self):
-        if self.subs.first():
+        if self.children.first():
             return True
         return False

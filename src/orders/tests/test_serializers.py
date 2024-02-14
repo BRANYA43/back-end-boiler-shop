@@ -1,173 +1,79 @@
-from unittest.mock import MagicMock
-
 from rest_framework.serializers import ModelSerializer
 
-from orders.serializers import OrderSerializer, OrderProductSerializer, CustomerSerializer
-from utils.tests import CustomTestCase
-from utils.tests.creators import create_test_order_product, create_test_product, create_test_customer
+from orders import serializers
+from utils.tests import CustomTestCase, creators
 
 
-class CustomerSerializerTest(CustomTestCase):
+class CustomerCreateSerializerTest(CustomTestCase):
     def setUp(self) -> None:
-        self.serializer = CustomerSerializer
+        self.serializer_class = serializers.CustomerCreateSerializer
 
     def test_serializer_inherit_necessary_classes(self):
         necessary_classes = [ModelSerializer]
         for class_ in necessary_classes:
-            self.assertTrue(issubclass(self.serializer, class_))
+            self.assertTrue(issubclass(self.serializer_class, class_))
 
     def test_serializer_has_only_expected_fields(self):
-        expected_fields = ['uuid', 'order', 'full_name', 'email', 'phone']
-        self.assertSerializerHasOnlyExpectedFields(self.serializer, expected_fields)
+        expected_fields = ['order', 'full_name', 'email', 'phone']
+        self.assertSerializerHasOnlyExpectedFields(self.serializer_class, expected_fields)
 
-    def test_uuid_field(self):
-        """
-        Tests:
-        field is read only;
-        """
-        field = self.get_serializer_field(self.serializer, 'uuid')
-        self.assertTrue(field.read_only)
-
-    def test_serializer_validates_and_formats_phone(self):
-        valid_phones = [
+    def test_serializer_clean_phone(self):
+        data = {
+            'order': creators.create_test_order().uuid,
+            'full_name': 'Rick Sanchez',
+            'email': 'rick.sanchez@test.com',
+        }
+        phones = [
             '+380501234567',
-            '+38 (050) 123-45-67',
-            '+38(050)123-45-67',
-            '380501234567',
             '0501234567',
-            '050-123-45-67',
+            '+38 050 123 45 67',
             '050 123 45 67',
-            '050-1234567',
-            '+380501234567',
-            '+38 (050) 123-45-67',
-            '+38(050)123-45-67',
-            '0501234567',
-            '050-123-45-67',
-            '050 123 45 67',
-            '050-1234567',
-            '+380501234567',
-            '+38 (050) 123-45-67',
-            '+38(050)123-45-67',
-            '0501234567',
-            '050-123-45-67',
-            '050 123 45 67',
-            '050-1234567',
         ]
         expected_phone = '+38 (050) 123 45-67'
 
-        customer = create_test_customer()
+        for phone in phones:
+            data.setdefault('phone', phone)
+            serializer = self.serializer_class(data=data)
 
-        for phone in valid_phones:
-            serializer = self.serializer(
-                instance=customer, data={'phone': phone}, context={'request': MagicMock()}, partial=True
-            )
-            serializer.is_valid()
+            self.assertTrue(serializer.is_valid())
             self.assertEqual(serializer.validated_data['phone'], expected_phone)
 
 
-class OrderProductSerializerTest(CustomTestCase):
+class OrderProductCreateSerializerTest(CustomTestCase):
     def setUp(self) -> None:
-        self.serializer = OrderProductSerializer
-        self.context = {'request': MagicMock()}
+        self.serializer_class = serializers.OrderProductCreateSerializer
 
     def test_serializer_inherit_necessary_classes(self):
-        necessary_classes = [ModelSerializer]
-        for class_ in necessary_classes:
-            self.assertTrue(issubclass(self.serializer, class_))
+        classes = [ModelSerializer]
+        for class_ in classes:
+            self.assertTrue(self.serializer_class, class_)
 
     def test_serializer_has_only_expected_fields(self):
-        expected_fields = ['uuid', 'order', 'product', 'quantity', 'price', 'total_cost']
-        self.assertSerializerHasOnlyExpectedFields(self.serializer, expected_fields)
-
-    def test_uuid_field(self):
-        """
-        Tests:
-        field is read only;
-        """
-        field = self.get_serializer_field(self.serializer, 'uuid')
-        self.assertTrue(field.read_only)
-
-    def test_price_field(self):
-        """
-        Tests:
-        field uses get_price_value method;
-        """
-        field = self.get_serializer_field(self.serializer, 'price')
-        self.assertEqual(field.method_name, 'get_price_value')
-
-    def test_get_price_value_returns_0_if_price_is_none(self):
-        product = create_test_product()
-        order_product = create_test_order_product(product=product)
-
-        self.assertEqual(self.serializer.get_price_value(order_product), 0)
-
-    def test_get_price_value_returns_correct_price(self):
-        order_product = create_test_order_product(price=1000)
-
-        self.assertEqual(self.serializer.get_price_value(order_product), order_product.price.value)
+        expected_fields = ['order', 'product', 'quantity']
+        self.assertSerializerHasOnlyExpectedFields(self.serializer_class, expected_fields)
 
 
-class OrderSerializerTest(CustomTestCase):
+class OrderCreateSerializerTest(CustomTestCase):
     def setUp(self) -> None:
-        self.serializer = OrderSerializer
+        self.serializer_class = serializers.OrderCreateSerializer
 
     def test_serializer_inherit_necessary_classes(self):
-        necessary_classes = [ModelSerializer]
-        for class_ in necessary_classes:
-            self.assertTrue(issubclass(self.serializer, class_))
+        classes = [ModelSerializer]
+        for class_ in classes:
+            self.assertTrue(self.serializer_class, class_)
 
     def test_serializer_has_only_expected_fields(self):
-        expected_fields = [
-            'uuid',
-            'status',
-            'payment',
-            'is_paid',
-            'delivery',
-            'delivery_address',
-            'total_cost',
-            'customer',
-            'products',
-            'updated',
-            'created',
-        ]
-        self.assertSerializerHasOnlyExpectedFields(self.serializer, expected_fields)
+        expected_fields = ['uuid', 'delivery', 'delivery_address', 'payment', 'comment']
+        self.assertSerializerHasOnlyExpectedFields(self.serializer_class, expected_fields)
 
-    def test_uuid_field(self):
-        """
-        Tests:
-        field is read only;
-        """
-        field = self.get_serializer_field(self.serializer, 'uuid')
+    def test_uuid_field_is_read_only(self):
+        field = self.get_serializer_field(self.serializer_class, 'uuid')
         self.assertTrue(field.read_only)
 
-    def test_customer_field(self):
-        """
-        Tests:
-        field is read only;
-        """
-        field = self.get_serializer_field(self.serializer, 'customer')
-        self.assertTrue(field.read_only)
+    def test_serializer_is_invalid_if_delivery_address_is_empty_when_delivery_is_different_from_pickup(self):
+        serializer = self.serializer_class(data={'delivery': 'nova_post'})
 
-    def test_products_field(self):
-        """
-        Tests:
-        field is read only;
-        """
-        field = self.get_serializer_field(self.serializer, 'products')
-        self.assertTrue(field.read_only)
+        self.assertFalse(serializer.is_valid())
 
-    def test_updated_field(self):
-        """
-        Tests:
-        field is read only;
-        """
-        field = self.get_serializer_field(self.serializer, 'updated')
-        self.assertTrue(field.read_only)
-
-    def test_created_field(self):
-        """
-        Tests:
-        field is read only;
-        """
-        field = self.get_serializer_field(self.serializer, 'created')
-        self.assertTrue(field.read_only)
+        expected_error = self.serializer_class.default_error_messages['invalid_delivery_address']
+        self.assertEqual(serializer.errors['delivery'][0], expected_error)

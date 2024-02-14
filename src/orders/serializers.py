@@ -1,50 +1,46 @@
 import re
 
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+
+from django.utils.translation import gettext as _
 
 from orders.models import Order, OrderProduct, Customer
 from orders.validators import PHONE_PATTERN
 
 
-class CustomerSerializer(serializers.ModelSerializer):
+class CustomerCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = ['uuid', 'order', 'full_name', 'email', 'phone']
-        read_only_fields = ['uuid']
+        fields = ['order', 'full_name', 'email', 'phone']
 
-    def validate_phone(self, phone):
-        if phone and (match := re.match(PHONE_PATTERN, phone)) is not None:
-            phone = '+38 ({}) {} {}-{}'.format(*match.groups()[1:])
-        return phone
+    def validate_phone(self, value):
+        if value and (match := re.match(PHONE_PATTERN, value)) is not None:
+            value = '+38 ({}) {} {}-{}'.format(*match.groups()[1:])
+        return value
 
 
-class OrderProductSerializer(serializers.ModelSerializer):
-    price = serializers.SerializerMethodField(method_name='get_price_value')
-
+class OrderProductCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderProduct
-        fields = ['uuid', 'order', 'product', 'quantity', 'price', 'total_cost']
-        read_only_fields = ['uuid', 'price', 'price_value']
-
-    @staticmethod
-    def get_price_value(obj):
-        return 0 if obj.price is None else obj.price.value
+        fields = ['order', 'product', 'quantity']
 
 
-class OrderSerializer(serializers.ModelSerializer):
+class OrderCreateSerializer(serializers.ModelSerializer):
+    default_error_messages = {
+        'invalid': _('Invalid data. Expected a dictionary, but got {datatype}.'),
+        'invalid_delivery_address': _('Delivery address cannot be empty if delivery way isn\'t "pickup".'),
+    }
+
     class Meta:
         model = Order
-        fields = [
-            'uuid',
-            'status',
-            'payment',
-            'is_paid',
-            'delivery',
-            'delivery_address',
-            'total_cost',
-            'customer',
-            'products',
-            'updated',
-            'created',
-        ]
-        read_only_fields = ['uuid', 'products', 'customer', 'updated', 'created']
+        fields = ['uuid', 'delivery', 'delivery_address', 'payment', 'comment']
+        read_only_fields = ['uuid']
+
+    def validate_delivery(self, value):
+        code = 'invalid_delivery_address'
+        delivery = value
+        delivery_address = self.initial_data.get('delivery_address')
+        if delivery != Order.Delivery.PICKUP.lower() and not bool(delivery_address):
+            raise ValidationError(self.default_error_messages[code], code)
+        return value
