@@ -1,7 +1,42 @@
 from rest_framework.serializers import ModelSerializer
 
 from orders import serializers
-from utils.tests import CustomTestCase
+from utils.tests import CustomTestCase, creators
+
+
+class CustomerCreateSerializerTest(CustomTestCase):
+    def setUp(self) -> None:
+        self.serializer_class = serializers.CustomerCreateSerializer
+
+    def test_serializer_inherit_necessary_classes(self):
+        necessary_classes = [ModelSerializer]
+        for class_ in necessary_classes:
+            self.assertTrue(issubclass(self.serializer_class, class_))
+
+    def test_serializer_has_only_expected_fields(self):
+        expected_fields = ['order', 'full_name', 'email', 'phone']
+        self.assertSerializerHasOnlyExpectedFields(self.serializer_class, expected_fields)
+
+    def test_serializer_clean_phone(self):
+        data = {
+            'order': creators.create_test_order().uuid,
+            'full_name': 'Rick Sanchez',
+            'email': 'rick.sanchez@test.com',
+        }
+        phones = [
+            '+380501234567',
+            '0501234567',
+            '+38 050 123 45 67',
+            '050 123 45 67',
+        ]
+        expected_phone = '+38 (050) 123 45-67'
+
+        for phone in phones:
+            data.setdefault('phone', phone)
+            serializer = self.serializer_class(data=data)
+
+            self.assertTrue(serializer.is_valid())
+            self.assertEqual(serializer.validated_data['phone'], expected_phone)
 
 
 class OrderProductCreateSerializerTest(CustomTestCase):
