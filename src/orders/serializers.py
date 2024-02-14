@@ -29,3 +29,4 @@ class OrderCreateSerializer(serializers.ModelSerializer):
         delivery_address = self.initial_data.get('delivery_address')
         if delivery != Order.Delivery.PICKUP.lower() and not bool(delivery_address):
             raise ValidationError(self.default_error_messages[code], code)
+        return value
