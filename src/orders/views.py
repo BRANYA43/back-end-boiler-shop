@@ -5,28 +5,31 @@ from orders.models import Order, OrderProduct, Customer
 from orders import serializers
 
 
-class CustomerViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+class CreateViewSetMixin(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        if kwargs.get('save_temp_data'):
+            self.temp_data = response.data
+        return Response(status=response.status_code, headers=response.headers)
+
+
+class CustomerViewSet(CreateViewSetMixin):
     queryset = Customer.objects.all()
     serializer_class = serializers.CustomerCreateSerializer
 
-    def create(self, request, *args, **kwargs):
-        response = super().create(request, *args, **kwargs)
-        return Response(status=response.status_code, headers=response.headers)
 
-
-class OrderProductViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+class OrderProductViewSet(CreateViewSetMixin):
     queryset = OrderProduct.objects.all()
     serializer_class = serializers.OrderProductCreateSerializer
 
-    def create(self, request, *args, **kwargs):
-        response = super().create(request, *args, **kwargs)
-        return Response(status=response.status_code, headers=response.headers)
 
-
-class OrderViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+class OrderViewSet(CreateViewSetMixin):
     queryset = Order.objects.all()
     serializer_class = serializers.OrderCreateSerializer
 
     def create(self, request, *args, **kwargs):
+        kwargs['save_temp_data'] = True
         response = super().create(request, *args, **kwargs)
-        return Response(data={'uuid': response.data['uuid']}, status=response.status_code, headers=response.headers)
+        response.data = {'uuid': self.temp_data['uuid']}
+        del self.temp_data
+        return response
