@@ -242,6 +242,7 @@ class ProductModelTest(CustomTestCase):
             'slug',
             'category',
             'stock',
+            'price',
             'description',
             'is_displayed',
             'updated',
@@ -304,6 +305,18 @@ class ProductModelTest(CustomTestCase):
         field = self.get_model_field(self.model, 'description')
         self.assertTrue(field.null)
         self.assertTrue(field.blank)
+
+    def test_price_field(self):
+        """
+        Tests:
+        field has max_digits as 10;
+        field has decimal_places as 2;
+        field is 0 by default;
+        """
+        field = self.get_model_field(self.model, 'price')
+        self.assertEqual(field.max_digits, 10)
+        self.assertEqual(field.decimal_places, 2)
+        self.assertEqual(field.default, 0)
 
     def test_model_allows_category_to_be_deleted(self):
         product = creators.create_test_product()
