@@ -136,12 +136,6 @@ class Product(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
     def __str__(self):
         return self.name
 
-    @property
-    def price(self) -> Price | None:
-        if self.prices.exists():
-            return self.prices.latest('created')
-        return None
-
 
 class Category(UUIDMixin):
     image = models.ForeignKey(

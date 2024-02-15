@@ -242,7 +242,6 @@ class ProductModelTest(CustomTestCase):
             'slug',
             'category',
             'stock',
-            'price',
             'description',
             'is_displayed',
             'updated',
@@ -305,21 +304,6 @@ class ProductModelTest(CustomTestCase):
         field = self.get_model_field(self.model, 'description')
         self.assertTrue(field.null)
         self.assertTrue(field.blank)
-
-    def test_price_property_returns_latest_created_price(self):
-        product = creators.create_test_product()
-        price_1 = creators.create_test_price(product, value=1000)
-
-        self.assertEqual(price_1.value, product.price.value)
-
-        price_2 = creators.create_test_price(product, value=2000)
-
-        self.assertNotEqual(price_1.value, product.price.value)
-        self.assertEqual(price_2.value, product.price.value)
-
-    def test_price_property_returns_none_if_prices_is_empty(self):
-        product = creators.create_test_product()
-        self.assertIsNone(product.price)
 
     def test_model_allows_category_to_be_deleted(self):
         product = creators.create_test_product()
