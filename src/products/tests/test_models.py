@@ -55,6 +55,10 @@ class PriceModelTest(CustomTestCase):
 
         self.assertEqual(Price.objects.count(), 0)
 
+    def test_model_instance_sets_product_price_after_saving_it(self):
+        price = creators.create_test_price(value=1000)
+        self.assertEqual(price.product.price, price.value)
+
 
 class ProductImageSetModelTest(CustomTestCase):
     def setUp(self) -> None:
