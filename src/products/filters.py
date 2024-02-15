@@ -1,4 +1,4 @@
-from django.db.models import Count, Max, Q, F
+from django.db.models import Count
 from django_filters import rest_framework as filters
 
 from products.models import Product
@@ -35,6 +35,4 @@ class ProductFilter(filters.FilterSet):
 
     def filter_price(self, queryset, _, price_range):
         min_price, max_price = price_range.start, price_range.stop
-        return queryset.annotate(latest_price_data=Max('prices__created')).filter(
-            Q(prices__created=F('latest_price_data')) & Q(prices__value__range=(min_price, max_price))
-        )
+        return queryset.filter(prices__value__range=(min_price, max_price))
