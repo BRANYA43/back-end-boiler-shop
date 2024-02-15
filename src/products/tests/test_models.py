@@ -81,13 +81,11 @@ class ProductImageSetModelTest(CustomTestCase):
         field has relation many to one;
         field has related_model as Image;
         field can be null;
-        field can be blank;
         """
         field = self.get_model_field(self.model, 'cover_image')
         self.assertTrue(field.many_to_one)
         self.assertIs(field.related_model, Image)
         self.assertTrue(field.null)
-        self.assertTrue(field.blank)
 
     def test_model_is_protected_from_deleting_cover_image(self):
         image = creators.create_test_image()
