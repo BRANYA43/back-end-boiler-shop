@@ -30,6 +30,9 @@ class ProductImageSet(ImageSetMixin):
         related_name='image_set',
         verbose_name=_('Image Set'),
     )
+    cover_image = models.ForeignKey(
+        Image, on_delete=models.PROTECT, null=True, blank=True, related_name='_image_set', verbose_name=_('Cover Image')
+    )
 
     class Meta:
         verbose_name = _('Product Image Set')

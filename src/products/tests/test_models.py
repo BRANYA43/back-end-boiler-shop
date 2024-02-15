@@ -75,6 +75,29 @@ class ProductImageSetModelTest(CustomTestCase):
         self.assertTrue(field.one_to_one)
         self.assertIs(field.related_model, Product)
 
+    def test_cover_image_field(self):
+        """
+        Test:
+        field has relation many to one;
+        field has related_model as Image;
+        field can be null;
+        field can be blank;
+        """
+        field = self.get_model_field(self.model, 'cover_image')
+        self.assertTrue(field.many_to_one)
+        self.assertIs(field.related_model, Image)
+        self.assertTrue(field.null)
+        self.assertTrue(field.blank)
+
+    def test_model_is_protected_from_deleting_cover_image(self):
+        image = creators.create_test_image()
+        image_set = creators.create_test_product().image_set
+        image_set.cover_image = image
+        image_set.save()
+
+        with self.assertRaises(ProtectedError):
+            image.delete()
+
     def test_model_is_created_after_creating_product(self):
         self.assertEqual(self.model.objects.count(), 0)
 
