@@ -1,12 +1,9 @@
-from decimal import Decimal
-
 from rest_framework import serializers
 
 from products.models import Category, Product
 
 
 class ProductSerializerMixin(serializers.ModelSerializer):
-    price = serializers.SerializerMethodField('get_price_value')
     images = serializers.SerializerMethodField('get_image_urls')
     cover_image = serializers.SerializerMethodField('get_cover_image_url')
 
@@ -16,11 +13,6 @@ class ProductSerializerMixin(serializers.ModelSerializer):
 
     def get_attributes(self, obj, name_field):
         return {attr.name: attr.value for attr in getattr(obj.specification, name_field).all()}
-
-    def get_price_value(self, obj):
-        if obj.price:
-            return obj.price.value
-        return Decimal(0)
 
     def get_image_urls(self, obj):
         return [image.image.url for image in obj.image_set.images.all()]
