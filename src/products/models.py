@@ -30,6 +30,13 @@ class ProductImageSet(ImageSetMixin):
         related_name='image_set',
         verbose_name=_('Image Set'),
     )
+    cover_image = models.ForeignKey(
+        to=Image,
+        on_delete=models.PROTECT,
+        null=True,
+        related_name='_image_set',
+        verbose_name=_('Cover Image'),
+    )
 
     class Meta:
         verbose_name = _('Product Image Set')
@@ -121,6 +128,12 @@ class Product(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
     )
     description = models.TextField(blank=True, null=True, verbose_name=_('Description'))
     is_displayed = models.BooleanField(default=True, verbose_name=_('Is Displayed'))
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0,
+        verbose_name=_('Price'),
+    )
 
     class Meta:
         verbose_name = _('Product')
@@ -128,12 +141,6 @@ class Product(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
 
     def __str__(self):
         return self.name
-
-    @property
-    def price(self) -> Price | None:
-        if self.prices.exists():
-            return self.prices.latest('created')
-        return None
 
 
 class Category(UUIDMixin):

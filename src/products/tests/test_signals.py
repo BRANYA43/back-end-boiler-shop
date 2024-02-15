@@ -1,6 +1,12 @@
 from products.models import ProductImageSet, Specification
-from utils.tests import CustomTestCase
+from utils.tests import CustomTestCase, creators
 from utils.tests.creators import create_test_product
+
+
+class SetProductPriceSignalTest(CustomTestCase):
+    def test_signal_set_product_price_as_value_of_price_model(self):
+        price = creators.create_test_price(value=1000)
+        self.assertEqual(price.product.price, price.value)
 
 
 class CreateSpecificationOfProductSignalTest(CustomTestCase):

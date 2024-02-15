@@ -1,13 +1,11 @@
-from decimal import Decimal
-
 from rest_framework import serializers
 
 from products.models import Category, Product
 
 
 class ProductSerializerMixin(serializers.ModelSerializer):
-    price = serializers.SerializerMethodField('get_price_value')
     images = serializers.SerializerMethodField('get_image_urls')
+    cover_image = serializers.SerializerMethodField('get_cover_image_url')
 
     class Meta:
         model = Product
@@ -16,13 +14,12 @@ class ProductSerializerMixin(serializers.ModelSerializer):
     def get_attributes(self, obj, name_field):
         return {attr.name: attr.value for attr in getattr(obj.specification, name_field).all()}
 
-    def get_price_value(self, obj):
-        if obj.price:
-            return obj.price.value
-        return Decimal(0)
-
     def get_image_urls(self, obj):
         return [image.image.url for image in obj.image_set.images.all()]
+
+    def get_cover_image_url(self, obj):
+        if image := obj.image_set.cover_image:
+            return image.image.url
 
 
 class ProductListSerializer(ProductSerializerMixin):
@@ -30,7 +27,7 @@ class ProductListSerializer(ProductSerializerMixin):
 
     class Meta:
         model = Product
-        fields = ['uuid', 'category', 'name', 'price', 'stock', 'images', 'card_attributes']
+        fields = ['uuid', 'category', 'name', 'price', 'stock', 'cover_image', 'images', 'card_attributes']
 
     def get_card_attributes(self, obj):
         return self.get_attributes(obj, 'all_attributes')
@@ -49,6 +46,7 @@ class ProductDetailSerializer(ProductSerializerMixin):
             'price',
             'stock',
             'description',
+            'cover_image',
             'images',
             'all_attributes',
             'detail_attributes',
