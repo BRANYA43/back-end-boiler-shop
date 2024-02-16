@@ -20,7 +20,7 @@ class PriceInline(admin.TabularInline):
 
 class ProductImageSetInline(admin.StackedInline):
     model = ProductImageSet
-    fields = ('images',)
+    fields = ('cover_image', 'images')
     filter_horizontal = ('images',)
     can_delete = False
     show_change_link = True

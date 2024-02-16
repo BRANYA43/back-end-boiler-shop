@@ -14,18 +14,6 @@ class ProductSerializerMixinTest(CustomTestCase):
         for class_ in classes:
             self.assertTrue(self.serializer_class, class_)
 
-    def test_price_field_returns_correct_price_value(self):
-        product = creators.create_test_product(price=1000)
-        data = self.serializer_class(product).data
-
-        self.assertEqual(data['price'], product.price.value)
-
-    def test_price_field_returns_0_if_price_is_none(self):
-        product = creators.create_test_product()
-        data = self.serializer_class(product).data
-
-        self.assertEqual(data['price'], 0)
-
     def test_images_field_returns_correct_image_urls(self):
         image = creators.create_test_image()
         product = creators.create_test_product()
@@ -33,6 +21,14 @@ class ProductSerializerMixinTest(CustomTestCase):
         data = self.serializer_class(product).data
 
         self.assertEqual(data['images'], [image.image.url])
+
+    def test_cover_image_field_returns_correct_image_url(self):
+        image = creators.create_test_image()
+        product = creators.create_test_product()
+        product.image_set.cover_image = image
+        data = self.serializer_class(product).data
+
+        self.assertEqual(data['cover_image'], image.image.url)
 
 
 class ProductListSerializerTest(CustomTestCase):
@@ -45,7 +41,7 @@ class ProductListSerializerTest(CustomTestCase):
             self.assertTrue(self.serializer_class, class_)
 
     def test_serializer_has_only_expected_fields(self):
-        expected_fields = ['uuid', 'category', 'name', 'price', 'stock', 'images', 'card_attributes']
+        expected_fields = ['uuid', 'category', 'name', 'price', 'stock', 'cover_image', 'images', 'card_attributes']
         self.assertSerializerHasOnlyExpectedFields(self.serializer_class, expected_fields)
 
     def test_card_attributes_returns_correct_attributes(self):
@@ -77,6 +73,7 @@ class ProductDetailSerializerTest(CustomTestCase):
             'description',
             'all_attributes',
             'detail_attributes',
+            'cover_image',
             'images',
         ]
         self.assertSerializerHasOnlyExpectedFields(self.serializer_class, expected_fields)

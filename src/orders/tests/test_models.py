@@ -71,7 +71,7 @@ class OrderProductModelTest(CustomTestCase):
         product = create_test_product(price=1000)
         order_product = create_test_order_product(product=product)
 
-        self.assertEqual(order_product.price.value, product.price.value)
+        self.assertEqual(order_product.price.value, product.price)
 
     def test_model_is_deleted_after_deleting_order(self):
         self.assertEqual(OrderProduct.objects.count(), 0)
