@@ -65,18 +65,18 @@ def switch_displaying(modeladmin, request, queryset):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'stock', 'get_price', 'is_displayed', 'updated', 'created')
+    list_display = ('name', 'category', 'stock', 'price', 'is_displayed', 'updated', 'created')
     fields = (
         'category',
         'name',
-        'get_price',
+        'price',
         'stock',
         'description',
         'is_displayed',
         'updated',
         'created',
     )
-    readonly_fields = ('get_price', 'updated', 'created')
+    readonly_fields = ('price', 'updated', 'created')
     search_fields = (
         'name',
         'description',
@@ -86,12 +86,6 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ('category', 'stock', 'is_displayed')
     inlines = [SpecificationInline, ProductImageSetInline, PriceInline]
     actions = [switch_displaying, make_in_stock, make_out_of_stock, make_to_order]
-
-    @admin.display(description=_('Price'))
-    def get_price(self, instance):
-        if instance.price is not None:
-            return str(instance.price.value)
-        return None
 
 
 class InlineCategory(admin.TabularInline):
