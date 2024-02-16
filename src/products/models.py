@@ -112,7 +112,7 @@ class Product(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
         OUT_OF_STOCK = 'out_of_stock', _('Out of stock')
         TO_ORDER = 'to_order', _('To order')
 
-    name = models.CharField(max_length=50, verbose_name=_('Title'))
+    name = models.CharField(max_length=55, verbose_name=_('Title'))
     category = models.ForeignKey(
         to='Category',
         on_delete=models.PROTECT,

@@ -259,7 +259,7 @@ class ProductModelTest(CustomTestCase):
         field has max length as 50;
         """
         field = self.get_model_field(self.model, 'name')
-        self.assertEqual(field.max_length, 50)
+        self.assertEqual(field.max_length, 55)
 
     def test_category_field(self):
         """
