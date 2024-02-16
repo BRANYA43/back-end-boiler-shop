@@ -1,5 +1,7 @@
 import json
 
+from django.conf import settings
+
 SINGLE_WALL = 'Одностінний'
 DOUBLE_WALL = 'Двостінний'
 types = [SINGLE_WALL, DOUBLE_WALL]
@@ -429,7 +431,7 @@ potbelly_stove = {
 
 def create_compact_catalog_data():
     data = {**boilers, **potbelly_stove, **stovepipes_detail}
-    with open('compact_catalog_data.json', 'w') as f:
+    with open(settings.BASE_DIR / 'data/compact_catalog_data.json', 'w') as f:
         json.dump(data, f, ensure_ascii=False)
 
 

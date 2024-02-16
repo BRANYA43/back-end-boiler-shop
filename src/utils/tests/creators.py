@@ -66,16 +66,13 @@ def create_test_category(name: str = None, **extra_fields):
     return _create_test_model(Category, name=name, **extra_fields)
 
 
-def create_test_product(
-    category: Category = None, name: str = None, slug: str = None, price: price_ = None, **extra_fields
-) -> Product:
+def create_test_product(category: Category = None, name: str = None, price: price_ = None, **extra_fields) -> Product:
     """
     Create test product.
     If category, name or slug is none, they will be generated.
     If price isn't none, price is created for product with value "price".
     :param category: instance of Category.
     :param name: product name.
-    :param slug: product slug.
     :param price: price value of instance Price.
     :param extra_fields: extra fields of product(stock, description, is_displayed).
     """
@@ -83,9 +80,7 @@ def create_test_product(
         category = create_test_category()
     if name is None:
         name = _get_name(Product)
-    if slug is None:
-        slug = name.replace('-', '_')
-    product = _create_test_model(Product, category=category, name=name, slug=slug, **extra_fields)
+    product = _create_test_model(Product, category=category, name=name, **extra_fields)
     if price:
         create_test_price(product, price)
     return product

@@ -113,7 +113,6 @@ class Product(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
         TO_ORDER = 'to_order', _('To order')
 
     name = models.CharField(max_length=50, verbose_name=_('Title'))
-    slug = models.SlugField(max_length=50, unique=True, verbose_name=_('Slug'))
     category = models.ForeignKey(
         to='Category',
         on_delete=models.PROTECT,
