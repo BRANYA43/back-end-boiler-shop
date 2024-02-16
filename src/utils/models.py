@@ -18,8 +18,8 @@ class Image(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
 
 
 class Attribute(UUIDMixin):
-    name = models.CharField(max_length=50, verbose_name=_('Title'))
-    value = models.CharField(max_length=50, verbose_name=_('Value'))
+    name = models.CharField(max_length=100, verbose_name=_('Title'))
+    value = models.CharField(max_length=100, verbose_name=_('Value'))
 
     class Meta:
         verbose_name = _('Attribute')
