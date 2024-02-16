@@ -224,7 +224,6 @@ class ProductModelTest(CustomTestCase):
         necessary_fields = [
             'uuid',
             'name',
-            'slug',
             'category',
             'stock',
             'price',
@@ -242,16 +241,6 @@ class ProductModelTest(CustomTestCase):
         """
         field = self.get_model_field(self.model, 'name')
         self.assertEqual(field.max_length, 50)
-
-    def test_slug_field(self):
-        """
-        Tests:
-        field has max length as 50;
-        field is unique;
-        """
-        field = self.get_model_field(self.model, 'slug')
-        self.assertEqual(field.max_length, 50)
-        self.assertTrue(field.unique)
 
     def test_category_field(self):
         """

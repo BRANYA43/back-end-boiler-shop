@@ -65,11 +65,10 @@ def switch_displaying(modeladmin, request, queryset):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug', 'category', 'stock', 'get_price', 'is_displayed', 'updated', 'created')
+    list_display = ('name', 'category', 'stock', 'get_price', 'is_displayed', 'updated', 'created')
     fields = (
         'category',
         'name',
-        'slug',
         'get_price',
         'stock',
         'description',
@@ -77,11 +76,9 @@ class ProductAdmin(admin.ModelAdmin):
         'updated',
         'created',
     )
-    prepopulated_fields = {'slug': ('name',)}
     readonly_fields = ('get_price', 'updated', 'created')
     search_fields = (
         'name',
-        'slug',
         'description',
         'specification__all_attributes__name',
         'specification__all_attributes__value',
