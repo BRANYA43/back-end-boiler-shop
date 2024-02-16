@@ -53,159 +53,377 @@ diameters = {
 }
 
 stovepipes_detail = {
-    'Димарі': {
-        'Труба': {
-            'Шаблон': '{name} {length}мм {steel} {thickness}мм Ø{diameter}мм',
-            'Тип': types,
-            'Сталь': steels,
-            'Товщина сталі (мм)': thicknesses,
-            'Довжина (мм)': [250, 300, 500, 1000],
-            'Діаметр (мм)': diameters,
+    'Димарі': [
+        {
+            'mixing_type': 'mixed',
+            'typing_specification_name': 'Тип',
+            'prices': 1000,
+            'title': 'Труба',
+            'template_title': '{title} {length}мм {steel} {thickness}мм Ø{diameter}мм',
+            'template_description': '',
+            'template_kwargs': {
+                'title_kwargs': {
+                    'length': 'Довжина (мм)',
+                    'steel': 'Сталь',
+                    'thickness': 'Товщина сталі (мм)',
+                    'diameter': 'Діаметр (мм)',
+                },
+                'description_kwargs': {},
+            },
+            'specifications': {
+                'Тип': types,
+                'Тип:Сталь': steels,
+                'Товщина сталі (мм)': thicknesses,
+                'Довжина (мм)': [250, 300, 500, 1000],
+                'Тип:Діаметр (мм)': diameters,
+            },
         },
-        'Коліно': {
-            'Шаблон': '{name} {corner}° {steel} {thickness}мм Ø{diameter}мм',
-            'Тип': types,
-            'Сталь': steels,
-            'Товщина сталі (мм)': thicknesses,
-            'Діаметр (мм)': diameters,
-            'Кут': [45, 90],
+        {
+            'mixing_type': 'mixed',
+            'typing_specification_name': 'Тип',
+            'prices': 1000,
+            'title': 'Коліно',
+            'template_title': '{name} {corner}° {steel} {thickness}мм Ø{diameter}мм',
+            'template_description': '',
+            'template_kwargs': {
+                'title_kwargs': {
+                    'corner': 'Кут',
+                    'steel': 'Сталь',
+                    'thickness': 'Товщина сталі (мм)',
+                    'diameter': 'Діаметр (мм)',
+                },
+                'description_kwargs': {},
+            },
+            'specification': {
+                'Тип': types,
+                'Тип:Сталь': steels,
+                'Товщина сталі (мм)': thicknesses,
+                'Тип:Діаметр (мм)': diameters,
+                'Кут': [45, 90],
+            },
         },
-        'Трійник': {
-            'Шаблон': '{name} {corner}° {steel} {thickness}мм Ø{diameter}мм',
-            'Тип': types,
-            'Сталь': steels,
-            'Товщина сталі (мм)': thicknesses,
-            'Діаметр (мм)': diameters,
-            'Кут': [45, 87],
+        {
+            'mixing_type': 'mixed',
+            'typing_specification_name': 'Тип',
+            'prices': 1000,
+            'title': 'Трійник',
+            'template_title': '{title} {corner}° {steel} {thickness}мм Ø{diameter}мм',
+            'template_description': '',
+            'template_kwargs': {
+                'title_kwargs': {
+                    'corner': 'Кут',
+                    'steel': 'Сталь',
+                    'thickness': 'Товщина сталі (мм)',
+                    'diameter': 'Діаметр (мм)',
+                },
+                'description_kwargs': {},
+            },
+            'specification': {
+                'Тип': types,
+                'Тип:Сталь': steels,
+                'Товщина сталі (мм)': thicknesses,
+                'Тип:Діаметр (мм)': diameters,
+                'Кут': [45, 87],
+            },
         },
-        'Ревізія': {
-            'Шаблон': '{name} {steel} {thickness}мм Ø{diameter}мм',
-            'Тип': types,
-            'Сталь': steels,
-            'Товщина сталі (мм)': thicknesses,
-            'Діаметр (мм)': diameters,
+        {
+            'mixing_type': 'mixed',
+            'typing_specification_name': 'Тип',
+            'prices': 1000,
+            'title': 'Ревізія',
+            'template_title': '{title} {steel} {thickness}мм Ø{diameter}мм',
+            'template_description': '',
+            'template_kwargs': {
+                'title_kwargs': {
+                    'steel': 'Сталь',
+                    'thickness': 'Товщина сталі (мм)',
+                    'diameter': 'Діаметр (мм)',
+                },
+                'description_kwargs': {},
+            },
+            'specifications': {
+                'Тип': types,
+                'Тип:Сталь': steels,
+                'Товщина сталі (мм)': thicknesses,
+                'Тип:Діаметр (мм)': diameters,
+            },
         },
-        'Грибок': {
-            'Шаблон': '{name} {steel} {thickness}мм Ø{diameter}мм',
-            'Тип': types,
-            'Сталь': steels,
-            'Товщина сталі (мм)': [thicknesses[0]],
-            'Діаметр (мм)': diameters,
+        {
+            'mixing_type': 'mixed',
+            'typing_specification_name': 'Тип',
+            'prices': 1000,
+            'title': 'Грибок',
+            'template_title': '{title} {steel} {thickness}мм Ø{diameter}мм',
+            'template_description': '',
+            'template_kwargs': {
+                'title_kwargs': {
+                    'steel': 'Сталь',
+                    'thickness': 'Товщина сталі (мм)',
+                    'diameter': 'Діаметр (мм)',
+                },
+                'description_kwargs': {},
+            },
+            'specifications': {
+                'Тип': types,
+                'Тип:Сталь': steels,
+                'Товщина сталі (мм)': [thicknesses[0]],
+                'Тип:Діаметр (мм)': diameters,
+            },
         },
-        'Іскрогасник': {
-            'Шаблон': '{name} {steel} {thickness}мм Ø{diameter}мм',
-            'Тип': SINGLE_WALL,
-            'Сталь': steels[SINGLE_WALL],
-            'Товщина сталі (мм)': thicknesses[0],
-            'Діаметр (мм)': diameters[SINGLE_WALL],
+        {
+            'mixing_type': 'mixed',
+            'typing_specification_name': 'Тип',
+            'prices': 1000,
+            'title': 'Іскрогасник',
+            'template_title': '{title} {steel} {thickness}мм Ø{diameter}мм',
+            'template_description': '',
+            'template_kwargs': {
+                'title_kwargs': {
+                    'steel': 'Сталь',
+                    'thickness': 'Товщина сталі (мм)',
+                    'diameter': 'Діаметр (мм)',
+                },
+                'description_kwargs': {},
+            },
+            'specifications': {
+                'Тип': SINGLE_WALL,
+                'Сталь': steels[SINGLE_WALL],
+                'Товщина сталі (мм)': thicknesses[0],
+                'Діаметр (мм)': diameters[SINGLE_WALL],
+            },
         },
-        'Флюгер': {
-            'Шаблон': '{name} {steel} {thickness}мм Ø{diameter}мм',
-            'Тип': SINGLE_WALL,
-            'Сталь': steels[SINGLE_WALL],
-            'Товщина сталі (мм)': thicknesses[0],
-            'Діаметр (мм)': diameters[SINGLE_WALL],
+        {
+            'mixing_type': 'mixed',
+            'typing_specification_name': 'Тип',
+            'prices': 1000,
+            'title': 'Флюгер',
+            'template_title': '{title} {steel} {thickness}мм Ø{diameter}мм',
+            'template_description': '',
+            'template_kwargs': {
+                'title_kwargs': {
+                    'steel': 'Сталь',
+                    'thickness': 'Товщина сталі (мм)',
+                    'diameter': 'Діаметр (мм)',
+                },
+                'description_kwargs': {},
+            },
+            'specifications': {
+                'Тип': SINGLE_WALL,
+                'Сталь': steels[SINGLE_WALL],
+                'Товщина сталі (мм)': thicknesses[0],
+                'Діаметр (мм)': diameters[SINGLE_WALL],
+            },
         },
-        'Дека': {
-            'Шаблон': '{name} {steel} {thickness}мм Ø{diameter}мм',
-            'Тип': SINGLE_WALL,
-            'Сталь': steels[SINGLE_WALL],
-            'Товщина сталі (мм)': thicknesses[0],
-            'Діаметр (мм)': diameters[SINGLE_WALL],
+        {
+            'mixing_type': 'mixed',
+            'typing_specification_name': 'Тип',
+            'prices': 1000,
+            'title': 'Дека',
+            'template_title': '{title} {steel} {thickness}мм Ø{diameter}мм',
+            'template_description': '',
+            'template_kwargs': {
+                'title_kwargs': {
+                    'steel': 'Сталь',
+                    'thickness': 'Товщина сталі (мм)',
+                    'diameter': 'Діаметр (мм)',
+                },
+                'description_kwargs': {},
+            },
+            'specifications': {
+                'Тип': SINGLE_WALL,
+                'Сталь': steels[SINGLE_WALL],
+                'Товщина сталі (мм)': thicknesses[0],
+                'Діаметр (мм)': diameters[SINGLE_WALL],
+            },
         },
-        'Перехідник': {
-            'Шаблон': '{name} {steel} {thickness}мм Ø{diameter}мм',
-            'Тип': SINGLE_WALL,
-            'Сталь': steels[SINGLE_WALL],
-            'Товщина сталі (мм)': thicknesses,
-            'Діаметр (мм)': diameters[SINGLE_WALL],
+        {
+            'mixing_type': 'mixed',
+            'typing_specification_name': 'Тип',
+            'prices': 1000,
+            'title': 'Перехідник',
+            'template_title': '{title} {steel} {thickness}мм Ø{diameter}мм',
+            'template_description': '',
+            'template_kwargs': {
+                'title_kwargs': {
+                    'steel': 'Сталь',
+                    'thickness': 'Товщина сталі (мм)',
+                    'diameter': 'Діаметр (мм)',
+                },
+                'description_kwargs': {},
+            },
+            'specifications': {
+                'Тип': SINGLE_WALL,
+                'Сталь': steels[SINGLE_WALL],
+                'Товщина сталі (мм)': thicknesses,
+                'Діаметр (мм)': diameters[SINGLE_WALL],
+            },
         },
-        'Скоба': {
-            'Шаблон': '{name} {steel} Ø{diameter}мм',
-            'Сталь': steels[SINGLE_WALL][0],
-            'Діаметр (мм)': diameters[SINGLE_WALL],
+        {
+            'mixing_type': 'mixed',
+            'typing_specification_name': '',
+            'prices': 1000,
+            'title': 'Скоба',
+            'template_title': '{title} {steel} Ø{diameter}мм',
+            'template_description': '',
+            'template_kwargs': {
+                'title_kwargs': {},
+                'description_kwargs': {},
+            },
+            'specifications': {
+                'Сталь': steels[SINGLE_WALL][0],
+                'Діаметр (мм)': diameters[SINGLE_WALL],
+            },
         },
-        'Конус': {
-            'Шаблон': '{name} {steel} {thickness}мм Ø{diameter}мм',
-            'Тип': DOUBLE_WALL,
-            'Сталь': steels[DOUBLE_WALL],
-            'Товщина сталі (мм)': thicknesses[0],
-            'Діаметр (мм)': diameters[DOUBLE_WALL],
+        {
+            'mixing_type': 'mixed',
+            'typing_specification_name': 'Тип',
+            'prices': 1000,
+            'title': 'Конус',
+            'template_title': '{title} {steel} {thickness}мм Ø{diameter}мм',
+            'template_description': '',
+            'template_kwargs': {
+                'title_kwargs': {
+                    'steel': 'Сталь',
+                    'thickness': 'Товщина сталі (мм)',
+                    'diameter': 'Діаметр (мм)',
+                },
+                'description_kwargs': {},
+            },
+            'specifications': {
+                'Тип': DOUBLE_WALL,
+                'Сталь': steels[DOUBLE_WALL],
+                'Товщина сталі (мм)': thicknesses[0],
+                'Діаметр (мм)': diameters[DOUBLE_WALL],
+            },
         },
-        'Стакан': {
-            'Шаблон': '{name} {steel} {thickness}мм Ø{diameter}мм',
-            'Тип': DOUBLE_WALL,
-            'Сталь': steels[DOUBLE_WALL],
-            'Товщина сталі (мм)': thicknesses[0],
-            'Діаметр (мм)': diameters[DOUBLE_WALL],
+        {
+            'mixing_type': 'mixed',
+            'typing_specification_name': 'Тип',
+            'prices': 1000,
+            'title': 'Стакан',
+            'template_title': '{title} {steel} {thickness}мм Ø{diameter}мм',
+            'template_description': '',
+            'template_kwargs': {
+                'title_kwargs': {
+                    'steel': 'Сталь',
+                    'thickness': 'Товщина сталі (мм)',
+                    'diameter': 'Діаметр (мм)',
+                },
+                'description_kwargs': {},
+            },
+            'specifications': {
+                'Тип': DOUBLE_WALL,
+                'Сталь': steels[DOUBLE_WALL],
+                'Товщина сталі (мм)': thicknesses[0],
+                'Діаметр (мм)': diameters[DOUBLE_WALL],
+            },
         },
-        'Конденсатозбірники': {
-            'Шаблон': '{name} {steel} {thickness}мм Ø{diameter}мм',
-            'Тип': SINGLE_WALL,
-            'Сталь': steels[SINGLE_WALL],
-            'Товщина сталі (мм)': thicknesses[0],
-            'Діаметр (мм)': diameters[SINGLE_WALL],
+        {
+            'mixing_type': 'mixed',
+            'typing_specification_name': 'Тип',
+            'prices': 1000,
+            'title': 'Конденсатозбірники',
+            'template_title': '{title} {steel} {thickness}мм Ø{diameter}мм',
+            'template_description': '',
+            'template_kwargs': {
+                'title_kwargs': {
+                    'steel': 'Сталь',
+                    'thickness': 'Товщина сталі (мм)',
+                    'diameter': 'Діаметр (мм)',
+                },
+                'description_kwargs': {},
+            },
+            'specifications': {
+                'Тип': SINGLE_WALL,
+                'Сталь': steels[SINGLE_WALL],
+                'Товщина сталі (мм)': thicknesses[0],
+                'Діаметр (мм)': diameters[SINGLE_WALL],
+            },
         },
-    }
+    ]
 }
 
 type_ = 'Двоконтурний'
 fuel_types = 'Дрова, Брикети, Тирса, Вугілля'
 work_pressure = 0.15
-weight = [95, 100, 105, 115]
 
 boilers = {
-    'Твердопаливні котли': {
-        'K': {
-            'Шаблон': 'Твердопаливний котел МАРС {name}-{power}',
-            'Тип котла': type_,
-            'Типи палива': fuel_types,
-            'Тип завантаження': 'Верхне',
-            'Тривалість робочого циклу': '4-8',
-            'Робочій тиск в системі опалення': work_pressure,
-            'Потужність (кВт)': [12, 15, 18, 25],
-            'Площа опалювання (м кв)': [120, 150, 180, 250],
-            "Об'єм камери завантаження (л)": [53, 70, 85, 160],
-            'Вага нетто (кг)': [120, 140, 160, 230],
-            'Габарити ВхШхД (мм)': ['950х340х760', '950х410х760', '950х480х760', '1150х480х830'],
-            'Мінімальна висота димаря (м)': [6, 6, 6, 7],
-            'Розмір патрубку відводу продуктів згоряння (мм)': [127, 127, 159, 159],
-            'Розмір приєднувальних патрубків': ['G1-B', 'G1-B', 'G2-B', 'G2-B'],
+    'Твердопаливні котли': [
+        {
+            'mixing_type': 'equal',
+            'typing_specification_name': 'Тип котла',
+            'prices': [25000, 27000, 29000, 38500],
+            'title': 'К',
+            'template_title': 'Твердопаливний котел МАРС {title}-{power}',
+            'template_description': '',
+            'template_kwargs': {'title_kwargs': {'power': 'Потужність (кВт)'}, 'description_kwargs': {}},
+            'specifications': {
+                'Тип котла': type_,
+                'Типи палива': fuel_types,
+                'Тип завантаження': 'Верхне',
+                'Тривалість робочого циклу': '4-8',
+                'Робочій тиск в системі опалення': work_pressure,
+                'Потужність (кВт)': [12, 15, 18, 25],
+                'Площа опалювання (м кв)': [120, 150, 180, 250],
+                "Об'єм камери завантаження (л)": [53, 70, 85, 160],
+                'Вага нетто (кг)': [120, 140, 160, 230],
+                'Габарити ВхШхД (мм)': ['950х340х760', '950х410х760', '950х480х760', '1150х480х830'],
+                'Мінімальна висота димаря (м)': [6, 6, 6, 7],
+                'Розмір патрубку відводу продуктів згоряння (мм)': [127, 127, 159, 159],
+                'Розмір приєднувальних патрубків': ['G1-B', 'G1-B', 'G2-B', 'G2-B'],
+            },
         },
-        'KТК': {
-            'Шаблон': 'Твердопаливний котел МАРС {name}-{power}',
-            'Тип котла': type_,
-            'Типи палива': fuel_types,
-            'Тип завантаження': 'Фронтальне',
-            'Тривалість робочого циклу': 4,
-            'Робочій тиск в системі опалення': work_pressure,
-            'Потужність (кВт)': [10, 12, 14, 16],
-            'Площа опалювання (м кв)': [100, 120, 140, 160],
-            "Об'єм камери завантаження (л)": [26, 34, 40, 46],
-            'Вага нетто (кг)': [95, 100, 105, 115],
-            'Габарити ВхШхД (мм)': ['850x450x650', '925x450x650', '1000x450x650', '1075x450x650'],
-            'Мінімальна висота димаря (м)': 6,
-            'Розмір патрубку відводу продуктів згоряння (мм)': 127,
-            'Розмір приєднувальних патрубків': 'G2',
+        {
+            'mixing_type': 'equal',
+            'typing_specification_name': 'Тип котла',
+            'prices': [15400, 15900, 16300, 16700],
+            'title': 'КТК',
+            'template_title': 'Твердопаливний котел МАРС {title}-{power}',
+            'template_description': '',
+            'template_kwargs': {'title_kwargs': {'power': 'Потужність (кВт)'}, 'description_kwargs': {}},
+            'specifications': {
+                'Тип котла': type_,
+                'Типи палива': fuel_types,
+                'Тип завантаження': 'Фронтальне',
+                'Тривалість робочого циклу': 4,
+                'Робочій тиск в системі опалення': work_pressure,
+                'Потужність (кВт)': [10, 12, 14, 16],
+                'Площа опалювання (м кв)': [100, 120, 140, 160],
+                "Об'єм камери завантаження (л)": [26, 34, 40, 46],
+                'Вага нетто (кг)': [95, 100, 105, 115],
+                'Габарити ВхШхД (мм)': ['850x450x650', '925x450x650', '1000x450x650', '1075x450x650'],
+                'Мінімальна висота димаря (м)': 6,
+                'Розмір патрубку відводу продуктів згоряння (мм)': 127,
+                'Розмір приєднувальних патрубків': 'G2',
+            },
         },
-    }
+    ]
 }
 
 potbelly_stove = {
-    'Буржуйки': {
-        'Буржуйка': {
-            'Тип палива': ['Дрова', 'Пелети', 'Кора', 'Брикети', 'Тирса'],
-            'Тип топки': 'Відкрита',
-            'Потужність (кВт)': 7,
-            'Площа обігріву (м.кв)': 70,
-            'Камера подвійного згоряння': 'Так',
-            'Підключення до димаря': 'Верхнє',
-            'Розташування печі-камін': 'Окремо',
-            'Габаритні розміри ВхШхГ (мм)': '708х332х570',
-            'Розмір патрубку відводу продуктів згоряння (мм)': 108,
-            'Вага нетто (кг)': 50,
+    'Буржуйки': [
+        {
+            'mixing_type': 'equal',
+            'typing_specification_name': 'Тип котла',
+            'prices': 7800,
+            'title': 'Буржуйка',
+            'template_title': '{title} МАРС {power}кВт',
+            'template_description': '',
+            'template_kwargs': {'title_kwargs': {'power': 'Потужність (кВт)'}, 'description_kwargs': {}},
+            'specifications': {
+                'Тип палива': fuel_types,
+                'Тип топки': 'Відкрита',
+                'Потужність (кВт)': 7,
+                'Площа обігріву (м.кв)': 70,
+                'Камера подвійного згоряння': 'Так',
+                'Підключення до димаря': 'Верхнє',
+                'Розташування печі-камін': 'Окремо',
+                'Габаритні розміри ВхШхГ (мм)': '708х332х570',
+                'Розмір патрубку відводу продуктів згоряння (мм)': 108,
+                'Вага нетто (кг)': 50,
+            },
         }
-    }
+    ]
 }
 
 
