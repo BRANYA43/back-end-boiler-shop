@@ -42,6 +42,9 @@ name of docker compose service for Postgres.
 #### Gunicorn environment values
 - **GUNICORN_WORKERS** - quantity workers for gunicorn. It's `2` by default.
 
+#### CORS environment values
+- **CORS_ALLOWED_ORIGINS** - list of allowed site address with port. 
+
 ### Template of .env file with required environment values
 ```dotenv
 DJANGO_SECRET_KEY=<secret key>
@@ -54,6 +57,8 @@ POSTGRES_DB=postgres
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_HOST=<host>
+
+CORS_ALLOWED_ORIGINS=<addres:port>
 ```
 
 ***
