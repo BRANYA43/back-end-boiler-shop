@@ -4,6 +4,7 @@
 ![Static Badge](https://img.shields.io/badge/Django%20Baton-%23?style=for-the-badge&logo=otto&labelColor=%230a0a0a&color=%23D4021D)
 ![Static Badge](https://img.shields.io/badge/Django%20Split%20Settings-%23?style=for-the-badge&label=DSS&labelColor=%230a0a0a&color=%23fff)
 ![Static Badge](https://img.shields.io/badge/Django%20Filter-%23?style=for-the-badge&label=DF&labelColor=%230a0a0a&color=%23428813)
+![Static Badge](https://img.shields.io/badge/Django%20CORS%20Headers-%23?style=for-the-badge&logo=DCH&label=DCH&labelColor=%230a0a0a&color=%237F2B7B)
 ![Static Badge](https://img.shields.io/badge/Swagger-%23?style=for-the-badge&logo=swagger&logoColor=white&labelColor=%230a0a0a&color=%2385EA2D)
 ![Static Badge](https://img.shields.io/badge/Postgres-%23?style=for-the-badge&logo=postgresql&logoColor=white&labelColor=%230a0a0a&color=%234169E1)
 ![Static Badge](https://img.shields.io/badge/Docker-%23?style=for-the-badge&logo=docker&logoColor=white&labelColor=%230a0a0a&color=%232496ED)
