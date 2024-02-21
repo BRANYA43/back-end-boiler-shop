@@ -1,5 +1,5 @@
 """
-Production setting file
+Production settings
 """
 
 from core.settings import env

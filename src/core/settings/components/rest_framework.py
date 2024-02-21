@@ -1,5 +1,6 @@
 """
 Rest Framework Settings
+Docs: https://www.django-rest-framework.org/
 """
 
 from core.settings.components.base import INSTALLED_APPS

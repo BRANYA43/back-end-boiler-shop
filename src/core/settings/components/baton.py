@@ -1,3 +1,8 @@
+"""
+Baton Settings
+GitHub: https://github.com/otto-torino/django-baton
+"""
+
 from core.settings.components.base import INSTALLED_APPS
 from django.utils.translation import gettext_lazy as _
 
