@@ -95,14 +95,17 @@ If you installed docker compose as application to your OS that command must star
 ### Product Filters
 #### By name/s
 The filter filters by a name or part of name and by multiple names or parts of names.
+It isn't сase sensitive.
 Example: single `names=Name`, multiple `names=Name, Name`.
 - http://localhost/api/product/?names=
 #### By category
 The filter filters by full name of category.
+It isn't сase sensitive.
 Example: `cateogry=Category`
 - http://localhost/api/product/?category=
 #### By attribute/s
 The filter filters by full name and value of attribute or multiple attributes.
+It's сase sensitive.
 Example: single `attributes=Name:Value`, multiple `attributs=Name:Value, Name:Value`.
 - http://localhost/api/product/?attributes=
 #### By price range
