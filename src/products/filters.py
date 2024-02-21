@@ -42,4 +42,4 @@ class ProductFilter(filters.FilterSet):
 
     def filter_price(self, queryset, _, price_range):
         min_price, max_price = price_range.start, price_range.stop
-        return queryset.filter(prices__value__range=(min_price, max_price))
+        return queryset.filter(price__range=(min_price, max_price))
