@@ -25,6 +25,7 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
         'list': serializers.CategoryListSerializer,
         'retrieve': serializers.CategoryDetailSerializer,
     }
+    pagination_class = None
 
     def get_serializer_class(self):
         return self.serializer_classes[self.action]

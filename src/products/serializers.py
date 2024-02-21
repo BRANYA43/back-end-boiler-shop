@@ -61,7 +61,7 @@ class ProductDetailSerializer(ProductSerializerMixin):
 
 class FilterListSerializer(serializers.ListSerializer):
     def to_representation(self, data):
-        data = Category.objects.filter(name__in=data, parent=None)
+        data = data.filter(parent=None)
         return super().to_representation(data)
 
 
