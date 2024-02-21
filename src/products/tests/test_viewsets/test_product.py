@@ -30,7 +30,7 @@ class ProductListViewTest(CustomTestCase):
 
         response = self.client.get(self.url)
 
-        self.assertEqual(response.data, expected_data)
+        self.assertEqual(response.data['results'], expected_data)
 
     def test_view_filters_product_by_name(self):
         for name in ['p1', 'p2', 'p3']:
@@ -39,7 +39,7 @@ class ProductListViewTest(CustomTestCase):
         expected_data = self.serializer_class(Product.objects.filter(name='p2'), many=True).data
         response = self.client.get(self.url, {'names': 'p2'})
 
-        self.assertEqual(response.data, expected_data)
+        self.assertEqual(response.data['results'], expected_data)
 
     def test_view_filter_product_by_some_names(self):
         for name in ['p1', 'p2', 'p3', 'p4', 'p5']:
@@ -50,7 +50,7 @@ class ProductListViewTest(CustomTestCase):
         expected_data = self.serializer_class(Product.objects.filter(name__in=names.split(', ')), many=True).data
         response = self.client.get(self.url, {'names': names})
 
-        self.assertEqual(response.data, expected_data)
+        self.assertEqual(response.data['results'], expected_data)
 
     def test_view_filter_product_by_category(self):
         categories = [creators.create_test_category(name=name) for name in ['c1', 'c2', 'c3']]
@@ -62,7 +62,7 @@ class ProductListViewTest(CustomTestCase):
         expected_data = self.serializer_class(Product.objects.filter(category__name='c2'), many=True).data
         response = self.client.get(self.url, {'category': 'c2'})
 
-        self.assertEqual(response.data, expected_data)
+        self.assertEqual(response.data['results'], expected_data)
 
     def test_view_filters_product_by_attribute(self):
         name_value = {f'n{i}': f'v{i}' for i in range(1, 4)}
@@ -77,7 +77,7 @@ class ProductListViewTest(CustomTestCase):
         expected_data = self.serializer_class(queryset, many=True).data
         response = self.client.get(self.url, {'attributes': 'n2:v2'})
 
-        self.assertEqual(response.data, expected_data)
+        self.assertEqual(response.data['results'], expected_data)
 
     def test_view_filters_product_by_some_attributes(self):
         name_value = {f'n{i}': f'v{i}' for i in range(1, 4)}
@@ -91,7 +91,7 @@ class ProductListViewTest(CustomTestCase):
         expected_data = self.serializer_class(queryset, many=True).data
         response = self.client.get(self.url, {'attributes': 'n1:v1, n2:v2'})
 
-        self.assertEqual(response.data, expected_data)
+        self.assertEqual(response.data['results'], expected_data)
 
     def test_view_filter_product_by_price_range(self):
         for price in range(1000, 3001, 1000):
@@ -103,10 +103,10 @@ class ProductListViewTest(CustomTestCase):
         response = self.client.get(self.url, {'price_min': 1500, 'price_max': 2500})
 
         # Sometimes response data and expected data aren't equal, but they have the same product data
-        if response.data != expected_data:
+        if response.data['results'] != expected_data:
             expected_data = expected_data[::-1]
 
-        self.assertEqual(response.data, expected_data)
+        self.assertEqual(response.data['results'], expected_data)
 
     def test_view_filter_product_by_price_range_but_filtering_only_latest_prices(self):
         product = creators.create_test_product()
@@ -115,7 +115,7 @@ class ProductListViewTest(CustomTestCase):
 
         response = self.client.get(self.url, {'price_min': 1500, 'price_max': 2500})
 
-        self.assertEqual(response.data, [])
+        self.assertEqual(response.data['results'], [])
 
 
 class ProductRetrieveViewTest(CustomTestCase):

@@ -1,4 +1,6 @@
-from django.db.models import Count
+from functools import reduce
+
+from django.db.models import Count, Q
 from django_filters import rest_framework as filters
 
 from products.models import Product
@@ -10,14 +12,19 @@ class CharFilterInFilter(filters.BaseInFilter, filters.CharFilter):
 
 
 class ProductFilter(filters.FilterSet):
-    names = CharFilterInFilter(field_name='name', lookup_expr='in', label='Name is in:')
+    names = CharFilterInFilter(method='filter_names', label='Name/s is in:')
     category = filters.CharFilter(field_name='category__name', lookup_expr='iexact')
-    attributes = CharFilterInFilter(method='filter_attributes', lookup_expr='in', label='Attribute is in:')
+    attributes = CharFilterInFilter(method='filter_attributes', label='Attribute/s is in:')
     price = filters.NumericRangeFilter(method='filter_price', label='Price range from min to max:')
 
     class Meta:
         model = Product
         fields = ['names', 'category', 'attributes', 'price']
+
+    def filter_names(self, queryset, _, names):
+        names_query = [Q(name__icontains=name) for name in names]
+        names_query = reduce(lambda q1, q2: q1 | q2, names_query)
+        return queryset.filter(names_query)
 
     def filter_attributes(self, queryset, _, attributes):
         names = []
@@ -35,4 +42,4 @@ class ProductFilter(filters.FilterSet):
 
     def filter_price(self, queryset, _, price_range):
         min_price, max_price = price_range.start, price_range.stop
-        return queryset.filter(prices__value__range=(min_price, max_price))
+        return queryset.filter(price__range=(min_price, max_price))

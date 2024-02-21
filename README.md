@@ -4,6 +4,7 @@
 ![Static Badge](https://img.shields.io/badge/Django%20Baton-%23?style=for-the-badge&logo=otto&labelColor=%230a0a0a&color=%23D4021D)
 ![Static Badge](https://img.shields.io/badge/Django%20Split%20Settings-%23?style=for-the-badge&label=DSS&labelColor=%230a0a0a&color=%23fff)
 ![Static Badge](https://img.shields.io/badge/Django%20Filter-%23?style=for-the-badge&label=DF&labelColor=%230a0a0a&color=%23428813)
+![Static Badge](https://img.shields.io/badge/Django%20CORS%20Headers-%23?style=for-the-badge&logo=DCH&label=DCH&labelColor=%230a0a0a&color=%237F2B7B)
 ![Static Badge](https://img.shields.io/badge/Swagger-%23?style=for-the-badge&logo=swagger&logoColor=white&labelColor=%230a0a0a&color=%2385EA2D)
 ![Static Badge](https://img.shields.io/badge/Postgres-%23?style=for-the-badge&logo=postgresql&logoColor=white&labelColor=%230a0a0a&color=%234169E1)
 ![Static Badge](https://img.shields.io/badge/Docker-%23?style=for-the-badge&logo=docker&logoColor=white&labelColor=%230a0a0a&color=%232496ED)
@@ -41,6 +42,9 @@ name of docker compose service for Postgres.
 
 #### Gunicorn environment values
 - **GUNICORN_WORKERS** - quantity workers for gunicorn. It's `2` by default.
+
+#### CORS environment values
+- **CORS_ALLOWED_ORIGINS** - list of allowed site address with port. 
 
 ### Template of .env file with required environment values
 ```dotenv
@@ -87,7 +91,26 @@ docker compose down -v
 
 If you installed docker compose as application to your OS that command must start with 
 `docker-compose` instead `docker compose`.
-
+***
+### Product Filters
+#### By name/s
+The filter filters by a name or part of name and by multiple names or parts of names.
+It isn't сase sensitive.
+Example: single `names=Name`, multiple `names=Name, Name`.
+- http://localhost/api/product/?names=
+#### By category
+The filter filters by full name of category.
+It isn't сase sensitive.
+Example: `cateogry=Category`
+- http://localhost/api/product/?category=
+#### By attribute/s
+The filter filters by full name and value of attribute or multiple attributes.
+It's сase sensitive.
+Example: single `attributes=Name:Value`, multiple `attributs=Name:Value, Name:Value`.
+- http://localhost/api/product/?attributes=
+#### By price range
+The filter filters by price range. Example: `min_range=1000&max_range=2000`
+- http://localhost/api/product/?min_range=&max_range=
 ***
 ### Links
 #### Api

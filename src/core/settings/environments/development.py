@@ -1,5 +1,5 @@
 """
-Development setting file
+Development settings
 """
 from core.settings import env
 
