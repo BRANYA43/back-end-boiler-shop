@@ -30,6 +30,9 @@ It's `admin` by default.
 It's `admin@admin.com` by default.
 * **DJANGO_SUPERUSER_PASSWORD** - password of superuser for django admin site.
 It's `123` by default.
+* **DJANGO_GOOGLE_EMAIL_HOST_USER** - your google email for shop.
+* **DJANGO_GOOGLE_EMAIL_HOST_PASSWORD** - password of google application. 
+
 
 #### Postgres environment values
 - **POSTGRES_DB** - database name for Postgres. It's `postgres` by default.
@@ -53,6 +56,8 @@ DJANGO_ALLOWED_HOSTS='localhost [::1] 127.0.0.1 0.0.0.0'
 DJANGO_SUPERUSER_USERNAME=admin
 DJANGO_SUPERUSER_EMAIL=admin@admin.com
 DJANGO_SUPERUSER_PASSWORD=123
+DJANGO_GOOGLE_EMAIL_HOST_USER=<email>
+DJANGO_GOOGLE_EMAIL_HOST_PASSWORD=<password>
 
 POSTGRES_DB=postgres
 POSTGRES_USER=postgres
