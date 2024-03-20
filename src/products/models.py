@@ -107,6 +107,11 @@ class Specification(UUIDMixin):
 
 
 class Product(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
+    class State(models.TextChoices):
+        NONE = 'none', '---'
+        NEW = 'new', _('New')
+        BESTSELLER = 'bestseller', _('Bestseller')
+
     class Stock(models.TextChoices):
         IN_STOCK = 'in_stock', _('In stock')
         OUT_OF_STOCK = 'out_of_stock', _('Out of stock')
@@ -132,6 +137,12 @@ class Product(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
         decimal_places=2,
         default=0,
         verbose_name=_('Price'),
+    )
+    state = models.CharField(
+        max_length=20,
+        choices=State.choices,
+        default=State.NONE,
+        verbose_name=_('State'),
     )
 
     class Meta:

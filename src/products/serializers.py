@@ -27,7 +27,7 @@ class ProductListSerializer(ProductSerializerMixin):
 
     class Meta:
         model = Product
-        fields = ['uuid', 'category', 'name', 'price', 'stock', 'cover_image', 'images', 'card_attributes']
+        fields = ['uuid', 'category', 'name', 'price', 'stock', 'state', 'cover_image', 'images', 'card_attributes']
 
     def get_card_attributes(self, obj):
         return self.get_attributes(obj, 'all_attributes')
@@ -45,6 +45,7 @@ class ProductDetailSerializer(ProductSerializerMixin):
             'name',
             'price',
             'stock',
+            'state',
             'description',
             'cover_image',
             'images',
