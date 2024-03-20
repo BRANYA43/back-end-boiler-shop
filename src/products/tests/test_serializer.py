@@ -41,7 +41,17 @@ class ProductListSerializerTest(CustomTestCase):
             self.assertTrue(self.serializer_class, class_)
 
     def test_serializer_has_only_expected_fields(self):
-        expected_fields = ['uuid', 'category', 'name', 'price', 'stock', 'cover_image', 'images', 'card_attributes']
+        expected_fields = [
+            'uuid',
+            'category',
+            'name',
+            'price',
+            'stock',
+            'state',
+            'cover_image',
+            'images',
+            'card_attributes',
+        ]
         self.assertSerializerHasOnlyExpectedFields(self.serializer_class, expected_fields)
 
     def test_card_attributes_returns_correct_attributes(self):
@@ -70,6 +80,7 @@ class ProductDetailSerializerTest(CustomTestCase):
             'name',
             'price',
             'stock',
+            'state',
             'description',
             'all_attributes',
             'detail_attributes',

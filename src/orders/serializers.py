@@ -12,7 +12,7 @@ from orders.validators import PHONE_PATTERN
 class CustomerCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = ['order', 'full_name', 'email', 'phone']
+        fields = ['full_name', 'email', 'phone']
 
     def validate_phone(self, value):
         if value and (match := re.match(PHONE_PATTERN, value)) is not None:
@@ -23,7 +23,7 @@ class CustomerCreateSerializer(serializers.ModelSerializer):
 class OrderProductCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderProduct
-        fields = ['order', 'product', 'quantity']
+        fields = ['product', 'quantity']
 
 
 class OrderCreateSerializer(serializers.ModelSerializer):
@@ -44,3 +44,41 @@ class OrderCreateSerializer(serializers.ModelSerializer):
         if delivery != Order.Delivery.PICKUP.lower() and not bool(delivery_address):
             raise ValidationError(self.default_error_messages[code], code)
         return value
+
+
+class OrderSetCreateSerializer(serializers.Serializer):
+    order = OrderCreateSerializer(required=True)
+    customer = CustomerCreateSerializer(required=True)
+    products = OrderProductCreateSerializer(required=True, many=True)
+
+    class Meta:
+        fields = ['order', 'customer', 'products']
+
+    def create(self, validated_data):
+        order_data = validated_data.pop('order')
+        customer_data = validated_data.pop('customer')
+        products_data = validated_data.pop('products')
+
+        order = self._create_order(order_data)
+        customer = self._create_customer(order, customer_data)
+        products = [self._create_products(order, data) for data in products_data]
+
+        return {'order': order, 'customer': customer, 'products': products}
+
+    def _create_order(self, data):
+        return self._create_model_instance(Order, data)
+
+    def _create_customer(self, order, data):
+        data['order'] = order
+        return self._create_model_instance(Customer, data)
+
+    def _create_products(self, order, data):
+        data['order'] = order
+        return self._create_model_instance(OrderProduct, data)
+
+    @staticmethod
+    def _create_model_instance(model, data):
+        instance = model(**data)
+        instance.full_clean()
+        instance.save()
+        return instance

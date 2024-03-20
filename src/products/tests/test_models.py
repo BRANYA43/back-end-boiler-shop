@@ -311,6 +311,17 @@ class ProductModelTest(CustomTestCase):
         self.assertEqual(field.decimal_places, 2)
         self.assertEqual(field.default, 0)
 
+    def test_state_field(self):
+        """
+        Tests:
+        field has max_length as 20;
+        field is State.NONE by default;
+        field has State.choices;
+        """
+        field = self.get_model_field(self.model, 'state')
+        self.assertEqual(field.default, self.model.State.NONE)
+        self.assertEqual(field.choices, self.model.State.choices)
+
     def test_model_allows_category_to_be_deleted(self):
         product = creators.create_test_product()
         category = product.category
