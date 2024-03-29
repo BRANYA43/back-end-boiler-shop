@@ -1,73 +1,76 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ua">
 <head>
     <meta charset="UTF-8">
+    <title>Замовлення Divo Comfort</title>
+    <link rel="stylesheet" href="{% static 'orders/css/base.css' %}">
 </head>
 <body>
-    <p>Дякуємо Вам що скористалися послугами нашого интернет-магазину. Ми прийняли ваше замовлення на обробку.</p>
-    <h2></h2>
-    <table>
-        <tr>
-            <th>ПІБ</th>
-            <td>{{ customer.full_name }}</td>
-        </tr>
-        <tr>
-            <th>Email</th>
-            <td>{{ customer.email }}</td>
-        </tr>
-        <tr>
-            <th>Телефон</th>
-            <td>{{ customer.phone }}</td>
-        </tr>
-    </table>
-    <h2>Інформація про замовлення</h2>
-    <table>
-        <tr>
-            <th>Номер</th>
-            <td>{{ order.uuid }}</td>
-        </tr>
-        <tr>
-            <th>Дата</th>
-            <td>{{ order.created }}</td>
-        </tr>
-        <tr>
-            <th>Адреса доставки</th>
-            <td>{{ order.delivery_address }}</td>
-        </tr>
-        <tr>
-            <th>Спосіб доставки</th>
-            <td>{{ order.delivery }}</td>
-        </tr>
-        <tr>
-            <th>Спосіб оплати</th>
-            <td>{{ order.payment }}</td>
-        </tr>
-        <tr>
-            <th></th>
-            <td>{{ order.comment }}</td>
-        </tr>
-    </table>
-    <h2>Інформація про товари</h2>
-    <table>
-        <tr>
-            <th>Назва</th>
-            <th>Ціна</th>
-            <th>Кіл-ть</th>
-            <th>Сума</th>
-        </tr>
-        {% for product in products %}
-            <tr>
-                <td>{{ product.product.name }}</td>
-                <td>{{ product.price.value }}грн</td>
-                <td>{{ product.quantity }}шт.</td>
-                <td>{{ product.total_cost }}грн</td>
-            </tr>
-        {% endfor %}
-        <tr>
-            <th colspan="3">Тотал Сума</th>
-            <td>{{ order.total_cost }}грн</td>
-        </tr>
-    </table>
-    <p>С повагою,<br>Інтернет-Магазин Divo Comfort</p>
+    <header>
+        <div class="logo">
+            <img src="{% static 'orders/imgs/logo.png' %}">
+        </div>
+    </header>
+    <main>
+        <h1>Нове замовлення</h1>
+        <h2>Інформація про замовника</h2>
+        <div class="table">
+            <div class="row">
+                <div class="label">ПІБ</div>
+                <div class="value">{{ customer.full_name }}</div>
+            </div>
+            <div class="row">
+                <span class="label">Email</span>
+                <span class="value">{{ customer.email }}</span>
+            </div>
+            <div class="row">
+                <span class="label">Номер телефону</span>
+                <span class="value">{{ customer.phone }}</span>
+            </div>
+        </div>
+        <h2>Інформація про замовлення</h2>
+        <div class="table">
+            <div class="row">
+                <div class="label">Номер</div>
+                <div class="value">{{ order.uuid }}</div>
+            </div>
+            <div class="row">
+                <span class="label">Спосіб оплати</span>
+                <span class="value">{{ order.get_payment_name }}</span>
+            </div>
+            <div class="row">
+                <span class="label">Адреса</span>
+                <span class="value">{{ order.delivery_address }}</span>
+            </div>
+            <div class="comment">
+                <div class="label">Кометар до замовлення:</div>
+                <div>{{ order.comment }}</div>
+
+            </div>
+        </div>
+        <ul>
+            {% for product in products %}
+                <li>
+                    <p>
+                        {{ product.name }}<br>
+                        <span class="label">Ціна:</span> <b>{{ product.price.value }}грн</b><br>
+                        <span class="label">Кіл-ть:</span> {{ product.quantity }} шт.<br>
+                        <span class="label">Сума:</span> <b>{{ product.total_cost }}грн</b>
+                    </p>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="total-sum">
+            <div class="row">
+                <span class="label">Разом:</span>
+                <span class="value">{{ order.total_cost }}грн</span>
+            </div>
+        </div>
+    </main>
+    {% block footer %}
+    {% endblock %}
+    <script src="{% static 'orders/js.base.js' %}">
+    </script>
 </body>
 </html>
