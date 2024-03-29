@@ -1,54 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-</head>
-<body>
-    <p>Дякуємо Вам що скористалися послугами нашого интернет-магазину. Ми прийняли ваше замовлення на обробку.</p>
-    <h2>Інформація про замовлення</h2>
-    <table>
-        <tr>
-            <th>Номер</th>
-            <td>{{ order.uuid }}</td>
-        </tr>
-        <tr>
-            <th>Дата</th>
-            <td>{{ order.created }}</td>
-        </tr>
-        <tr>
-            <th>Адреса доставки</th>
-            <td>{{ order.delivery_address }}</td>
-        </tr>
-        <tr>
-            <th>Спосіб доставки</th>
-            <td>{{ order.delivery }}</td>
-        </tr>
-        <tr>
-            <th>Спосіб оплати</th>
-            <td>{{ order.payment }}</td>
-        </tr>
-    </table>
-    <h2>Інформація про товари</h2>
-    <table>
-        <tr>
-            <th>Назва</th>
-            <th>Ціна</th>
-            <th>Кіл-ть</th>
-            <th>Сума</th>
-        </tr>
-        {% for product in products %}
-            <tr>
-                <td>{{ product.product.name }}</td>
-                <td>{{ product.price.value }}грн</td>
-                <td>{{ product.quantity }}шт.</td>
-                <td>{{ product.total_cost }}грн</td>
-            </tr>
-        {% endfor %}
-        <tr>
-            <th colspan="3">Тотал Сума</th>
-            <td>{{ order.total_cost }}грн</td>
-        </tr>
-    </table>
-    <p>С повагою,<br>Інтернет-Магазин Divo Comfort</p>
-</body>
-</html>
+{% extends 'orders/msg_body_of_order_for_owner.html' %}
+{% load static %}
+{% block footer %}
+    <footer>
+        <div class="contact">
+            <h3>Контактна інформація</h3>
+            <p>
+                <img src="{% static 'orders/imgs/phone.png' %}">
+                <span>+380 68 262 5900</span>
+            </p>
+            <p>
+                <img src="{% static 'orders/imgs/phone.png' %}">
+                <span>+380 50 401 6660</span>
+            </p>
+            <p>
+                <img src="{% static 'orders/imgs/email.png' %}">
+                <span>service@divo-comfort.ua</span>
+            </p>
+            <p>
+                <img src="{% static 'orders/imgs/address.png' %}">
+                <span>м. Харків, вул. Киргизька, 19</span>
+            </p>
+        </div>
+        <div class="schedule">
+            <h3>Графік роботи</h3>
+            <p>
+                <img src="{% static 'orders/imgs/time.png' %}">
+                <span>Пн-Нд з 9:00 до 18:00<br>Без вихідних</span>
+            </p>
+        </div>
+        <div>
+            <img src="{% static 'orders/imgs/logo.png' %}">
+        </div>
+</footer>
+{% endblock %}
