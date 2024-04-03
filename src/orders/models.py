@@ -102,3 +102,6 @@ class Order(UUIDMixin, CreatedAndUpdatedDateTimeMixin):
     @property
     def total_cost(self) -> Decimal:
         return sum([product.total_cost for product in self.products.all()])
+
+    def get_payment_name(self):
+        return dict(self.Payment.choices)[self.payment]

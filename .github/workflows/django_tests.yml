@@ -31,6 +31,7 @@ jobs:
       env:
         DJANGO_SETTINGS_ENV: 'development'
         DJANGO_SECRET_KEY: 'django_secret_key'
+        DJANGO_GOOGLE_EMAIL_HOST_USER: 'test@test.com'
       run: |
         cd src
         python manage.py test
